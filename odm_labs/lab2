@@ -1,0 +1,325 @@
+#include <iostream>
+#include <vector>
+#include <string.h>
+#include <cstdlib>
+
+struct mn
+{
+	int n_power = 0;
+	std::vector<int> elems;
+} A, B, C, T, U;
+
+mn UNITE(mn A, mn B)
+{
+	mn C;
+	bool not_in_list = true;
+	C.n_power = A.elems.size();
+	C.elems = A.elems;
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = 0; k < C.elems.size(); k++)
+		{
+			if (B.elems[i] == C.elems[k])
+			{
+				not_in_list = false;
+				break;
+			}
+		}
+		if (not_in_list == true)
+		{
+			C.elems.push_back(B.elems[i]);
+			C.n_power++;
+		}
+		else
+		{
+			not_in_list = true;
+		}
+	}
+	return C;
+}
+
+mn CROSSING(mn A, mn B)
+{
+	mn C;
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			if (B.elems[j] == A.elems[i])
+			{
+				C.elems.push_back(B.elems[j]);
+			}
+		}
+	}
+	return C;
+}
+
+mn DIFFERENCE(mn A, mn B)
+{
+	mn C;
+	C.elems = A.elems;
+	C.n_power = A.n_power;
+	for (int i = 0; i < C.elems.size(); i++)
+	{
+		for (int k = 0; k < B.elems.size(); k++)
+		{
+			if (C.elems[i] == B.elems[k])
+			{
+				C.elems.erase(C.elems.begin() + i);
+				i--;
+				break;
+			}
+		}
+	}
+	return C;
+}
+
+void CARTESIAN_PRODUCT(mn A, mn B)
+{
+	std::cout << "{ ";
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			std::cout << "(" << A.elems[i] << "," << B.elems[j] << ")" << " ";
+		}
+		if (i == A.elems.size() - 1) std::cout << "}";
+	}
+	std::cout << "\n";
+}
+
+int main()
+{
+	int t;
+	system("printf \033c");
+	while (true) {
+		std::cout << "Выберыце спосаб задання мностваў: \n1) Пералічэнне\n2) Выказванне\n";
+		std::cin >> t;
+		switch (t) {
+		case 1:
+			goto per;
+			break;
+		case 2:
+			std::cout << "Увядзіце магутнасць мноства А: "; std::cin >> t;
+			if (t > 10) {
+				while (true) {
+					std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+					std::cout << "Увядзіце магутнасць мноства А: "; std::cin >> t;
+					if (t <= 10) break;
+				}
+			}
+			for (int i = 1; i <= t; i++) {
+				A.n_power = t;
+				A.elems.push_back(i);
+			}
+			std::cout << "Увядзіце магутнасць мноства В: "; std::cin >> t;
+			if (t > 10) {
+				while (true) {
+					std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+					std::cout << "Увядзіце магутнасць мноства А: "; std::cin >> t;
+					if (t <= 10) break;
+				}
+			}
+			for (int i = 1; i <= t; i++) {
+				B.n_power = t;
+				B.elems.push_back(2 * i);
+			}
+			goto Menu;
+			break;
+		}
+
+	}
+per:
+	while (true)
+	{
+		std::cout << "Задайце магутнасць мноства А:\n"; //задаецца магутнасць мноства А
+		std::cin >> A.n_power;
+		if (!std::cin || A.n_power <= 0 || A.n_power > 10)
+		{
+			std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+			std::cin.clear();
+			while (std::cin.get() != '\n');
+		}
+		else break;
+	}
+	while (true)
+	{
+		std::cout << "Задайце магутнасць мноства В:\n"; //задаецца магутнасць мноства В
+		std::cin >> B.n_power;
+		if (!std::cin || B.n_power <= 0 || B.n_power > 10)
+		{
+			std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+			std::cin.clear();
+			while (std::cin.get() != '\n');
+		}
+		else break;
+	}
+	std::cout << "Увядзіце элементы мноства А: "; //увод элементаў мноства А
+	for (int i = 0; i < A.n_power; i++)
+	{
+
+		std::cin >> t;
+		A.elems.push_back(t);
+	}
+	std::cout << "Увядзіце элементы мноства В: "; //увод элементаў мноства В
+	for (int i = 0; i < B.n_power; i++)
+	{
+		std::cin >> t;
+		B.elems.push_back(t);
+	}
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int k = i; k < A.elems.size() - 1; k++)
+		{
+			if (A.elems[i] == A.elems[k + 1])
+			{
+				A.elems.erase(A.elems.begin() + k + 1);
+				k--;
+			}
+		}
+	}
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = i; k < B.elems.size() - 1; k++)
+		{
+			if (B.elems[i] == B.elems[k + 1])
+			{
+				B.elems.erase(B.elems.begin() + k + 1);
+				k--;
+			}
+		}
+	}
+Menu:
+	for (int i = 1; i < 21; i++)
+	{
+		U.elems.push_back(i);
+		U.n_power++;
+	}
+	while (true)
+	{
+		int nSwitch;
+		std::cout << "1) Аб'яднанне мностваў А і В.\n" <<
+			"2) Перасячэнне мностваў А і В.\n" <<
+			"3) Рознасць мностваў А і В.\n" <<
+			"4) Рознасць мностваў В і А.\n" <<
+			"5) Сіметрычная рознасць мностваў А і В.\n" <<
+			"6) Дапаўненне мноства А.\n" <<
+			"7) Дапаўненне мноства В.\n" <<
+			"8) Дэкартаў здабытак мноства А на мноства В.\n" <<
+			"10) Дэкартаў здабытак мноства В на мноства А.\n" <<
+			"10) Выхад з праграмы.\n"; //
+		std::cin >> nSwitch;
+		system("printf \033c");
+		switch (nSwitch)
+		{
+		case 1:
+			C = UNITE(A, B);
+			std::cout << "Аб'яднанне мностваў А і В: ";
+			std::cout << "{" << C.elems[0];
+			for (int i = 1; i < C.elems.size(); i++)
+			{
+				std::cout << ", " << C.elems[i];
+			}
+			std::cout << "}" << std::endl;
+			break;
+		case 2:
+			C = CROSSING(A, B);
+			std::cout << "Перасячэнне мностваў А і В: ";
+			std::cout << "{" << C.elems[0];
+			for (int i = 1; i < C.elems.size(); i++)
+			{
+				std::cout << ", " << C.elems[i];
+			}
+			std::cout << "}" << std::endl;
+			if (C.elems.empty())
+			{
+				std::cout << "пустое мноства.";
+			}
+			break;
+		case 3:
+			C = DIFFERENCE(A, B);
+			std::cout << "Розніца мностваў А і В: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{" << C.elems[0];
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", " << C.elems[i];
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пустое мноства." << std::endl;
+			break;
+		case 4:
+			C = DIFFERENCE(B, A);
+			std::cout << "Розніца мностваў В і A: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{" << C.elems[0];
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", " << C.elems[i];
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пустое мноства." << std::endl;
+			break;
+		case 5:
+			C = UNITE(A, B);
+			T = CROSSING(A, B);
+			C = DIFFERENCE(C, T);
+			std::cout << "Сіметрычная рознасць мностваў А і В: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{" << C.elems[0];
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", " << C.elems[i];
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пустое мноства." << std::endl;
+			break;
+		case 6:
+			std::cout << "Дапаўненне мноства А: ";
+			C = DIFFERENCE(U, A);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{" << C.elems[0];
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", " << C.elems[i];
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пустое мноства." << std::endl;
+			break;
+		case 7:
+			std::cout << "Дапаўненне мноства В: ";
+			C = DIFFERENCE(U, B);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{" << C.elems[0];
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", " << C.elems[i];
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пустое мноства." << std::endl;
+			break;
+		case 8:
+			std::cout << "Дэкартаў здабытак мностваў А і В: ";
+			CARTESIAN_PRODUCT(A, B);
+			break;
+		case 9:
+			std::cout << "Дэкартаў здабытак мностваў В і А: ";
+			CARTESIAN_PRODUCT(B, A);
+			break;
+		case 10:
+			return 0;
+		}
+	}
+	return 0;
+	
+}

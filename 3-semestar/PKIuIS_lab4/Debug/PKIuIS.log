@@ -1,0 +1,14 @@
+﻿  main.cpp
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(38,47): warning C4305: 'initializing': truncation from 'double' to '_Ty'
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(38,47): warning C4305:         with
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(38,47): warning C4305:         [
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(38,47): warning C4305:             _Ty=float
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(38,47): warning C4305:         ]
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(42,43): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(74,33): warning C4305: 'initializing': truncation from 'double' to '_Ty'
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(74,33): warning C4305:         with
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(74,33): warning C4305:         [
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(74,33): warning C4305:             _Ty=float
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(74,33): warning C4305:         ]
+D:\Workspace\Visual Studio\PKIuIS\main.cpp(77,44): warning C4305: 'initializing': truncation from 'double' to 'float'
+  PKIuIS.vcxproj -> D:\Workspace\Visual Studio\PKIuIS\Debug\PKIuIS.exe

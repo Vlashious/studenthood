@@ -1,0 +1,15 @@
+﻿  main.cpp
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(91,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(88): message : while compiling class template member function 'bool Graph<int>::operator >=(const Graph<int> &)'
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\main.cpp(13): message : see reference to function template instantiation 'bool Graph<int>::operator >=(const Graph<int> &)' being compiled
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\main.cpp(6): message : see reference to class template instantiation 'Graph<int>' being compiled
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(92,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(96,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(97,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(57,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(54): message : while compiling class template member function 'bool Graph<int>::operator >(const Graph<int> &)'
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\main.cpp(12): message : see reference to function template instantiation 'bool Graph<int>::operator >(const Graph<int> &)' being compiled
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(58,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(62,2): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Graph.h(63,2): warning C4018: '<': signed/unsigned mismatch
+  ПКІўІС_ускладнённая.vcxproj -> D:\Workspace\Visual Studio\ПКІўІС_ускладнённая\Debug\ПКІўІС_ускладнённая.exe

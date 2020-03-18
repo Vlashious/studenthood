@@ -1,0 +1,24 @@
+﻿  main.cpp
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(20,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(21,22): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(27,24): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(64,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(67,22): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(115,16): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(145,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(155,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(174,23): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(184,23): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(217,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(220,23): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(247,22): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(261,22): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(279,22): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(294,24): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(306,24): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(344,23): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(354,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(366,21): warning C4018: '<': signed/unsigned mismatch
+D:\Workspace\Visual Studio\PPuIS\PPuIS\main.cpp(9,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Workspace\Visual Studio\PPuIS\PPuIS\Field.h(351): warning C4715: 'Field::getAnimalPosition': not all control paths return a value
+  PPuIS.vcxproj -> D:\Workspace\Visual Studio\PPuIS\Debug\PPuIS.exe

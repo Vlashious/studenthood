@@ -1,0 +1,466 @@
+@font-face {
+    font-family: 'Lucida Sans';
+    src: url('./assets/fonts/pt-sans/PTS55F.ttf');
+}
+
+@font-face {
+    font-family: 'Segoe WP';
+    src: url('./assets/fonts/segoe-wp-cufonfonts/SegoeWP.ttf')
+}
+
+@font-face {
+    font-family: 'Asap';
+    src: url('./assets/fonts/asap/Asap-Regular.otf');
+}
+
+@media screen and (max-width: 700px) {
+    
+    .fullPage {
+        height: 1554px;
+        width: 100%;
+    }
+
+    .wrapperHeader {
+        height: 383px;
+        width: 100%;
+    }
+
+    .header {
+        display: flex;
+        height: 63px;
+    }
+
+    .logo {
+        background-image: url('./assets/image/mobile/menu/logobck.png');
+        width: 186px;
+        height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .symbal {
+        background: url('./assets/image/mobile/menu/symbal_b.png') no-repeat;
+        width: 40px;
+        height: 39px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo > .symbal > img {
+        width: 40px;
+        height: 39px;
+        margin: 0px 3px 1px 0px;
+    }
+
+    .logoText {
+        font-size: 19px;
+        letter-spacing: 0px;
+        color: #ffffff;
+        font-family: "Lucida Sans";
+        font-style: italic;
+        text-align: center;
+        text-shadow: 1px 1.732px 0px rgba(0,0,0,0.42);
+        text-transform: uppercase;
+    }
+
+    .main_nav {
+        background: url('./assets/image/mobile/menu/navbarback.png');
+        width: 100%;
+        height: inherit;
+    }
+
+    .rect1 {
+        display: none;
+    }
+
+    .rect2 {
+        display: none;
+    }
+
+    .navContent {
+        height: 62px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .navContent li {
+        width: 33.33%;
+        display: flex;
+        justify-content: space-evenly;
+        height: inherit;
+        align-items: center;
+    }
+
+    .navContent li a {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        height: inherit;
+        align-items: center;
+        font-size: 19px;
+        letter-spacing: 0px;
+        color: #9b7d08;
+        font-family: "Segoe WP";
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .navContent li a:hover {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        height: inherit;
+        align-items: center;
+        font-size: 19px;
+        letter-spacing: 0px;
+        color: white;
+        font-family: "Segoe WP";
+        text-align: center;
+        text-decoration: underline;
+        text-transform: uppercase;
+    }
+
+    .headerMain {
+        width: 100%;
+    }
+
+    .player {
+        background: url('./assets/image/header/video/backgr.png');
+        width: inherit;
+        height: 320px;
+    }
+
+    .leftArr {
+        display: none;
+    }
+
+    .rightArr {
+        display: none;
+    }
+
+    .headerMain {
+        height: 320px;
+        width: inherit;
+    }
+
+    .headerMainText {
+        display: none;
+    }
+
+    .icon_area {
+        height: 180px;
+        width: 100%;
+    }
+
+    .icon_areaWrapper {
+        background: url('./assets/image/icon_section/background.png');
+        height: inherit;
+        width: inherit;
+        display: flex;
+        justify-content: space-evenly;
+        align-content: center;
+    }
+
+    .icon_areaWrapper > .item {
+        width: 33.33%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 23px;
+        letter-spacing: 0px;
+        color: #000000;
+        font-family: "Segoe UI";
+        font-weight: 300;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .icon_area .item img {
+        height: 85px;
+    }
+
+    .sect1Text {
+        display: none;
+    }
+
+    .sect1Blocks {
+        height: 465px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .scroll_1 {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .block1 {
+        background: url('./assets/image/section_1/leftblock.png');
+        width: 300px;
+        height: 230px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .block1Text {
+        font-size: 25px;
+        letter-spacing: 0px;
+        line-height: 33px;
+        color: #ffffff;
+        font-family: "Segoe WP";
+        font-weight: 300;
+        height: 186px;
+        width: 230px;
+    }
+
+    .block1Plus {
+        background: url('./assets/image/section_1/plussign.png');
+        position: relative;
+        top: 90px;
+        left: 10px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .block1Plus:hover {
+        background: yellow;
+        position: relative;
+        top: 90px;
+        left: 10px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .block2 {
+        background: url('./assets/image/section_1/image.PNG');
+        width: 315px;
+        height: 230px;
+    }
+
+    .block3Number {
+        display: none;
+    }
+
+    .block3 {
+        background: url('./assets/image/mobile/twitter_section/backgr.png');
+        height: 230px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .twitter {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .twitterImage {
+        display: flex;
+        justify-content: center;
+        height: 230px;
+        width: inherit;
+    }
+
+    .formBox {
+        width: 50%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .formBox ul {
+        height: 154px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+    .formBox ul li {
+        background: url('./assets/image/mobile/twitter_section/msg1.png');
+        width: 285px;
+        height: 43px;
+        font-size: 13px;
+        letter-spacing: 0px;
+        color: #8f8e8e;
+        font-family: "Arial";
+    }
+
+    .msgesText {
+        width: 214px;
+        height: 26px;
+        margin: 10px auto;
+    }
+
+    .form {
+        display: flex;
+        width: 273px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .form > #inputT {
+        width: inherit;
+        height: inherit;
+        background: url('./assets/image/mobile/twitter_section/form.png');
+        border: none;
+    }
+
+    button, input[type="submit"] {
+        background: url('./assets/image/mobile/twitter_section/submit.png');
+        width: 70px;
+        height: 30px;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+    }
+
+    .dateWrapper {
+        display: none;
+    }
+
+    .slidebarWrapper {
+        display: none;
+    }
+
+    .section_2 {
+        background: url('./assets/image/section_2/background.png');
+        height: 464px;
+        width: inherit;
+    }
+
+    .sect2Wrapper {
+        height: inherit;
+        width: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sect2Wrapper ul {
+        display: none;
+    }
+
+    .sect2Logo {
+        height: 116px;
+        width: inherit;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }
+
+    .sect2Wrapper > .sect2Logo > .text {
+        font-size: 39px;
+        letter-spacing: 0px;
+        color: #f5c506;
+        font-family: "Segoe UI";
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+
+    #emblem {
+        background: url('./assets/image/section_2/free_backgr.png');
+        width: 117px;
+        height: 117px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+        letter-spacing: 0px;
+        color: #ffffff;
+        font-family: "Segoe UI";
+        font-weight: 700;
+        text-transform: uppercase;
+        position: relative;
+        right: 50px;
+        bottom: 50px;
+    }
+
+    .sect2Content{
+        width: inherit;
+        height: 352px;
+    }
+
+    .electronics {
+        width: inherit;
+        height: inherit;
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 50px;
+    }
+
+    .pc {
+        background: url('./assets/image/section_2/pc.png') no-repeat;
+        width: 323px;
+        height: 255px;
+        margin-left: 50px;
+    }
+
+    .tablet {
+        background: url('./assets/image/section_2/laptop.png');
+        width: 129px;
+        height: 173px;
+        margin-top: 40px;
+    }
+
+    .phone {
+        background: url('./assets/image/section_2/phone.png');
+        width: 39px;
+        height: 63px;
+        margin-top: 150px;
+    }
+
+    .footer {
+        background: url('./assets/image/footer/background.png');
+        width: inherit;
+        height: 47px;
+        -webkit-box-shadow: 0px -5px 6px 1px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px -5px 6px 1px rgba(0,0,0,0.75);
+        box-shadow: 0px -5px 6px 1px rgba(0,0,0,0.75);
+    }
+
+    .footerWrapper {
+        margin-left: 65px;
+        display: flex;
+        align-items: center;
+        height: inherit;
+    }
+
+    .logoFooter {
+        background-image: url('./assets/image/mobile/footer_b.svg');
+        max-width: 29px;
+        max-height: auto;
+    }
+
+    .logoFooter img {
+        width: 30px;
+        height: 29px;
+        margin-top: 1px;
+    }
+
+    .textFooter {
+        font-size: 17px;
+        letter-spacing: 0px;
+        color: #ffffff;
+        font-family: "Lucida Sans";
+        font-style: italic;
+        text-align: center;
+        text-shadow: 1px 1.732px 0px rgba(0,0,0,0.42);
+        text-transform: uppercase;
+    }
+
+}

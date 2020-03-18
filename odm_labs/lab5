@@ -1,0 +1,416 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct graph
+{
+	std::vector<std::pair<int, int>> elems;
+} M;
+
+struct mn {
+	std::vector<int> elems;
+} S;
+
+struct func 
+{
+	mn OUT;
+	mn TO;
+	graph GRAPH;
+} A, B, C;
+
+graph UNITE (graph, graph);
+graph CROSSING (graph, graph);
+graph DIFFERENCE (graph, graph);
+graph INVERSE_GRAPHIC (graph);
+graph COMPOSITION (graph, graph);
+
+mn UNITE (mn, mn);
+mn CROSSING (mn, mn);
+mn DIFFERENCE (mn, mn);
+graph CARTESIAN_PRODUCT(mn, mn);
+
+mn IMAGE(mn, graph);
+
+int main()
+{
+	int t;
+	std::pair<int, int> p;
+	std::cout << "Увядзіце вобласць адпраўлення адпаведнасці А:";
+	while (std::cin.peek() != '\n') {
+		std::cin >> t;
+		A.OUT.elems.push_back(t);
+	}
+	std::cin.ignore();
+	std::cout << "Увядзіце вобласць прыбыцця адпаведнасці А:";
+	while (std::cin.peek() != '\n') {
+		std::cin >> t;
+		A.TO.elems.push_back(t);
+	}
+	std::cin.ignore();
+	std::cout << "Увядзіце вобласць адпраўлення адпаведнасці B:";
+	while (std::cin.peek() != '\n') {
+		std::cin >> t;
+		B.OUT.elems.push_back(t);
+	}
+	std::cin.ignore();
+	std::cout << "Увядзіце вобласць адпраўлення адпаведнасці B:";
+	while (std::cin.peek() != '\n') {
+		std::cin >> t;
+		B.TO.elems.push_back(t);
+	}
+	A.GRAPH = CARTESIAN_PRODUCT (A.OUT, A.TO);
+	B.GRAPH = CARTESIAN_PRODUCT (B.OUT, B.TO);
+    while (true)
+	{
+
+		C.GRAPH.elems.clear();
+		C.OUT.elems.clear();
+		C.TO.elems.clear();
+		S.elems.clear();
+		int nSwitch;
+		std::cout << "1) Аб'яднанне адпаведнасцей А і В.\n" <<
+			"2) Перасячэнне адпаведнасцей А і В.\n" <<
+			"3) Рознасць адпаведнасцей А і В.\n" <<
+			"4) Сіметрычная рознасць адпаведнасцей А і В.\n" <<
+			"5) Інверсія адпаведнасці А.\n" <<
+			"6) Кампазіцыя адпаведнасцей А і В.\n" <<
+			"7) Вобраз адпаведнасці А.\n" <<
+			"8) Правобраз адпаведнасці А.\n" <<
+			"9) Звужэнне адпаведнасці А.\n" <<
+			"10) Працяг адпаведнасці.\n" <<
+            "11) Выхад з праграмы";
+		std::cin >> nSwitch;
+		std::cin.ignore();
+		system("printf \033c");
+		switch (nSwitch) {
+            case 1:
+				C.OUT = UNITE(A.OUT, B.OUT);
+				C.TO = UNITE(A.TO, B.TO);
+				C.GRAPH = UNITE(A.GRAPH, B.GRAPH);
+				break;
+			case 2:
+				C.OUT = CROSSING(A.OUT, B.OUT);
+				C.TO = CROSSING(A.TO, B.TO);
+				C.GRAPH = CROSSING(A.GRAPH, B.GRAPH);
+				break;
+			case 3:
+				C.OUT = DIFFERENCE(A.OUT, B.OUT);
+				C.TO = DIFFERENCE(A.TO, B.TO);
+				C.GRAPH = DIFFERENCE(A.GRAPH, B.GRAPH);
+				break;
+			case 4: {
+				func C1;
+				C.OUT = UNITE(A.OUT, B.OUT);
+				C.TO = UNITE(A.TO, B.TO);
+				C.GRAPH = UNITE(A.GRAPH, B.GRAPH);
+				C1.OUT = CROSSING(A.OUT, B.OUT);
+				C1.TO = CROSSING(A.TO, B.TO);
+				C1.GRAPH = CROSSING(A.GRAPH, B.GRAPH);
+				C.OUT = DIFFERENCE(C.OUT, C1.OUT);
+				C.TO = DIFFERENCE(C.TO, C1.TO);
+				C.GRAPH = DIFFERENCE(C.GRAPH, C1.GRAPH);
+				break;
+			}
+			case 5:
+				C.OUT = A.TO;
+				C.TO = A.OUT;
+				C.GRAPH = INVERSE_GRAPHIC(A.GRAPH);
+				break;
+			case 6:
+				C.OUT = A.OUT;
+				C.TO = B.TO;
+				C.GRAPH = COMPOSITION(A.GRAPH, B.GRAPH);
+				break;
+			case 7: {
+				std::cout << "Увядзіце мноства S:";
+				while(std::cin.peek() != '\n') {
+					std::cin >> t;
+					S.elems.push_back(t);
+				}
+				std::cin.ignore();
+				S = IMAGE(S, A.GRAPH);
+				break;
+			}
+			case 8:
+				std::cout << "Увядзіце мноства L:";
+				while (std::cin.peek() != '\n') {
+					std::cin >> t;
+					S.elems.push_back(t);
+				}
+				std::cin.ignore();
+				S = IMAGE(S, INVERSE_GRAPHIC(A.GRAPH));
+				break;
+			case 9:
+				std::cout << "Увядзіце мноства Е:";
+				while (std::cin.peek() != '\n') {
+					std::cin >> t;
+					S.elems.push_back(t);
+				}
+				std::cin.ignore();
+				C.OUT = A.OUT;
+				C.TO = A.TO;
+				C.GRAPH = CROSSING(A.GRAPH, CARTESIAN_PRODUCT(S, A.TO));
+				S.elems.clear();
+				break;
+			case 10:
+				std::cout << "Увядзіце графік М:";
+				while (std::cin.peek() != '\n') {
+					std::cin >> t;
+					p.first = t;
+					std::cin >> t;
+					p.second = t;
+					M.elems.push_back(p);
+				}
+				C.OUT = A.OUT;
+				C.TO = A.TO;
+				C.GRAPH = UNITE(A.GRAPH, M);
+				M.elems.clear();
+				break;
+			case 11:
+				return 0;
+				}
+				if (!C.GRAPH.elems.empty())
+				{
+					std::cout << "( { ";
+					for (int i = 0; i < C.OUT.elems.size(); i++)
+					{
+						std::cout << C.OUT.elems[i];
+						if (i + 1 == C.OUT.elems.size())
+							std::cout << " }, ";
+						else
+						{
+							std::cout << ", ";
+						}
+					}
+					std::cout << "{ ";
+					for (int i = 0; i < C.TO.elems.size(); i++)
+					{
+						std::cout << C.TO.elems[i];
+						if (i + 1 == C.TO.elems.size())
+							std::cout << " }, ";
+						else
+						{
+							std::cout << ", ";
+						}
+					}
+					std::cout << "{ ";
+					for (int i = 0; i < C.GRAPH.elems.size(); i++)
+					{
+						std::cout << "<" << C.GRAPH.elems[i].first << ", " << C.GRAPH.elems[i].second << ">";
+						if (i + 1 == C.GRAPH.elems.size())
+						{
+							std::cout << " } )\n";
+						}
+						else
+						{
+							std::cout << ", ";
+						}
+					}
+			}
+			if (!S.elems.empty()) {
+				std::cout << "{";
+				for (int i = 0; i < S.elems.size(); i++) {
+					std::cout << S.elems[i];
+					if (i + 1 == S.elems.size()) {
+						std::cout << "}\n";
+					}
+					else {
+						std::cout << ", ";
+					}
+				}
+			}
+		}
+	return 0;
+}
+
+graph UNITE (graph A, graph B) {
+	graph C;
+	bool not_in_list = true;
+	C.elems = A.elems;
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = 0; k < C.elems.size(); k++)
+		{
+			if (B.elems[i] == C.elems[k])
+			{
+				not_in_list = false;
+				break;
+			}
+		}
+		if (not_in_list == true)
+		{
+			C.elems.push_back(B.elems[i]);
+		}
+		else
+		{
+			not_in_list = true;
+		}
+	}
+	return C;
+}
+
+graph CROSSING(graph A, graph B)
+{
+	graph C;
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			if (B.elems[j] == A.elems[i])
+			{
+				C.elems.push_back(B.elems[j]);
+			}
+		}
+	}
+	return C;
+}
+
+graph DIFFERENCE(graph A, graph B)
+{
+	graph C;
+	C.elems = A.elems;
+	for (int i = 0; i < C.elems.size(); i++)
+	{
+		for (int k = 0; k < B.elems.size(); k++)
+		{
+			if (C.elems[i] == B.elems[k])
+			{
+				C.elems.erase(C.elems.begin() + i);
+				i--;
+				break;
+			}
+		}
+	}
+	return C;
+}
+
+graph INVERSE_GRAPHIC(graph A)
+{
+	graph C;
+	C = A;
+	for (int i = 0; i < C.elems.size(); i++) {
+		C.elems[i].first = A.elems[i].second;
+		C.elems[i].second = A.elems[i].first;
+	}
+	return C;
+}
+
+graph COMPOSITION(graph A, graph B)
+{
+	graph C;
+	for (int i = 0; i < A.elems.size(); i++) {
+		for (int j = 0; j < B.elems.size(); j++) {
+			if (A.elems[i].second == B.elems[j].first) {
+				std::pair<int, int> k;
+				k.first = A.elems[i].first;
+				k.second = B.elems[j].second;
+				C.elems.push_back(k);
+			}
+		}
+	}
+	for (int i = 0; i < C.elems.size() - 1; i++) {
+		if (C.elems[i] == C.elems[i + 1]) {
+			C.elems.erase(C.elems.begin() + i);
+			i--;
+		}
+	}
+	return C;
+}
+mn UNITE(mn A, mn B)
+{
+	mn C;
+	bool not_in_list = true;
+	C.elems = A.elems;
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = 0; k < C.elems.size(); k++)
+		{
+			if (B.elems[i] == C.elems[k])
+			{
+				not_in_list = false;
+				break;
+			}
+		}
+		if (not_in_list == true)
+		{
+			C.elems.push_back(B.elems[i]);
+		}
+		else
+		{
+			not_in_list = true;
+		}
+	}
+	return C;
+}
+
+mn CROSSING(mn A, mn B)
+{
+	mn C;
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			if (B.elems[j] == A.elems[i])
+			{
+				C.elems.push_back(B.elems[j]);
+			}
+		}
+	}
+	return C;
+}
+
+mn DIFFERENCE(mn A, mn B)
+{
+	mn C;
+	C.elems = A.elems;
+	for (int i = 0; i < C.elems.size(); i++)
+	{
+		for (int k = 0; k < B.elems.size(); k++)
+		{
+			if (C.elems[i] == B.elems[k])
+			{
+				C.elems.erase(C.elems.begin() + i);
+				i--;
+				break;
+			}
+		}
+	}
+	return C;
+}
+
+graph CARTESIAN_PRODUCT(mn A, mn B)
+{
+	graph C;
+	int l = 0;
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			C.elems.resize(C.elems.size()+1);
+			C.elems[l].first = A.elems[i];
+			C.elems[l].second = B.elems[j];
+			l++;
+		}
+	}
+	return C;
+}
+
+mn IMAGE (mn A, graph B) {
+	mn S;
+	for (int i = 0; i < A.elems.size(); i++) {
+		for (int k = 0; k < B.elems.size(); k++) {
+			if (A.elems[i] == B.elems[k].first) {
+				S.elems.push_back(B.elems[k].second);
+			}
+		}
+	}
+	for (int i = 0; i < S.elems.size(); i++) {
+		for (int k = i; k < S.elems.size() - 1; k++) {
+			if (S.elems[i] == S.elems[k + 1]) {
+				S.elems.erase(S.elems.begin() + k + 1);
+				k--;
+			}
+		}
+	}
+	return S;
+}

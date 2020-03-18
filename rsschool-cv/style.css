@@ -1,0 +1,30 @@
+body {
+    text-align: center;
+    width: 1024px;
+    margin: auto;
+    font-family: "Arial", Arial, Sans-serif;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.code {
+    background-color: rgb(205, 205, 205);
+}
+
+img {
+    display: block;
+    margin: auto;
+    width: 25%;
+}
+
+ul {
+    width: 50%;
+    margin: auto;
+}

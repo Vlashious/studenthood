@@ -1,0 +1,324 @@
+#include <iostream>
+#include <vector>
+#include <string.h>
+#include <cstdlib>
+
+struct mn
+{
+	int n_power = 0;
+	std::vector<std::pair<int, int>> elems;
+} A, B, C, T;
+
+mn UNITE(mn A, mn B)
+{
+	mn C;
+	bool not_in_list = true;
+	C.n_power = A.elems.size();
+	C.elems = A.elems;
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = 0; k < C.elems.size(); k++)
+		{
+			if (B.elems[i] == C.elems[k])
+			{
+				not_in_list = false;
+				break;
+			}
+		}
+		if (not_in_list == true)
+		{
+			C.elems.push_back(B.elems[i]);
+			C.n_power++;
+		}
+		else
+		{
+			not_in_list = true;
+		}
+	}
+	return C;
+}
+
+mn CROSSING(mn A, mn B)
+{
+	mn C;
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int j = 0; j < B.elems.size(); j++)
+		{
+			if (B.elems[j] == A.elems[i])
+			{
+				C.elems.push_back(B.elems[j]);
+			}
+		}
+	}
+	return C;
+}
+
+mn DIFFERENCE(mn A, mn B)
+{
+	mn C;
+	C.elems = A.elems;
+	C.n_power = A.n_power;
+	for (int i = 0; i < C.elems.size(); i++)
+	{
+		for (int k = 0; k < B.elems.size(); k++)
+		{
+			if (C.elems[i] == B.elems[k])
+			{
+				C.elems.erase(C.elems.begin() + i);
+				i--;
+				break;
+			}
+		}
+	}
+	return C;
+}
+
+mn INVERSE_GRAPHIC(mn A)
+{
+	mn C;
+	C = A;
+	for (int i = 0; i < C.elems.size(); i++) {
+		C.elems[i].first = A.elems[i].second;
+		C.elems[i].second = A.elems[i].first;
+	}
+	return C;
+}
+
+mn COMPOSITION(mn A, mn B)
+{
+	mn C;
+	for (int i = 0; i < A.elems.size(); i++) {
+		for (int j = 0; j < B.elems.size(); j++) {
+			if (A.elems[i].second == B.elems[j].first) {
+				std::pair<int, int> k;
+				k.first = A.elems[i].first;
+				k.second = B.elems[j].second;
+				C.elems.push_back(k);
+			}
+		}
+	}
+	for (int i = 0; i < C.elems.size() - 1; i++) {
+		if (C.elems[i] == C.elems[i + 1]) {
+			C.elems.erase(C.elems.begin() + i);
+			i--;
+		}
+	}
+	return C;
+}
+
+
+int main()
+{
+	int a, b;
+	std::pair<int, int> t;
+	system("printf \033c");
+	while (true)
+	{
+		std::cout << "Задайце магутнасць графіка А:\n"; //задаецца магутнасць графіка А
+		std::cin >> A.n_power;
+		if (!std::cin || A.n_power <= 0 || A.n_power > 10)
+		{
+			std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+			std::cin.clear();
+			while (std::cin.get() != '\n');
+		}
+		else break;
+	}
+	while (true)
+	{
+		std::cout << "Задайце магутнасць графіка В:\n"; //задаецца магутнасць графіка В
+		std::cin >> B.n_power;
+		if (!std::cin || B.n_power <= 0 || B.n_power > 10)
+		{
+			std::cout << "Трэба ўводзіць натуральныя лікі не больш 10.\n";
+			std::cin.clear();
+			while (std::cin.get() != '\n');
+		}
+		else break;
+	}
+	std::cout << "Увядзіце элементы графіка А: "; //увод элементаў графіка А
+	for (int i = 0; i < A.n_power; i++)
+	{
+
+		std::cin >> a >> b;
+		t = std::make_pair(a, b);
+		A.elems.push_back(t);
+	}
+	std::cout << "Увядзіце элементы графіка В: "; //увод элементаў графіка В
+	for (int i = 0; i < B.n_power; i++)
+	{
+		std::cin >> a >> b;
+		t = std::make_pair(a, b);
+		B.elems.push_back(t);
+	}
+	for (int i = 0; i < A.elems.size(); i++)
+	{
+		for (int k = i; k < A.elems.size() - 1; k++)
+		{
+			if (A.elems[i] == A.elems[k + 1])
+			{
+				A.elems.erase(A.elems.begin() + k + 1);
+				k--;
+			}
+		}
+	}
+	for (int i = 0; i < B.elems.size(); i++)
+	{
+		for (int k = i; k < B.elems.size() - 1; k++)
+		{
+			if (B.elems[i] == B.elems[k + 1])
+			{
+				B.elems.erase(B.elems.begin() + k + 1);
+				k--;
+			}
+		}
+	}
+	while (true)
+	{
+		int nSwitch;
+		std::cout << "1) Аб'яднанне графікаў А і В.\n" <<
+			"2) Перасячэнне графікаў А і В.\n" <<
+			"3) Рознасць графікаў А і В.\n" <<
+			"4) Рознасць графікаў В і А.\n" <<
+			"5) Сіметрычная рознасць графікаў А і В.\n" <<
+			"6) Інверсія графіка А.\n" <<
+			"7) Інверсія графіка В.\n" <<
+			"8) Кампазіцыя графікаў А і В.\n" <<
+			"9) Кампазіцыя графікаў В і А.\n" <<
+			"10) Выхад з праграмы.\n"; //
+		std::cin >> nSwitch;
+		system("printf \033");
+		switch (nSwitch)
+		{
+		case 1:
+			C = UNITE(A, B);
+			std::cout << "Аб'яднанне графікаў А і В: ";
+			std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+			for (int i = 1; i < C.elems.size(); i++)
+			{
+				std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+			}
+			std::cout << "}" << std::endl;
+			break;
+		case 2:
+			C = CROSSING(A, B);
+			std::cout << "Перасячэнне графікаў А і В: ";
+			std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+			for (int i = 1; i < C.elems.size(); i++)
+			{
+				std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+			}
+			std::cout << "}" << std::endl;
+			if (C.elems.empty())
+			{
+				std::cout << "пустоы графік.";
+			}
+			break;
+		case 3:
+			C = DIFFERENCE(A, B);
+			std::cout << "Розніца графікаў А і В: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 4:
+			C = DIFFERENCE(B, A);
+			std::cout << "Розніца графікаў В і A: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 5:
+			C = UNITE(A, B);
+			T = CROSSING(A, B);
+			C = DIFFERENCE(C, T);
+			std::cout << "Сіметрычная рознасць графікаў А і В: ";
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 6:
+			std::cout << "Інверсія графіка А: ";
+			C = INVERSE_GRAPHIC(A);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 7:
+			std::cout << "Інверсія графіка В: ";
+			C = INVERSE_GRAPHIC(B);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 8:
+			std::cout << "Кампазіцыя граыфіка А на графік В: ";
+			C = COMPOSITION(A, B);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 9:
+			std::cout << "Кампазіцыя графіка В на графік А: ";
+			C = COMPOSITION(B, A);
+			if (C.elems.size() != 0)
+			{
+				std::cout << "{<" << C.elems[0].first << "," << C.elems[0].second << ">";
+				for (int i = 1; i < C.elems.size(); i++)
+				{
+					std::cout << ", <" << C.elems[i].first << "," << C.elems[i].second << ">";
+				}
+				std::cout << "}" << std::endl;
+			}
+			else std::cout << "пусты графік." << std::endl;
+			break;
+		case 10:
+			return 0;
+		}
+	}
+	return 0;
+
+}

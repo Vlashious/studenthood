@@ -4,26 +4,10 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class Window {
     protected Shell shell;
     protected Display display;
-    protected Shell parentShell;
-
-    public Window(Display display, int style) {
-        this.display = display;
-        shell = new Shell(display, style);
-    }
-
-    public Window(Display display) {
-        this.display = display;
-        shell = new Shell(display);
-    }
-
-    public Window(Shell shell, int style) {
-        this.parentShell = shell;
-        shell = new Shell(shell);
-    }
 
     public Window(Shell shell) {
-        this.parentShell = shell;
-        shell = new Shell(shell);
+        this.shell = shell;
+        display = Display.getDefault();
     }
 
     public void StartWindow() {

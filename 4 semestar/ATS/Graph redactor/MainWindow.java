@@ -9,30 +9,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow extends Window {
-    
-    public MainWindow(Display display, int style) {
-        super(display, style);
-        this.display = display;
-        shell = new Shell(display, style);
-    }
-
-    public MainWindow(Display display) {
-        super(display);
-        this.display = display;
-        shell = new Shell(display);
-    }
-
-    public MainWindow(Shell shell, int style) {
-        super(shell, style);
-        this.parentShell = shell;
-        shell = new Shell(shell);
-    }
 
     public MainWindow(Shell shell) {
         super(shell);
-        this.parentShell = shell;
+        //this.parentShell = shell;
         shell = new Shell(shell);
     }
+
     public void SetContent() {
         GridLayout gridLayout = new GridLayout(12, true);
         shell.setLayout(gridLayout);
@@ -93,7 +76,7 @@ public class MainWindow extends Window {
             @Override
             public void mouseUp(MouseEvent e) {
                 graphCanvas.graph.AddNode();
-                graphCanvas.redraw();
+                graphCanvas.Redraw();
             }
         
             @Override
@@ -104,6 +87,58 @@ public class MainWindow extends Window {
             @Override
             public void mouseDoubleClick(MouseEvent e) {
 
+            }
+        });
+
+        setGraphNameButton.addMouseListener(new MouseListener(){
+        
+            @Override
+            public void mouseUp(MouseEvent e) {
+                Shell child = new Shell(shell);
+                DialogWindow dWindow = new DialogWindow(child);
+                dWindow.SetWindowName("Name Graph");
+                dWindow.SetSize(400, 200);
+                dWindow.SetText("Name Graph", "New Graph");
+                dWindow.SetContent();
+                dWindow.StartWindow();
+            }
+        
+            @Override
+            public void mouseDown(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+
+        setNodeNameButton.addMouseListener(new MouseListener(){
+        
+            @Override
+            public void mouseUp(MouseEvent e) {
+                Shell child = new Shell(shell);
+                DialogWindow dWindow = new DialogWindow(child);
+                dWindow.SetWindowName("Name Node");
+                dWindow.SetSize(400, 200);
+                dWindow.SetText("New Name", "Node");
+                dWindow.SetContent();
+                dWindow.StartWindow();
+            }
+        
+            @Override
+            public void mouseDown(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
             }
         });
     }

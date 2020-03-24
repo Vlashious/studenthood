@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 public class Graph {
@@ -60,6 +61,7 @@ public class Graph {
         Node node = new Node();
         node.x = random.nextInt(Display.getCurrent().getBounds().width);
         node.y = random.nextInt(Display.getCurrent().getBounds().height);
+        node.color = new Color(Display.getDefault(), random.nextInt(255), random.nextInt(255), random.nextInt(255));
         nodes.add(node);
     }
 

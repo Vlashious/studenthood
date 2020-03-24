@@ -14,12 +14,17 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class GraphCanvas extends Composite {
 
     private Canvas canvas;
     Graph graph;
     private int radius = 20;
+
+    public void Redraw() {
+        canvas.redraw();
+    }
 
     public GraphCanvas(Composite parent, int style) {
         super(parent, style);

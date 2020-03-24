@@ -1,11 +1,15 @@
 import java.util.Random;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -37,6 +41,19 @@ public class GraphCanvas extends Composite {
                         e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
                         e.gc.fillOval(node.x, node.y, radius, radius);
                     }
+                }
+            }
+        });
+
+        canvas.addMouseMoveListener(new MouseMoveListener(){
+        
+            @Override
+            public void mouseMove(MouseEvent e) {
+                if(e.stateMask == 0x80000 & !graph.isSelectedNodesEmpty()) {
+                    Node node = graph.GetSelectedNodes().get(0);
+                    node.x = e.x;
+                    node.y = e.y;
+                    redraw();
                 }
             }
         });

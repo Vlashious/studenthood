@@ -9,9 +9,30 @@ public class Graph {
     private List<Edge> edges;
     private String name;
 
+    private List<Node> selectedNodes;
+    private List<Edge> selectedEdges;
+
     public Graph() {
         nodes = new ArrayList<Node>();
         edges = new ArrayList<Edge>();
+        selectedNodes = new ArrayList<Node>();
+        selectedEdges = new ArrayList<Edge>();
+    }
+
+    public void SelectNode(Node node) {
+        selectedNodes.add(node);
+    }
+
+    public void UnselectAllNodes() {
+        selectedNodes.clear();
+    }
+
+    public void SelectEdge(Edge edge) {
+        selectedEdges.add(edge);
+    }
+
+    public String GetName() {
+        return name;
     }
 
     public boolean isNodesEmpty() {
@@ -22,8 +43,16 @@ public class Graph {
         return edges.isEmpty();
     }
 
+    public boolean isSelectedNodesEmpty() {
+        return selectedNodes.isEmpty();
+    }
+
     public List<Node> GetNodes() {
         return nodes;
+    }
+
+    public List<Node> GetSelectedNodes() {
+        return selectedNodes;
     }
 
     public void AddNode() {
@@ -35,7 +64,6 @@ public class Graph {
     }
 
     public void AddNode(int x, int y) {
-        Random random = new Random();
         Node node = new Node();
         node.x = x;
         node.y = y;

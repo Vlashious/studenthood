@@ -1,4 +1,7 @@
+import org.eclipse.swt.graphics.Color;
+
 public class Edge {
-    private Node left;
-    private Node right;
+    public Node left;
+    public Node right;
+    public Color color;
 }

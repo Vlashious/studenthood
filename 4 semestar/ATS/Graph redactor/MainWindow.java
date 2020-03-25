@@ -1,19 +1,25 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow extends Window {
+
+    private Graph graph;
+    private GraphButton activeGraphButton;
 
     public MainWindow(Shell shell) {
         super(shell);
         //this.parentShell = shell;
         shell = new Shell(shell);
+        graph = new Graph();
     }
 
     public void SetContent() {
@@ -68,8 +74,34 @@ public class MainWindow extends Window {
         seeGraphInfoButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         seeGraphInfoButton.setText("Info");
 
-        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.NONE);
-        graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 12, 12));
+        List<GraphButton> graphNameButtons = new ArrayList<GraphButton>();
+
+        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER, graph);
+        graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 12, 1));
+
+        newCanvasButton.addMouseListener(new MouseListener(){
+        
+            @Override
+            public void mouseUp(MouseEvent e) {
+                GraphButton button = new GraphButton(shell, SWT.PUSH, graphCanvas);
+                button.SetLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+                activeGraphButton = button;
+                graphNameButtons.add(activeGraphButton);
+                Point point = shell.getSize();
+                shell.pack();
+                shell.setSize(point);
+            }
+        
+            @Override
+            public void mouseDown(MouseEvent e) {
+                
+            }
+        
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+
+            }
+        });
 
         newNodeButton.addMouseListener(new MouseListener(){
         
@@ -95,23 +127,21 @@ public class MainWindow extends Window {
             @Override
             public void mouseUp(MouseEvent e) {
                 Shell child = new Shell(shell);
-                DialogWindow dWindow = new DialogWindow(child);
-                dWindow.SetWindowName("Name Graph");
-                dWindow.SetSize(400, 200);
-                dWindow.SetText("Name Graph", "New Graph");
-                dWindow.SetContent();
-                dWindow.StartWindow();
+                SetGraphNameDialog setGraphNameDialog = new SetGraphNameDialog(child, graph, activeGraphButton);
+                setGraphNameDialog.SetWindowName("Name Graph");
+                setGraphNameDialog.SetSize(400, 100);
+                setGraphNameDialog.SetText("Name Graph", "My Graph");
+                setGraphNameDialog.SetContent();
+                setGraphNameDialog.StartWindow();
             }
         
             @Override
             public void mouseDown(MouseEvent e) {
-                // TODO Auto-generated method stub
                 
             }
         
             @Override
             public void mouseDoubleClick(MouseEvent e) {
-                // TODO Auto-generated method stub
                 
             }
         });
@@ -121,23 +151,43 @@ public class MainWindow extends Window {
             @Override
             public void mouseUp(MouseEvent e) {
                 Shell child = new Shell(shell);
-                DialogWindow dWindow = new DialogWindow(child);
-                dWindow.SetWindowName("Name Node");
-                dWindow.SetSize(400, 200);
-                dWindow.SetText("New Name", "Node");
-                dWindow.SetContent();
-                dWindow.StartWindow();
+                SetNodeNameDialog setNodeNameDialog = new SetNodeNameDialog(child, graph);
+                setNodeNameDialog.SetWindowName("Name Node");
+                setNodeNameDialog.SetSize(400, 100);
+                setNodeNameDialog.SetText("New Name", "Node");
+                setNodeNameDialog.SetContent();
+                setNodeNameDialog.StartWindow();
             }
         
             @Override
             public void mouseDown(MouseEvent e) {
-                // TODO Auto-generated method stub
                 
             }
         
             @Override
             public void mouseDoubleClick(MouseEvent e) {
-                // TODO Auto-generated method stub
+                
+            }
+        });
+
+        deleteNodeButton.addMouseListener(new MouseListener(){
+        
+            @Override
+            public void mouseUp(MouseEvent e) {
+                for (Node node : graph.GetSelectedNodes()) {
+                    graph.RemoveNode(node);
+                }
+                graph.UnselectAllNodes();
+                graphCanvas.redraw();
+            }
+        
+            @Override
+            public void mouseDown(MouseEvent e) {
+                
+            }
+        
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
                 
             }
         });

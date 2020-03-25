@@ -1,20 +1,16 @@
 import java.util.Random;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DragDetectEvent;
-import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class GraphCanvas extends Composite {
 
@@ -26,11 +22,16 @@ public class GraphCanvas extends Composite {
         canvas.redraw();
     }
 
-    public GraphCanvas(Composite parent, int style) {
+    public void SetGraph(Graph graph) {
+        this.graph = graph;
+        redraw();
+    }
+
+    public GraphCanvas(Composite parent, int style, Graph graph) {
         super(parent, style);
         this.setLayout(new FillLayout());
         canvas = new Canvas(this, style);
-        graph = new Graph();
+        this.graph = graph;
         canvas.addPaintListener(new PaintListener(){
         
             @Override
@@ -39,12 +40,14 @@ public class GraphCanvas extends Composite {
                     for (Node node : graph.GetNodes()) {
                         e.gc.setBackground(node.color);
                         e.gc.fillOval(node.x, node.y, radius, radius);
+                        e.gc.drawText(node.name, node.x - radius, node.y + radius);
                     }
                 }
                 if(!graph.isSelectedNodesEmpty()) {
                     for (Node node : graph.GetSelectedNodes()) {
                         e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
-                        e.gc.fillOval(node.x, node.y, radius, radius);
+                        e.gc.setLineWidth(4);
+                        e.gc.drawOval(node.x, node.y, radius, radius);
                     }
                 }
             }

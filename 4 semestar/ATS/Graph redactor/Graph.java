@@ -20,6 +20,14 @@ public class Graph {
         selectedEdges = new ArrayList<Edge>();
     }
 
+    public void SetName(String name) {
+        this.name = name;
+    }
+
+    public String GetName() {
+        return name;
+    }
+
     public void SelectNode(Node node) {
         selectedNodes.add(node);
     }
@@ -30,10 +38,6 @@ public class Graph {
 
     public void SelectEdge(Edge edge) {
         selectedEdges.add(edge);
-    }
-
-    public String GetName() {
-        return name;
     }
 
     public boolean isNodesEmpty() {
@@ -74,5 +78,9 @@ public class Graph {
 
     public void AddNode(Node node) {
         nodes.add(node);
+    }
+
+    public void RemoveNode(Node node) {
+        nodes.remove(node);
     }
 }

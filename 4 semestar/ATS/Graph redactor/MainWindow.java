@@ -12,14 +12,12 @@ import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow extends Window {
 
-    private Graph graph;
     private GraphButton activeGraphButton;
 
     public MainWindow(Shell shell) {
         super(shell);
         //this.parentShell = shell;
         shell = new Shell(shell);
-        graph = new Graph();
     }
 
     public void SetContent() {
@@ -74,22 +72,14 @@ public class MainWindow extends Window {
         seeGraphInfoButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         seeGraphInfoButton.setText("Info");
 
-        List<GraphButton> graphNameButtons = new ArrayList<GraphButton>();
-
-        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER, graph);
+        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER, new Graph());
         graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 12, 1));
 
         newCanvasButton.addMouseListener(new MouseListener(){
         
             @Override
             public void mouseUp(MouseEvent e) {
-                GraphButton button = new GraphButton(shell, SWT.PUSH, graphCanvas);
-                button.SetLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-                activeGraphButton = button;
-                graphNameButtons.add(activeGraphButton);
-                Point point = shell.getSize();
-                shell.pack();
-                shell.setSize(point);
+                
             }
         
             @Override

@@ -10,11 +10,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class SetGraphNameDialog extends DialogWindow {
 
-    private GraphButton button;
-
-    public SetGraphNameDialog(Shell shell, Graph graph, GraphButton button) {
+    public SetGraphNameDialog(Shell shell, Graph graph) {
         super(shell, graph);
-        this.button = button;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class SetGraphNameDialog extends DialogWindow {
             public void handleEvent(Event e) {
                 if(e.keyCode == 13) {
                     graph.SetName(text.getText());
-                    button.SetText(graph.GetName());
+                    //button.SetText(graph.GetName());
                 }
                 shell.dispose();
             }

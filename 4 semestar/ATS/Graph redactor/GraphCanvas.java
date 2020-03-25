@@ -1,6 +1,7 @@
 import java.util.Random;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -29,8 +30,12 @@ public class GraphCanvas extends Composite {
 
     public GraphCanvas(Composite parent, int style, Graph graph) {
         super(parent, style);
-        this.setLayout(new FillLayout());
+
+        StackLayout layout = new StackLayout();
+
+        this.setLayout(layout);
         canvas = new Canvas(this, style);
+        layout.topControl = canvas;
         this.graph = graph;
         canvas.addPaintListener(new PaintListener(){
         

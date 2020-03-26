@@ -7,10 +7,10 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 public class Graph implements Serializable {
-    private static final long serialVersionUID = -660070637562543671L;
+    private static final long serialVersionUID = 1L;
     private List<Node> nodes;
     private List<Edge> edges;
-    private String name;
+    private String name = "";
 
     private List<Node> selectedNodes;
     private List<Edge> selectedEdges;
@@ -68,7 +68,9 @@ public class Graph implements Serializable {
         Node node = new Node();
         node.x = random.nextInt(Display.getCurrent().getBounds().width);
         node.y = random.nextInt(Display.getCurrent().getBounds().height);
-        node.color = new Color(Display.getDefault(), random.nextInt(255), random.nextInt(255), random.nextInt(255));
+        node.r = random.nextInt(255);
+        node.g = random.nextInt(255);
+        node.b = random.nextInt(255);
         nodes.add(node);
     }
 

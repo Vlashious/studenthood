@@ -70,7 +70,7 @@ public class GraphCanvas extends Composite {
             public void paintControl(PaintEvent e) {
                 if(!currentGraph.isNodesEmpty()) {
                     for (Node node : currentGraph.GetNodes()) {
-                        e.gc.setBackground(node.color);
+                        e.gc.setBackground(new Color(Display.getDefault(), node.r, node.g, node.b));
                         e.gc.fillOval(node.x, node.y, radius, radius);
                         e.gc.drawText(node.name, node.x - radius, node.y + radius);
                     }
@@ -127,7 +127,9 @@ public class GraphCanvas extends Composite {
                 node.x = e.x - radius / 2;
                 node.y = e.y - radius / 2;
                 Random random = new Random();
-                node.color = new Color(Display.getDefault(), random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                node.r = random.nextInt(255);
+                node.g = random.nextInt(255);
+                node.b = random.nextInt(255);
                 currentGraph.AddNode(node);
                 redraw();
             }

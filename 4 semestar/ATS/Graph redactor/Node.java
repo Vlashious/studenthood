@@ -1,15 +1,13 @@
 import java.io.Serializable;
 
-import org.eclipse.swt.graphics.Color;
-
 public class Node implements Serializable {
-    private static final long serialVersionUID = -4957584992625683746L;
+    private static final long serialVersionUID = 1L;
     public int x;
     public int y;
-    public Color color;
+    public int r, g, b;
     public String name = "";
 
     protected void finalize() {
-        color.dispose();
+        
     }
 }

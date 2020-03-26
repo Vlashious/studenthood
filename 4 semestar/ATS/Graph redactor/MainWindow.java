@@ -197,6 +197,27 @@ public class MainWindow extends Window {
                 
             }
         });
+
+        saveGraphButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                Saver saver = new Saver();
+                saver.Save(graphCanvas.GetCurrentGraph(), shell);
+            }
+        });
+
+        loadGraphButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                Loader loader = new Loader();
+                Graph loadedGraph = loader.Load(shell);
+                graphCanvas.SetCurrentGraph(loadedGraph);   
+                graphCanvas.Redraw();
+                CreateGraphButtons(graphCanvas.GetGraphNum(), graphButtons, graphCanvas);
+            }
+        });
     }
 
     private void CreateGraphButtons(int num, List<Button> graphButtons, GraphCanvas graphCanvas) {
@@ -223,4 +244,5 @@ public class MainWindow extends Window {
         shell.pack();
         shell.setSize(point);
     }
+
 }

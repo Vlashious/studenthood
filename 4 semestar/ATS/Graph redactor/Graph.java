@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -5,7 +6,8 @@ import java.util.Random;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
-public class Graph {
+public class Graph implements Serializable {
+    private static final long serialVersionUID = -660070637562543671L;
     private List<Node> nodes;
     private List<Edge> edges;
     private String name;

@@ -91,8 +91,8 @@ public class GraphCanvas extends Composite {
             public void mouseMove(MouseEvent e) {
                 if(e.stateMask == 0x80000 & !currentGraph.isSelectedNodesEmpty()) {
                     Node node = currentGraph.GetSelectedNodes().get(0);
-                    node.x = e.x;
-                    node.y = e.y;
+                    node.x = e.x - radius / 2;
+                    node.y = e.y - radius / 2;
                     redraw();
                 }
             }

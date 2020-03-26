@@ -4,20 +4,22 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 public class MainWindow extends Window {
 
-    List<Graph> graphs = new ArrayList<Graph>();
+    private int index;
 
     public MainWindow(Shell shell) {
         super(shell);
         //this.parentShell = shell;
         shell = new Shell(shell);
-        graphs.add(new Graph());
     }
 
     public void SetContent() {
@@ -72,14 +74,26 @@ public class MainWindow extends Window {
         seeGraphInfoButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         seeGraphInfoButton.setText("Info");
 
-        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER, graphs.get(0));
+        GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER);
         graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 12, 1));
+        graphCanvas.CreateNewGraph();
+
+        List<Button> graphButtons = new ArrayList<Button>();
+        Point point = shell.getSize();
+        Button button = new Button(shell, SWT.PUSH);
+        button.setText(graphCanvas.GetCurrentGraph().GetName());
+        button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        graphButtons.add(button);
+        shell.pack();
+        shell.setSize(point);
 
         newGraphButton.addMouseListener(new MouseListener(){
         
             @Override
             public void mouseUp(MouseEvent e) {
-                
+                graphCanvas.CreateNewGraph();
+                graphCanvas.Redraw();
+                CreateGraphButtons(graphCanvas.GetGraphNum(), graphButtons, graphCanvas);
             }
         
             @Override
@@ -97,7 +111,7 @@ public class MainWindow extends Window {
         
             @Override
             public void mouseUp(MouseEvent e) {
-                graphCanvas.graph.AddNode();
+                graphCanvas.GetCurrentGraph().AddNode();
                 graphCanvas.Redraw();
             }
         
@@ -117,11 +131,12 @@ public class MainWindow extends Window {
             @Override
             public void mouseUp(MouseEvent e) {
                 Shell child = new Shell(shell);
-                SetGraphNameDialog setGraphNameDialog = new SetGraphNameDialog(child, graphs.get(0));
+                SetGraphNameDialog setGraphNameDialog = new SetGraphNameDialog(child, graphCanvas.GetCurrentGraph());
                 setGraphNameDialog.SetWindowName("Name Graph");
                 setGraphNameDialog.SetSize(400, 100);
                 setGraphNameDialog.SetText("Name Graph", "My Graph");
                 setGraphNameDialog.SetContent();
+                setGraphNameDialog.SetButton(graphButtons.get(graphCanvas.GetGraphIndex()));
                 setGraphNameDialog.StartWindow();
             }
         
@@ -141,7 +156,7 @@ public class MainWindow extends Window {
             @Override
             public void mouseUp(MouseEvent e) {
                 Shell child = new Shell(shell);
-                SetNodeNameDialog setNodeNameDialog = new SetNodeNameDialog(child, graphs.get(0));
+                SetNodeNameDialog setNodeNameDialog = new SetNodeNameDialog(child, graphCanvas.GetCurrentGraph());
                 setNodeNameDialog.SetWindowName("Name Node");
                 setNodeNameDialog.SetSize(400, 100);
                 setNodeNameDialog.SetText("New Name", "Node");
@@ -164,7 +179,7 @@ public class MainWindow extends Window {
         
             @Override
             public void mouseUp(MouseEvent e) {
-                Graph graph = graphs.get(0);
+                Graph graph = graphCanvas.GetCurrentGraph();
                 for (Node node : graph.GetSelectedNodes()) {
                     graph.RemoveNode(node);
                 }
@@ -182,5 +197,30 @@ public class MainWindow extends Window {
                 
             }
         });
+    }
+
+    private void CreateGraphButtons(int num, List<Button> graphButtons, GraphCanvas graphCanvas) {
+        for(int i = 0; i < graphButtons.size(); i++) {
+            graphButtons.get(i).dispose();
+        }
+        graphButtons.clear();
+        Point point = shell.getSize();
+        for(int i = 0; i < num; i++) {
+            Button button = new Button(shell, SWT.PUSH);
+            button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+            button.setText(graphCanvas.GetGraphAtIndex(i).GetName());
+            button.addListener(SWT.MouseUp, new Listener(){
+            
+                @Override
+                public void handleEvent(Event e) {
+                    index = graphButtons.indexOf(button);
+                    graphCanvas.SetCurrentGraph(index);
+                    graphCanvas.Redraw();
+                }
+            });
+            graphButtons.add(button);
+        }
+        shell.pack();
+        shell.setSize(point);
     }
 }

@@ -18,6 +18,7 @@ public class Graph {
         edges = new ArrayList<Edge>();
         selectedNodes = new ArrayList<Node>();
         selectedEdges = new ArrayList<Edge>();
+        name = "New Graph";
     }
 
     public void SetName(String name) {

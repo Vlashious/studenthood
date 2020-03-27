@@ -222,6 +222,7 @@ public class MainWindow extends Window {
             public void handleEvent(Event e) {
                 Saver saver = new Saver();
                 saver.Save(graphCanvas.GetCurrentGraph(), shell);
+                UpdateButtons(graphButtons, graphCanvas);
             }
         });
 

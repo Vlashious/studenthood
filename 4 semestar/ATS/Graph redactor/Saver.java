@@ -17,6 +17,10 @@ public class Saver {
             try {
                 FileOutputStream FOStream = new FileOutputStream(new File(filePath));
                 ObjectOutputStream OOStream = new ObjectOutputStream(FOStream);
+                int first = filePath.lastIndexOf("/") + 1;
+                int last = filePath.lastIndexOf(".");
+                String graphName = filePath.substring(first, last);
+                graph.SetName(graphName);
                 OOStream.writeObject(graph);
                 OOStream.close();
             } catch (Exception e) {

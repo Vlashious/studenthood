@@ -198,6 +198,24 @@ public class MainWindow extends Window {
             }
         });
 
+        newNotOrientedEdgeButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                graphCanvas.GetCurrentGraph().AddNOREdge();
+                graphCanvas.redraw();
+            }
+        });
+
+        newOrientedEdgeButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                graphCanvas.GetCurrentGraph().AddOREdge();
+                graphCanvas.redraw();
+            }
+        });
+
         saveGraphButton.addListener(SWT.MouseUp, new Listener(){
         
             @Override

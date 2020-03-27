@@ -9,7 +9,8 @@ import org.eclipse.swt.widgets.Display;
 public class Graph implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<Node> nodes;
-    private List<Edge> edges;
+    private List<Edge> NORientedEdges;
+    private List<Edge> OREdges;
     private String name = "";
 
     private List<Node> selectedNodes;
@@ -17,7 +18,8 @@ public class Graph implements Serializable {
 
     public Graph() {
         nodes = new ArrayList<Node>();
-        edges = new ArrayList<Edge>();
+        NORientedEdges = new ArrayList<Edge>();
+        OREdges = new ArrayList<Edge>();
         selectedNodes = new ArrayList<Node>();
         selectedEdges = new ArrayList<Edge>();
         name = "New Graph";
@@ -43,24 +45,51 @@ public class Graph implements Serializable {
         selectedEdges.add(edge);
     }
 
+    public void UnselectAllEdges() {
+        selectedEdges.clear();
+    }
+
     public boolean isNodesEmpty() {
         return nodes.isEmpty();
     }
 
     public boolean isEdgesEmpty() {
-        return edges.isEmpty();
+        return NORientedEdges.isEmpty() & OREdges.isEmpty();
     }
 
     public boolean isSelectedNodesEmpty() {
         return selectedNodes.isEmpty();
     }
 
+    public boolean isSelectedEdgesEmpty() {
+        return selectedEdges.isEmpty();
+    }
+
     public List<Node> GetNodes() {
         return nodes;
     }
 
+    public List<Edge> GetEdges() {
+        List<Edge> edges = new ArrayList<Edge>();
+        edges.addAll(NORientedEdges);
+        edges.addAll(OREdges);
+        return edges;
+    }
+
+    public List<Edge> GetNOREdges() {
+        return NORientedEdges;
+    }
+
+    public List<Edge> GetOREdges() {
+        return OREdges;
+    }
+
     public List<Node> GetSelectedNodes() {
         return selectedNodes;
+    }
+
+    public List<Edge> GetSelectedEdges() {
+        return selectedEdges;
     }
 
     public void AddNode() {
@@ -92,4 +121,31 @@ public class Graph implements Serializable {
     public void RemoveNode(Node node) {
         nodes.remove(node);
     }
+
+    public void AddNOREdge() {
+        if(selectedNodes.size() == 2) {
+            Random random = new Random();
+            Edge edge = new Edge();
+            edge.left = selectedNodes.get(0);
+            edge.right = selectedNodes.get(1);
+            edge.r = random.nextInt(255);
+            edge.g = random.nextInt(255);
+            edge.b = random.nextInt(255);
+            NORientedEdges.add(edge);
+        }
+    }
+
+    public void AddOREdge() {
+        if(selectedNodes.size() == 2) {
+            Random random = new Random();
+            Edge edge = new Edge();
+            edge.left = selectedNodes.get(0);
+            edge.right = selectedNodes.get(1);
+            edge.r = random.nextInt(255);
+            edge.g = random.nextInt(255);
+            edge.b = random.nextInt(255);
+            OREdges.add(edge);
+        }
+    }
+
 }

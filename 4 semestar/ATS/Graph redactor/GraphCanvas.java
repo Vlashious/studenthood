@@ -10,6 +10,10 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -69,6 +73,20 @@ public class GraphCanvas extends Composite {
         
             @Override
             public void paintControl(PaintEvent e) {
+                if(!currentGraph.isEdgesEmpty()) {
+                    for (Edge edge : currentGraph.GetNOREdges()) {
+                        e.gc.setBackground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setForeground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setLineWidth(5);
+                        e.gc.drawLine(edge.left.x + radius / 2, edge.left.y + radius / 2, edge.right.x + radius / 2, edge.right.y + radius / 2);
+                    }
+                    for (Edge edge : currentGraph.GetOREdges()) {
+                        e.gc.setBackground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setForeground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setLineWidth(5);
+                        drawArrow(e.gc, edge.left.x + radius / 2, edge.left.y + radius / 2, edge.right.x + radius / 2, edge.right.y + radius / 2, 40, Math.toRadians(10));
+                    }
+                }
                 if(!currentGraph.isNodesEmpty()) {
                     for (Node node : currentGraph.GetNodes()) {
                         e.gc.setBackground(new Color(Display.getDefault(), node.r, node.g, node.b));
@@ -78,7 +96,7 @@ public class GraphCanvas extends Composite {
                 }
                 if(!currentGraph.isSelectedNodesEmpty()) {
                     for (Node node : currentGraph.GetSelectedNodes()) {
-                        e.gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
+                        e.gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
                         e.gc.setLineWidth(4);
                         e.gc.drawOval(node.x, node.y, radius, radius);
                     }
@@ -136,5 +154,22 @@ public class GraphCanvas extends Composite {
             }
         });
 
+    }
+
+    public void drawArrow(GC gc, int x1, int y1, int x2, int y2, double arrowLength, double arrowAngle) {
+        double theta = Math.atan2(y2 - y1, x2 - x1);
+        double offset = (arrowLength - 2) * Math.cos(arrowAngle);
+    
+        gc.drawLine(x1, y1, (int)(x2 - offset * Math.cos(theta)), (int)(y2 - offset * Math.sin(theta)));
+    
+        Path path = new Path(gc.getDevice());
+        path.moveTo((float)(x2 - arrowLength * Math.cos(theta - arrowAngle)), (float)(y2 - arrowLength * Math.sin(theta - arrowAngle)));
+        path.lineTo((float)x2, (float)y2);
+        path.lineTo((float)(x2 - arrowLength * Math.cos(theta + arrowAngle)), (float)(y2 - arrowLength * Math.sin(theta + arrowAngle)));
+        path.close();
+    
+        gc.fillPath(path);
+    
+        path.dispose();
     }
 }

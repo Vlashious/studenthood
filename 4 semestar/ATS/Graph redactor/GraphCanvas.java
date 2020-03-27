@@ -34,6 +34,7 @@ public class GraphCanvas extends Composite {
     }
 
     public void SetCurrentGraph(Graph graph) {
+        graphs.set(GetGraphIndex(), graph);
         this.currentGraph = graph;
         redraw();
     }

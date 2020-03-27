@@ -213,11 +213,18 @@ public class MainWindow extends Window {
             public void handleEvent(Event e) {
                 Loader loader = new Loader();
                 Graph loadedGraph = loader.Load(shell);
-                graphCanvas.SetCurrentGraph(loadedGraph);   
+                graphCanvas.SetCurrentGraph(loadedGraph);
                 graphCanvas.Redraw();
                 CreateGraphButtons(graphCanvas.GetGraphNum(), graphButtons, graphCanvas);
+                UpdateButtons(graphButtons, graphCanvas);
             }
         });
+    }
+
+    private void UpdateButtons(List<Button> graphButtons, GraphCanvas graphCanvas) {
+        for(int i = 0; i < graphButtons.size(); i++) {
+            graphButtons.get(i).setText(graphCanvas.GetGraphAtIndex(i).GetName());
+        }
     }
 
     private void CreateGraphButtons(int num, List<Button> graphButtons, GraphCanvas graphCanvas) {

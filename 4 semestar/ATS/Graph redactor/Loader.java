@@ -17,6 +17,11 @@ public class Loader {
                 FileInputStream FIStream = new FileInputStream(new File(filePath));
                 ObjectInputStream OIStream = new ObjectInputStream(FIStream);
                 Graph newGraph = (Graph) OIStream.readObject();
+                int first = filePath.lastIndexOf("/") + 1;
+                int last = filePath.lastIndexOf(".");
+                String graphName = filePath.substring(first, last);
+                System.out.println(graphName);
+                newGraph.SetName(graphName);
                 OIStream.close();
                 return newGraph;
             } catch (Exception e) {

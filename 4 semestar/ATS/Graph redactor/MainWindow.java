@@ -111,7 +111,7 @@ public class MainWindow extends Window {
         
             @Override
             public void mouseUp(MouseEvent e) {
-                graphCanvas.GetCurrentGraph().AddNode();
+                graphCanvas.GetCurrentGraph().AddNode(graphCanvas.getSize().x, graphCanvas.getSize().y);
                 graphCanvas.Redraw();
             }
         

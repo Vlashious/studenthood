@@ -75,9 +75,13 @@ public class Graph implements Serializable {
     }
 
     public void AddNode(int x, int y) {
+        Random random = new Random();
         Node node = new Node();
-        node.x = x;
-        node.y = y;
+        node.x = random.nextInt(x);
+        node.y = random.nextInt(y);
+        node.r = random.nextInt(255);
+        node.g = random.nextInt(255);
+        node.b = random.nextInt(255);
         nodes.add(node);
     }
 

@@ -8,7 +8,7 @@ import src.util.controller.Controller;
 import src.util.model.Student;
 
 public class server {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         Controller controller = new Controller(new ArrayList<Student>());
         ServerSocket serverSocket = new ServerSocket(8080);
         System.out.println("Waiting for the client...");
@@ -21,7 +21,12 @@ public class server {
                 case "Add":
                     System.out.println("Add a student");
                     controller.addStudent(data);
+                    data.close();
                     break;
+                case "findByName":
+                    System.out.println("Find by name");
+                    controller.findByName(data, socket);
+                    data.close();
                 default:
                     System.out.println("No command.");
                     break;

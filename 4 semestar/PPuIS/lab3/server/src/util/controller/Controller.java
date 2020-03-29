@@ -2,6 +2,9 @@ package src.util.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,8 @@ public class Controller {
         student.setNumOfBrothers(numOfBrothers);
         student.setNumOfSisters(numOfSisters);
         students.add(student);
+
+        data.close();
     }
 
     public void deleteStudents(List<Student> students) {
@@ -62,14 +67,21 @@ public class Controller {
         }
     }
 
-    public List<Student> findByName(String name) {
-        List<Student> students = new ArrayList<Student>();
+    public void findByName(BufferedReader data, Socket socket) throws IOException, ClassNotFoundException {
+        String name = data.readLine();
+
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+        List<Student> students = (List<Student>) inputStream.readObject();
         for (Student student : students) {
             if(student.getName().contains(name)) {
                 students.add(student);
             }
         }
-        return students;
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+        outputStream.writeObject(students);
+        outputStream.close();
+        data.close();
     }
 
     public List<Student> findByName(String name, List<Student> studentsList) {

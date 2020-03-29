@@ -1,5 +1,6 @@
 package src.util.listener;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -41,7 +42,7 @@ public class SearchListener implements Listener {
 
         Label nameLabel = new Label(child, SWT.NONE);
         nameLabel.setText("Imia studenta:");
-        
+
         Text nameText = new Text(child, SWT.NONE);
         nameText.setLayoutData(new RowData(200, 20));
 
@@ -50,7 +51,7 @@ public class SearchListener implements Listener {
 
         Label fatherNameLabel = new Label(child, SWT.NONE);
         fatherNameLabel.setText("Imia ajca:");
-        
+
         Text fatherNameText = new Text(child, SWT.NONE);
         fatherNameText.setLayoutData(new RowData(200, 20));
 
@@ -59,25 +60,25 @@ public class SearchListener implements Listener {
 
         Label motherNameLabel = new Label(child, SWT.NONE);
         motherNameLabel.setText("Imia matki:");
-        
+
         Text motherNameText = new Text(child, SWT.NONE);
         motherNameText.setLayoutData(new RowData(200, 20));
-        
+
         Button motherNameSearchCheck = new Button(child, SWT.CHECK);
         motherNameSearchCheck.setText("Šukać pa jimi matki");
 
         Label numOfBrothersLabel = new Label(child, SWT.NONE);
         numOfBrothersLabel.setText("Kolkaść bratoŭ:");
-        
+
         Text numOfBrothersText = new Text(child, SWT.NONE);
         numOfBrothersText.setLayoutData(new RowData(200, 20));
 
         Button numOfBrothersSearchCheck = new Button(child, SWT.CHECK);
         numOfBrothersSearchCheck.setText("Šukać pa kolkaśći bratoŭ");
-        
+
         Label numOfSistersLabel = new Label(child, SWT.NONE);
         numOfSistersLabel.setText("Kolkaść siostraŭ:");
-        
+
         Text numOfSistersText = new Text(child, SWT.NONE);
         numOfSistersText.setLayoutData(new RowData(200, 20));
 
@@ -95,13 +96,13 @@ public class SearchListener implements Listener {
 
         Text lowerBoundText = new Text(child, SWT.NONE);
         lowerBoundText.setLayoutData(new RowData(200, 20));
-        
+
         Button upperBoundCheck = new Button(child, SWT.CHECK);
         upperBoundCheck.setText("Šukać nižejšy za najvyšejšy zarobak");
-        
+
         Button lowerBoundCheck = new Button(child, SWT.CHECK);
         lowerBoundCheck.setText("Šukać vyšejšy za najnižejšy zarobak");
-        
+
         Button fatherIncomeSearchCheck = new Button(child, SWT.CHECK);
         fatherIncomeSearchCheck.setText("Šukać pa zarobku ajca");
 
@@ -112,15 +113,19 @@ public class SearchListener implements Listener {
         searchButton.setText("Adšukaj");
 
         StudentTable table = new StudentTable(child, SWT.NONE, controller);
-        
+
         Listener proceedListener = new Listener() {
 
             @Override
             public void handleEvent(Event e) {
                 List<Student> students = controller.getAllStudents();
-                if(nameSearchCheck.getSelection()) {
+                if (nameSearchCheck.getSelection()) {
                     String name = nameText.getText();
-                    students = controller.findByName(name, students);
+                    try {
+                        students = controller.findByName(name, students);
+                    } catch (IOException | ClassNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
                 if(fatherNameSearchCheck.getSelection()) {

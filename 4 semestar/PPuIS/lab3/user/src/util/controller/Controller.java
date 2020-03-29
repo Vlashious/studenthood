@@ -1,6 +1,8 @@
 package src.util.controller;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -63,23 +65,18 @@ public class Controller {
         }
     }
 
-    public List<Student> findByName(String name) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getName().contains(name)) {
-                students.add(student);
-            }
-        }
-        return students;
-    }
+    public List<Student> findByName(String name, List<Student> studentsList) throws IOException,
+            ClassNotFoundException {
+        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        out.println("findByName");
+        out.println(name);
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+        outputStream.writeObject(studentsList);
+        out.flush();
+        out.close();
 
-    public List<Student> findByName(String name, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getName().contains(name)) {
-                students.add(student);
-            }
-        }
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+        List<Student> students = (List<Student>) inputStream.readObject();
         return students;
     }
 

@@ -1,5 +1,9 @@
 package src.util.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +15,16 @@ public class Controller {
     private List<Student> students;
     private Loader loader;
     private Saver saver;
+    private Socket socket;
 
     public Controller(List<Student> students) {
         this.students = students;
         loader = new Loader();
         saver = new Saver();
+    }
+
+    public void connect(String url, int port) throws UnknownHostException, IOException {
+        socket = new Socket(url, port);
     }
 
     public void load(String filePath) {
@@ -34,16 +43,18 @@ public class Controller {
         this.students = students;
     }
 
-    public void addStudent(String name, String fatherName, String motherName, int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters) {
-        Student student = new Student();
-        student.setName(name);
-        student.setFatherName(fatherName);
-        student.setFatherIncome(fatherIncome);
-        student.setMotherName(motherName);
-        student.setMotherIncome(motherIncome);
-        student.setNumOfBrothers(numOfBrothers);
-        student.setNumOfSisters(numOfSisters);
-        students.add(student);
+    public void addStudent(String name, String fatherName, String motherName, int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters)
+            throws IOException {
+        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        out.println("Add");
+        out.println(name);
+        out.println(fatherName);
+        out.println(motherName);
+        out.println(fatherIncome);
+        out.println(motherIncome);
+        out.println(numOfBrothers);
+        out.println(numOfSisters);
+        out.close();
     }
 
     public void deleteStudents(List<Student> students) {

@@ -1,5 +1,7 @@
 package src.util.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +36,16 @@ public class Controller {
         this.students = students;
     }
 
-    public void addStudent(String name, String fatherName, String motherName, int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters) {
+    public void addStudent(BufferedReader data) throws IOException {
         Student student = new Student();
+        String name = data.readLine();
+        String fatherName = data.readLine();
+        String motherName = data.readLine();
+        int fatherIncome = Integer.parseInt(data.readLine());
+        int motherIncome = Integer.parseInt(data.readLine());
+        int numOfBrothers = Integer.parseInt(data.readLine());
+        int numOfSisters = Integer.parseInt(data.readLine());
+        
         student.setName(name);
         student.setFatherName(fatherName);
         student.setFatherIncome(fatherIncome);

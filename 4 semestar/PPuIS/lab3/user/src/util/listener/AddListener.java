@@ -1,5 +1,7 @@
 package src.util.listener;
 
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -93,39 +95,41 @@ public class AddListener implements Listener {
 
                 int fatherIncome = -1;
                 try {
-                fatherIncome = Integer.parseInt(fatherIncomeText.getText());
-                }
-                catch (java.lang.NumberFormatException e) {
+                    fatherIncome = Integer.parseInt(fatherIncomeText.getText());
+                } catch (java.lang.NumberFormatException e) {
                     System.out.println("Father income is empty.");
                 }
 
                 String motherName = motherNameText.getText();
                 int motherIncome = -1;
                 try {
-                motherIncome = Integer.parseInt(motherIncomeText.getText());
-                }
-                catch (java.lang.NumberFormatException e) {
+                    motherIncome = Integer.parseInt(motherIncomeText.getText());
+                } catch (java.lang.NumberFormatException e) {
                     System.out.println("Mother income is empty.");
                 }
 
                 int numOfBrothers;
                 try {
                     numOfBrothers = Integer.parseInt(numOfBrothersText.getText());
-                }
-                catch (java.lang.NumberFormatException e) {
+                } catch (java.lang.NumberFormatException e) {
                     numOfBrothers = 0;
                 }
 
                 int numOfSisters;
                 try {
                     numOfSisters = Integer.parseInt(numOfSistersText.getText());
-                }
-                catch (java.lang.NumberFormatException e) {
+                } catch (java.lang.NumberFormatException e) {
                     numOfSisters = 0;
                 }
 
-                if(studentName != "" && fatherName != "" && motherName != "" && fatherIncome != -1 && motherIncome != -1) {
-                    controller.addStudent(studentName, fatherName, motherName, fatherIncome, motherIncome, numOfBrothers, numOfSisters);
+                if (studentName != "" && fatherName != "" && motherName != "" && fatherIncome != -1
+                        && motherIncome != -1) {
+                    try {
+                        controller.addStudent(studentName, fatherName, motherName, fatherIncome, motherIncome,
+                                numOfBrothers, numOfSisters);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     window.updateTable();
                     child.dispose();
                 }

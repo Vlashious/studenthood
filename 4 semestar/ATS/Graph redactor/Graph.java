@@ -9,6 +9,9 @@ public class Graph implements Serializable {
     private List<Node> nodes;
     private List<Edge> NORientedEdges;
     private List<Edge> OREdges;
+
+    private List<Edge> loopEdges;
+
     private String name = "";
 
     private List<Node> selectedNodes;
@@ -17,6 +20,9 @@ public class Graph implements Serializable {
         nodes = new ArrayList<Node>();
         NORientedEdges = new ArrayList<Edge>();
         OREdges = new ArrayList<Edge>();
+
+        loopEdges = new ArrayList<Edge>();
+
         selectedNodes = new ArrayList<Node>();
         name = "New Graph";
     }
@@ -42,7 +48,7 @@ public class Graph implements Serializable {
     }
 
     public boolean isEdgesEmpty() {
-        return NORientedEdges.isEmpty() & OREdges.isEmpty();
+        return NORientedEdges.isEmpty() & OREdges.isEmpty() & loopEdges.isEmpty();
     }
 
     public boolean isSelectedNodesEmpty() {
@@ -57,6 +63,7 @@ public class Graph implements Serializable {
         List<Edge> edges = new ArrayList<Edge>();
         edges.addAll(NORientedEdges);
         edges.addAll(OREdges);
+        edges.addAll(loopEdges);
         return edges;
     }
 
@@ -68,7 +75,19 @@ public class Graph implements Serializable {
         return OREdges;
     }
 
+    public List<Edge> GetLoopEdges() {
+        return loopEdges;
+    }
+
     public Edge GetEdge() {
+        if(selectedNodes.size() == 1) {
+            Node n = selectedNodes.get(0);
+            for (Edge edge : loopEdges) {
+                if(edge.left == n) {
+                    return edge;
+                }
+            }
+        }
         if(selectedNodes.size() == 2) {
             Node n1 = selectedNodes.get(0);
             Node n2 = selectedNodes.get(1);
@@ -151,6 +170,15 @@ public class Graph implements Serializable {
     }
 
     public void AddNOREdge() {
+
+        if(selectedNodes.size() == 1) {
+            Edge edge = new Edge();
+            edge.left = selectedNodes.get(0);
+            edge.right = edge.left;
+            loopEdges.add(edge);
+            return;
+        }
+
         if(selectedNodes.size() == 2) {
             Random random = new Random();
             Edge edge = new Edge();
@@ -188,6 +216,11 @@ public class Graph implements Serializable {
                 degree++;
             }
         }
+        for (int i = 0; i < loopEdges.size(); i++) {
+            if(loopEdges.get(i).left == node) {
+                degree += 2;
+            }
+        }
 
         return degree;
     }
@@ -204,6 +237,11 @@ public class Graph implements Serializable {
             for (int i = 0; i < OREdges.size(); i++) {
                 if(OREdges.get(i).left == node) {
                     degree++;
+                }
+            }
+            for (int i = 0; i < loopEdges.size(); i++) {
+                if(loopEdges.get(i).left == node) {
+                    degree += 2;
                 }
             }
         }

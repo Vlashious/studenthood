@@ -84,6 +84,12 @@ public class GraphCanvas extends Composite {
                         e.gc.setLineWidth(5);
                         drawArrow(e.gc, edge.left.x + radius / 2, edge.left.y + radius / 2, edge.right.x + radius / 2, edge.right.y + radius / 2, 40, Math.toRadians(10));
                     }
+                    for (Edge edge : currentGraph.GetLoopEdges()) {
+                        e.gc.setForeground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setBackground(new Color(Display.getDefault(), edge.r, edge.g, edge.b));
+                        e.gc.setLineWidth(5);
+                        e.gc.drawOval(edge.left.x, edge.left.y, 50, 50);
+                    }
                 }
                 if(!currentGraph.isNodesEmpty()) {
                     for (Node node : currentGraph.GetNodes()) {

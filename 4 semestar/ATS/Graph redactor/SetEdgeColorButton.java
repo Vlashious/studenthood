@@ -13,13 +13,13 @@ public class SetEdgeColorButton extends DialogWindow {
         ColorDialog cd = new ColorDialog(shell);
         cd.setText("Set Color");
         cd.setRGB(new RGB(255, 255, 255));
-
         RGB newColor = cd.open();
-        
-        Edge edge = graph.GetEdge();
-        edge.r = newColor.red;
-        edge.g = newColor.green;
-        edge.b = newColor.blue;
+        if(newColor != null) {
+            Edge edge = graph.GetEdge();
+            edge.r = newColor.red;
+            edge.g = newColor.green;
+            edge.b = newColor.blue;
+        }
     }
     
 }

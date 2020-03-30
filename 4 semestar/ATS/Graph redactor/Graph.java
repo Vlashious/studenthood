@@ -178,4 +178,48 @@ public class Graph implements Serializable {
         }
     }
 
+    public int GetNodeDegree(Node node) {
+        int degree = 0;
+        for (int i = 0; i < NORientedEdges.size(); i++) {
+            if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
+                degree++;
+            }
+        }
+        for (int i = 0; i < OREdges.size(); i++) {
+            if(OREdges.get(i).left == node) {
+                degree++;
+            }
+        }
+
+        return degree;
+    }
+
+    public int GetNodeDegree() {
+        int degree = 0;
+        if(selectedNodes.size() > 0) {
+            Node node = selectedNodes.get(0);
+            for (int i = 0; i < NORientedEdges.size(); i++) {
+                if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
+                    degree++;
+                }
+            }
+            for (int i = 0; i < OREdges.size(); i++) {
+                if(OREdges.get(i).left == node) {
+                    degree++;
+                }
+            }
+        }
+
+        return degree;
+    }
+
+    public int GetGraphDegree() {
+        int graphDegree = 0;
+        for (Node node : nodes) {
+            graphDegree += GetNodeDegree(node);
+        }
+
+        return graphDegree;
+    }
+
 }

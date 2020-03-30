@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
@@ -248,6 +249,35 @@ public class MainWindow extends Window {
                 SetEdgeColorButton setEdgeColorButton = new SetEdgeColorButton(shell, graphCanvas.GetCurrentGraph());
                 setEdgeColorButton.SetContent();
                 setEdgeColorButton.StartWindow();
+            }
+        });
+
+        seeGraphInfoButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                Shell child = new Shell(shell);
+                child.setLayout(new GridLayout(1, true));
+                child.setSize(200, 150);
+                child.setText("Information");
+
+                Label numOfNodesLabel = new Label(child, SWT.NONE);
+                numOfNodesLabel.setLayoutData(new GridData());
+                numOfNodesLabel.setText("Number of nodes: " + graphCanvas.GetCurrentGraph().GetNodes().size());
+
+                Label numOfEdgesLabel = new Label(child, SWT.NONE);
+                numOfEdgesLabel.setLayoutData(new GridData());
+                numOfEdgesLabel.setText("Number of edges: " + graphCanvas.GetCurrentGraph().GetEdges().size());
+
+                Label graphDegreeLabel = new Label(child, SWT.NONE);
+                graphDegreeLabel.setLayoutData(new GridData());
+                graphDegreeLabel.setText("Degree of the graph: " + graphCanvas.GetCurrentGraph().GetGraphDegree());
+
+                Label nodeDegreeLabel = new Label(child, SWT.NONE);
+                nodeDegreeLabel.setLayoutData(new GridData());
+                nodeDegreeLabel.setText("Degree of the node: " + graphCanvas.GetCurrentGraph().GetNodeDegree());
+
+                child.open();
             }
         });
 

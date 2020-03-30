@@ -15,11 +15,12 @@ public class SetNodeColorDialog extends DialogWindow {
         cd.setRGB(new RGB(255, 255, 255));
 
         RGB newColor = cd.open();
-        
-        for (Node node : graph.GetSelectedNodes()) {
-            node.r = newColor.red;
-            node.g = newColor.green;
-            node.b = newColor.blue;
+        if(newColor != null) {
+            for (Node node : graph.GetSelectedNodes()) {
+                node.r = newColor.red;
+                node.g = newColor.green;
+                node.b = newColor.blue;
+            }
         }
     }
     

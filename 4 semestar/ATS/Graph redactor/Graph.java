@@ -70,6 +70,25 @@ public class Graph implements Serializable {
         return OREdges;
     }
 
+    public Edge GetEdge() {
+        if(selectedNodes.size() == 2) {
+            Node n1 = selectedNodes.get(0);
+            Node n2 = selectedNodes.get(1);
+            for (int i = 0; i < NORientedEdges.size(); i++) {
+                if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2 || NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
+                    return NORientedEdges.get(i);
+                }
+            }
+            for (int i = 0; i < OREdges.size(); i++) {
+                if(OREdges.get(i).left == n1 && OREdges.get(i).right == n2 || OREdges.get(i).left == n2 && OREdges.get(i).right == n1) {
+                    return OREdges.get(i);
+                }
+            }
+        }
+
+        return null;
+    }
+
     public List<Node> GetSelectedNodes() {
         return selectedNodes;
     }

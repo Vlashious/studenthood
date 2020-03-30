@@ -5,9 +5,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -23,7 +25,7 @@ public class MainWindow extends Window {
     }
 
     public void SetContent() {
-        GridLayout gridLayout = new GridLayout(12, true);
+        GridLayout gridLayout = new GridLayout(13, true);
         shell.setLayout(gridLayout);
 
         Button newGraphButton = new Button(shell, SWT.PUSH);
@@ -66,16 +68,20 @@ public class MainWindow extends Window {
         deleteEdgeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         deleteEdgeButton.setText("Delete Edge");
 
-        Button setColorButton = new Button(shell, SWT.PUSH);
-        setColorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        setColorButton.setText("Set Color");
+        Button setNodeColorButton = new Button(shell, SWT.PUSH);
+        setNodeColorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        setNodeColorButton.setText("Set Node Color");
+
+        Button setEdgeColorButton = new Button(shell, SWT.PUSH);
+        setEdgeColorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        setEdgeColorButton.setText("Set Edge Color");
 
         Button seeGraphInfoButton = new Button(shell, SWT.PUSH);
         seeGraphInfoButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         seeGraphInfoButton.setText("Info");
 
         GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER);
-        graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 12, 1));
+        graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 13, 1));
         graphCanvas.CreateNewGraph();
 
         List<Button> graphButtons = new ArrayList<Button>();
@@ -222,6 +228,26 @@ public class MainWindow extends Window {
             public void handleEvent(Event e) {
                 graphCanvas.GetCurrentGraph().RemoveEdge();
                 graphCanvas.redraw();
+            }
+        });
+
+        setNodeColorButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                SetNodeColorDialog setNodeColorDialog = new SetNodeColorDialog(shell, graphCanvas.GetCurrentGraph());
+                setNodeColorDialog.SetContent();
+                setNodeColorDialog.StartWindow();
+            }
+        });
+
+        setEdgeColorButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                SetEdgeColorButton setEdgeColorButton = new SetEdgeColorButton(shell, graphCanvas.GetCurrentGraph());
+                setEdgeColorButton.SetContent();
+                setEdgeColorButton.StartWindow();
             }
         });
 

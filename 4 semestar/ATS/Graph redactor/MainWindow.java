@@ -79,6 +79,34 @@ public class MainWindow extends Window {
         seeGraphInfoButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         seeGraphInfoButton.setText("Info");
 
+        Button turnIntoTreeButton = new Button(shell, SWT.PUSH);
+        turnIntoTreeButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        turnIntoTreeButton.setText("Turn into Tree");
+
+        Button findHamiltonianCycleButton = new Button(shell, SWT.PUSH);
+        findHamiltonianCycleButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findHamiltonianCycleButton.setText("Find hamiltonian cycle");
+
+        Button findDiameterButton = new Button(shell, SWT.PUSH);
+        findDiameterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findDiameterButton.setText("Find diameter");
+
+        Button findRadiusButton = new Button(shell, SWT.PUSH);
+        findRadiusButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findRadiusButton.setText("Find radius");
+
+        Button findGraphCenterButton = new Button(shell, SWT.PUSH);
+        findGraphCenterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findGraphCenterButton.setText("Find center");
+
+        Button findVectorMultButton = new Button(shell, SWT.PUSH);
+        findVectorMultButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findVectorMultButton.setText("Find vector mult");
+
+        Button findDecartMultButton = new Button(shell, SWT.PUSH);
+        findDecartMultButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        findDecartMultButton.setText("Find decart mult");
+
         GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER);
         graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 13, 1));
         graphCanvas.CreateNewGraph();

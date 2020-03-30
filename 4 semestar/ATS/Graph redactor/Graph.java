@@ -120,6 +120,17 @@ public class Graph implements Serializable {
 
     public void RemoveNode(Node node) {
         nodes.remove(node);
+        for (int i = 0; i < NORientedEdges.size(); i++) {
+            if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
+                NORientedEdges.remove(i);
+            }
+        }
+        for (int i = 0; i < OREdges.size(); i++) {
+            if(OREdges.get(i).left == node || OREdges.get(i).right == node) {
+                OREdges.remove(i);
+                i--;
+            }
+        }
     }
 
     public void AddNOREdge() {

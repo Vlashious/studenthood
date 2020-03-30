@@ -258,4 +258,14 @@ public class Graph implements Serializable {
         return graphDegree;
     }
 
+    public String CheckIfTree() {
+        CheckIfTreeAlgorithm algorithm = new CheckIfTreeAlgorithm(this);
+        if(algorithm.isTree()) {
+            return "This is a Tree!";
+        }
+        else {
+            return "This is not a Tree!";
+        }
+    }
+
 }

@@ -303,6 +303,10 @@ public class MainWindow extends Window {
                 nodeDegreeLabel.setLayoutData(new GridData());
                 nodeDegreeLabel.setText("Degree of the node: " + graphCanvas.GetCurrentGraph().GetNodeDegree());
 
+                Label isGraphTreeLabel = new Label(child, SWT.NONE);
+                isGraphTreeLabel.setLayoutData(new GridData());
+                isGraphTreeLabel.setText(graphCanvas.GetCurrentGraph().CheckIfTree());
+
                 child.open();
             }
         });

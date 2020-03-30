@@ -14,14 +14,12 @@ public class Graph implements Serializable {
     private String name = "";
 
     private List<Node> selectedNodes;
-    private List<Edge> selectedEdges;
 
     public Graph() {
         nodes = new ArrayList<Node>();
         NORientedEdges = new ArrayList<Edge>();
         OREdges = new ArrayList<Edge>();
         selectedNodes = new ArrayList<Node>();
-        selectedEdges = new ArrayList<Edge>();
         name = "New Graph";
     }
 
@@ -41,14 +39,6 @@ public class Graph implements Serializable {
         selectedNodes.clear();
     }
 
-    public void SelectEdge(Edge edge) {
-        selectedEdges.add(edge);
-    }
-
-    public void UnselectAllEdges() {
-        selectedEdges.clear();
-    }
-
     public boolean isNodesEmpty() {
         return nodes.isEmpty();
     }
@@ -59,10 +49,6 @@ public class Graph implements Serializable {
 
     public boolean isSelectedNodesEmpty() {
         return selectedNodes.isEmpty();
-    }
-
-    public boolean isSelectedEdgesEmpty() {
-        return selectedEdges.isEmpty();
     }
 
     public List<Node> GetNodes() {
@@ -86,10 +72,6 @@ public class Graph implements Serializable {
 
     public List<Node> GetSelectedNodes() {
         return selectedNodes;
-    }
-
-    public List<Edge> GetSelectedEdges() {
-        return selectedEdges;
     }
 
     public void AddNode() {
@@ -129,6 +111,24 @@ public class Graph implements Serializable {
             if(OREdges.get(i).left == node || OREdges.get(i).right == node) {
                 OREdges.remove(i);
                 i--;
+            }
+        }
+    }
+
+    public void RemoveEdge() {
+        if(selectedNodes.size() == 2) {
+            Node n1 = selectedNodes.get(0);
+            Node n2 = selectedNodes.get(1);
+            for (int i = 0; i < NORientedEdges.size(); i++) {
+                if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2 || NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
+                    NORientedEdges.remove(i);
+                }
+            }
+            for (int i = 0; i < OREdges.size(); i++) {
+                if(OREdges.get(i).left == n1 && OREdges.get(i).right == n2 || OREdges.get(i).left == n2 && OREdges.get(i).right == n1) {
+                    OREdges.remove(i);
+                    i--;
+                }
             }
         }
     }

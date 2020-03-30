@@ -216,6 +216,15 @@ public class MainWindow extends Window {
             }
         });
 
+        deleteEdgeButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                graphCanvas.GetCurrentGraph().RemoveEdge();
+                graphCanvas.redraw();
+            }
+        });
+
         saveGraphButton.addListener(SWT.MouseUp, new Listener(){
         
             @Override

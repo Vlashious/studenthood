@@ -169,6 +169,12 @@ public class Graph implements Serializable {
         }
     }
 
+    public void RemoveAllEdges() {
+        NORientedEdges.clear();
+        OREdges.clear();
+        loopEdges.clear();
+    }
+
     public void AddNOREdge() {
 
         if(selectedNodes.size() == 1) {
@@ -191,6 +197,13 @@ public class Graph implements Serializable {
         }
     }
 
+    public void AddNOREdge(Node left, Node right) {
+        Edge edge = new Edge();
+        edge.left = left;
+        edge.right = right;
+        NORientedEdges.add(edge);
+    }
+
     public void AddOREdge() {
         if(selectedNodes.size() == 2) {
             Random random = new Random();
@@ -202,6 +215,13 @@ public class Graph implements Serializable {
             edge.b = random.nextInt(255);
             OREdges.add(edge);
         }
+    }
+
+    public void AddOREdge(Node left, Node right) {
+        Edge edge = new Edge();
+        edge.left = left;
+        edge.right = right;
+        OREdges.add(edge);
     }
 
     public int GetNodeDegree(Node node) {

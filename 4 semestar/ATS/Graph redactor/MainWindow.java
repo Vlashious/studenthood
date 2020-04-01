@@ -333,6 +333,15 @@ public class MainWindow extends Window {
                 UpdateButtons(graphButtons, graphCanvas);
             }
         });
+
+        turnIntoTreeButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                ConvertToTreeAlgorithm algorithm = new ConvertToTreeAlgorithm(graphCanvas.GetCurrentGraph());
+                graphCanvas.redraw();
+            }
+        });
     }
 
     private void UpdateButtons(List<Button> graphButtons, GraphCanvas graphCanvas) {

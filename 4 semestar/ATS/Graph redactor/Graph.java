@@ -79,6 +79,10 @@ public class Graph implements Serializable {
         return loopEdges;
     }
 
+    public int GetEdgesNum() {
+        return OREdges.size() + loopEdges.size() + NORientedEdges.size() / 2;
+    }
+
     public Edge GetEdge() {
         if(selectedNodes.size() == 1) {
             Node n = selectedNodes.get(0);
@@ -188,12 +192,19 @@ public class Graph implements Serializable {
         if(selectedNodes.size() == 2) {
             Random random = new Random();
             Edge edge = new Edge();
+            Edge edge1 = new Edge();
             edge.left = selectedNodes.get(0);
             edge.right = selectedNodes.get(1);
             edge.r = random.nextInt(255);
             edge.g = random.nextInt(255);
             edge.b = random.nextInt(255);
+            edge1.left = selectedNodes.get(1);
+            edge1.right = selectedNodes.get(0);
+            edge1.r = edge.r;
+            edge1.g = edge.g;
+            edge1.b = edge.b;
             NORientedEdges.add(edge);
+            NORientedEdges.add(edge1);
         }
     }
 
@@ -201,7 +212,11 @@ public class Graph implements Serializable {
         Edge edge = new Edge();
         edge.left = left;
         edge.right = right;
+        Edge edge1 = new Edge();
+        edge1.left = right;
+        edge1.right = left;
         NORientedEdges.add(edge);
+        NORientedEdges.add(edge1);
     }
 
     public void AddOREdge() {
@@ -227,7 +242,7 @@ public class Graph implements Serializable {
     public int GetNodeDegree(Node node) {
         int degree = 0;
         for (int i = 0; i < NORientedEdges.size(); i++) {
-            if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
+            if(NORientedEdges.get(i).left == node) {
                 degree++;
             }
         }
@@ -250,7 +265,7 @@ public class Graph implements Serializable {
         if(selectedNodes.size() > 0) {
             Node node = selectedNodes.get(0);
             for (int i = 0; i < NORientedEdges.size(); i++) {
-                if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
+                if(NORientedEdges.get(i).left == node) {
                     degree++;
                 }
             }

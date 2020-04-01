@@ -23,7 +23,7 @@ public class CheckIfTreeAlgorithm {
             int leftIndex = graph.GetNodes().indexOf(left);
             int rightIndex = graph.GetNodes().indexOf(right);
             adj[leftIndex].add(rightIndex);
-            adj[rightIndex].add(leftIndex);
+            //adj[rightIndex].add(leftIndex);
         }
     }
 

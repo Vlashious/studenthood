@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -293,7 +294,7 @@ public class MainWindow extends Window {
 
                 Label numOfEdgesLabel = new Label(child, SWT.NONE);
                 numOfEdgesLabel.setLayoutData(new GridData());
-                numOfEdgesLabel.setText("Number of edges: " + graphCanvas.GetCurrentGraph().GetEdges().size());
+                numOfEdgesLabel.setText("Number of edges: " + graphCanvas.GetCurrentGraph().GetEdgesNum());
 
                 Label graphDegreeLabel = new Label(child, SWT.NONE);
                 graphDegreeLabel.setLayoutData(new GridData());
@@ -340,6 +341,42 @@ public class MainWindow extends Window {
             public void handleEvent(Event e) {
                 ConvertToTreeAlgorithm algorithm = new ConvertToTreeAlgorithm(graphCanvas.GetCurrentGraph());
                 graphCanvas.redraw();
+            }
+        });
+
+        findDiameterButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                DijkstraAlgorithm algorithm = new DijkstraAlgorithm(graphCanvas.GetCurrentGraph());
+                algorithm.dijkstra();
+                
+                Shell child = new Shell(shell);
+                child.setSize(200, 100);
+                child.setLayout(new FillLayout());
+
+                Label label = new Label(child, SWT.NONE);
+                label.setText("Diameter is: " + algorithm.getDiameter());
+
+                child.open();
+            }
+        });
+
+        findRadiusButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                DijkstraAlgorithm algorithm = new DijkstraAlgorithm(graphCanvas.GetCurrentGraph());
+                algorithm.dijkstra();
+                
+                Shell child = new Shell(shell);
+                child.setSize(200, 100);
+                child.setLayout(new FillLayout());
+
+                Label label = new Label(child, SWT.NONE);
+                label.setText("Radius is: " + algorithm.getRadius());
+
+                child.open();
             }
         });
     }

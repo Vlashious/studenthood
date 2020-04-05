@@ -91,24 +91,24 @@ public class Controller {
         oos.close();
     }
 
-    public List<Student> findByMotherName(String motherName) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getMotherName().contains(motherName)) {
-                students.add(student);
+    public void findByMotherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getMotherName().contains(name)) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getMotherName().contains(name)) {
+                    outputStudents.add(student);
+                }
             }
         }
-        return students;
-    }
-
-    public List<Student> findByMotherName(String motherName, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getMotherName().contains(motherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 
     public List<Student> findByNumOfBrothers(int numOfBrothers) {

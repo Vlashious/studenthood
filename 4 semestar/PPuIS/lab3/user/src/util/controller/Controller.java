@@ -146,24 +146,32 @@ public class Controller {
         return incomePacket.getData();
     }
 
-    public List<Student> findByMotherName(String motherName) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getMotherName().contains(motherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+    public List<Student> findByMotherName(String motherName)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherName";
+        Packet packet = new Packet(method, null, null, motherName, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
-    public List<Student> findByMotherName(String motherName, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getMotherName().contains(motherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+    public List<Student> findByMotherName(String motherName, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherName";
+        Packet packet = new Packet(method, studentsList, null, motherName, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
     public List<Student> findByNumOfBrothers(int numOfBrothers) {

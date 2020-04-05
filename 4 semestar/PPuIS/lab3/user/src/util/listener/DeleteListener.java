@@ -148,7 +148,12 @@ public class DeleteListener implements Listener {
 
                 if (motherNameSearchCheck.getSelection()) {
                     String motherName = motherNameText.getText();
-                    students = controller.findByMotherName(motherName, students);
+                    try {
+                        students = controller.findByMotherName(motherName, students);
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
 
                 if (numOfBrothersSearchCheck.getSelection()) {

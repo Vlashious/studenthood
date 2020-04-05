@@ -158,12 +158,22 @@ public class DeleteListener implements Listener {
 
                 if (numOfBrothersSearchCheck.getSelection()) {
                     int numOfBrothers = Integer.parseInt(numOfBrothersText.getText());
-                    students = controller.findByNumOfBrothers(numOfBrothers, students);
+                    try {
+                        students = controller.findByNumOfBrothers(numOfBrothers, students);
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
 
                 if (numOfSistersSearchCheck.getSelection()) {
                     int numOfSIsters = Integer.parseInt(numOfSistersText.getText());
-                    students = controller.findByNumOfSisters(numOfSIsters, students);
+                    try {
+                        students = controller.findByNumOfSisters(numOfSIsters, students);
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
                 if (fatherIncomeSearchCheck.getSelection() || motherIncomeSearchCheck.getSelection()) {
                     boolean includeFather = fatherIncomeSearchCheck.getSelection();

@@ -118,7 +118,13 @@ public class DeleteListener implements Listener {
         Listener proceedListener = new Listener() {
             @Override
             public void handleEvent(Event e) {
-                List<Student> students = controller.getAllStudents();
+                List<Student> students = null;
+                try {
+                    students = controller.getAllStudents();
+                } catch (ClassNotFoundException | IOException e2) {
+                    // TODO Auto-generated catch block
+                    e2.printStackTrace();
+                }
                 if (nameSearchCheck.getSelection()) {
                     String name = nameText.getText();
                     try {
@@ -130,26 +136,26 @@ public class DeleteListener implements Listener {
                     }
                 }
 
-                if(fatherNameSearchCheck.getSelection()) {
+                if (fatherNameSearchCheck.getSelection()) {
                     String fatherName = fatherNameText.getText();
                     students = controller.findByFatherName(fatherName, students);
                 }
 
-                if(motherNameSearchCheck.getSelection()) {
+                if (motherNameSearchCheck.getSelection()) {
                     String motherName = motherNameText.getText();
                     students = controller.findByMotherName(motherName, students);
                 }
 
-                if(numOfBrothersSearchCheck.getSelection()) {
+                if (numOfBrothersSearchCheck.getSelection()) {
                     int numOfBrothers = Integer.parseInt(numOfBrothersText.getText());
                     students = controller.findByNumOfBrothers(numOfBrothers, students);
                 }
 
-                if(numOfSistersSearchCheck.getSelection()) {
+                if (numOfSistersSearchCheck.getSelection()) {
                     int numOfSIsters = Integer.parseInt(numOfSistersText.getText());
                     students = controller.findByNumOfSisters(numOfSIsters, students);
                 }
-                if(fatherIncomeSearchCheck.getSelection() || motherIncomeSearchCheck.getSelection()) {
+                if (fatherIncomeSearchCheck.getSelection() || motherIncomeSearchCheck.getSelection()) {
                     boolean includeFather = fatherIncomeSearchCheck.getSelection();
                     boolean includeMother = motherIncomeSearchCheck.getSelection();
                     boolean includeLower = lowerBoundCheck.getSelection();
@@ -158,26 +164,30 @@ public class DeleteListener implements Listener {
                     int lowerBound = 0;
                     try {
                         upperBound = Integer.parseInt(upperBoundText.getText());
-                    }
-                    catch (java.lang.NumberFormatException exception) {
+                    } catch (java.lang.NumberFormatException exception) {
                         System.out.println("Upper bound was not set.");
                     }
 
                     try {
                         lowerBound = Integer.parseInt(lowerBoundText.getText());
-                    }
-                    catch (java.lang.NumberFormatException exception) {
+                    } catch (java.lang.NumberFormatException exception) {
                         System.out.println("Lower bound was not set.");
                     }
-                    students = controller.findByIncome(upperBound, lowerBound, includeUpper, includeLower, includeFather, includeMother, students);
+                    students = controller.findByIncome(upperBound, lowerBound, includeUpper, includeLower,
+                            includeFather, includeMother, students);
                 }
                 Shell dialog = new Shell(child);
                 dialog.setText("Vynik");
                 dialog.setLayout(new FillLayout());
                 Label resultLabel = new Label(dialog, SWT.NONE);
-                if(students.size() != 0) {
+                if (students.size() != 0) {
                     controller.deleteStudents(students);
-                    window.updateTable();
+                    try {
+                        window.updateTable();
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     resultLabel.setText("Było vydalena " + students.size() + " studentaŭ.");
                 } else resultLabel.setText("Takich studentaŭ niama.");
                 dialog.pack();

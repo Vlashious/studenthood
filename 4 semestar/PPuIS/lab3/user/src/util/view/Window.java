@@ -1,5 +1,8 @@
 package src.util.view;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -69,12 +72,13 @@ public class Window {
 
         shell.pack();
         shell.open();
-        while(!shell.isDisposed()) {
-            if(!display.readAndDispatch()) display.sleep();
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch())
+                display.sleep();
         }
     }
 
-    public void updateTable() {
+    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException {
         table.updateTable();
     }
 }

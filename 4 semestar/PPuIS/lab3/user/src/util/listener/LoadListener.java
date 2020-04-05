@@ -1,5 +1,7 @@
 package src.util.listener;
 
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -10,7 +12,7 @@ import src.util.controller.Controller;
 import src.util.view.Window;
 
 public class LoadListener implements Listener {
-    
+
     private Shell parent;
     private Controller controller;
     private Window window;
@@ -24,10 +26,15 @@ public class LoadListener implements Listener {
     @Override
     public void handleEvent(Event e) {
         FileDialog fDialog = new FileDialog(parent, SWT.OPEN);
-        fDialog.setFilterNames(new String[] {"XML File"});
-        fDialog.setFilterExtensions(new String[] {"*.xml"});
+        fDialog.setFilterNames(new String[] { "XML File" });
+        fDialog.setFilterExtensions(new String[] { "*.xml" });
         String inputFile = fDialog.open();
         controller.load(inputFile);
-        window.updateTable();
+        try {
+            window.updateTable();
+        } catch (ClassNotFoundException | IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
     }
 }

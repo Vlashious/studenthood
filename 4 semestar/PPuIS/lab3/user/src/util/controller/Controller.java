@@ -11,6 +11,7 @@ import java.util.List;
 
 import src.util.loader.Loader;
 import src.util.model.Student;
+import src.util.packet.Packet;
 import src.util.saver.Saver;
 
 public class Controller {
@@ -18,6 +19,8 @@ public class Controller {
     private Loader loader;
     private Saver saver;
     private Socket socket;
+    private String url = "localhost";
+    private int port = 8080;
 
     public Controller(List<Student> students) {
         this.students = students;
@@ -25,7 +28,7 @@ public class Controller {
         saver = new Saver();
     }
 
-    public void connect(String url, int port) throws UnknownHostException, IOException {
+    public void connect(String url, int port) throws UnknownHostException, IOException, ClassNotFoundException {
         socket = new Socket(url, port);
     }
 
@@ -37,26 +40,42 @@ public class Controller {
         saver.save(this.students, filePath);
     }
 
-    public List<Student> getAllStudents() {
-        return students;
+    public List<Student> getAllStudents() throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "getAllStudents";
+        Packet packet = new Packet(method, null);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        oos.close();
+        ois.close();
+        return incomePacket.getData();
     }
 
     public void setAllStudents(List<Student> students) {
         this.students = students;
     }
 
-    public void addStudent(String name, String fatherName, String motherName, int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters)
-            throws IOException {
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
-        out.println("Add");
-        out.println(name);
-        out.println(fatherName);
-        out.println(motherName);
-        out.println(fatherIncome);
-        out.println(motherIncome);
-        out.println(numOfBrothers);
-        out.println(numOfSisters);
-        out.close();
+    public void addStudent(String name, String fatherName, String motherName,
+                           int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters) throws IOException,
+            ClassNotFoundException {
+        connect(url, port);
+        String method = "addStudent";
+        Student newStud = new Student();
+        newStud.setName(name);
+        newStud.setFatherName(fatherName);
+        newStud.setMotherName(motherName);
+        newStud.setFatherIncome(fatherIncome);
+        newStud.setMotherIncome(motherIncome);
+        newStud.setNumOfBrothers(numOfBrothers);
+        newStud.setNumOfSisters(numOfSisters);
+        List<Student> oneStudent = new ArrayList<Student>();
+        oneStudent.add(newStud);
+        Packet packet = new Packet(method, oneStudent);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        oos.close();
     }
 
     public void deleteStudents(List<Student> students) {
@@ -258,5 +277,37 @@ public class Controller {
             return students;
         }
         return students;
+    }
+
+    public List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students) {
+        List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
+        if(!pages.isEmpty()) {
+            return pages.get(index);
+        } else {
+            List<Student> page = new ArrayList<Student>();
+            return page;
+        }
+    }
+
+    private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {
+        List<List<Student>> pages = new ArrayList<List<Student>>();
+        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage );
+
+        System.out.println("Students on page: " + numOfStudentsOnPage);
+        System.out.println("Number of pages: " + numOfPages);
+
+        for(int j = 0; j < numOfPages; j++) {
+            List<Student> studentPage = new ArrayList<Student>();
+            for(int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
+                try {
+                studentPage.add(students.get(i));
+                }
+                catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            pages.add(studentPage);
+        }
+        return pages;
     }
 }

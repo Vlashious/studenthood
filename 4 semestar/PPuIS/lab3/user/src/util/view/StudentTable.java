@@ -1,5 +1,7 @@
 package src.util.view;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +63,15 @@ public class StudentTable extends Composite {
             @Override
             public void handleEvent(Event e) {
                 pageNum = 0;
-                if(searchStudentList.isEmpty()) {
-                    updateTable();
-                }
-                else updateTable(searchStudentList);
+                if (searchStudentList.isEmpty()) {
+                    try {
+                        updateTable();
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                } else
+                    updateTable(searchStudentList);
             }
         });
 
@@ -74,29 +81,45 @@ public class StudentTable extends Composite {
 
             @Override
             public void handleEvent(Event e) {
-                if(pageNum - 1 >= 0) {
+                if (pageNum - 1 >= 0) {
                     pageNum--;
-                    if(searchStudentList.isEmpty()) {
-                        updateTable();
-                    }
-                    else updateTable(searchStudentList);
+                    if (searchStudentList.isEmpty()) {
+                        try {
+                            updateTable();
+                        } catch (ClassNotFoundException | IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    } else
+                        updateTable(searchStudentList);
                 }
             }
         });
 
-        nextPageButton= new Button(this, SWT.PUSH);
+        nextPageButton = new Button(this, SWT.PUSH);
         nextPageButton.setText(">");
         nextPageButton.addListener(SWT.MouseDown, new Listener() {
 
             @Override
             public void handleEvent(Event e) {
-                if(searchStudentList.isEmpty()) {
-                    if(pageNum + 1 < Math.ceil((double) controller.getAllStudents().size() / numOfStudentsOnPage)) {
-                        pageNum++;
-                        updateTable();
+                if (searchStudentList.isEmpty()) {
+                    try {
+                        if (pageNum + 1 < Math
+                                .ceil((double) controller.getAllStudents().size() / numOfStudentsOnPage)) {
+                            pageNum++;
+                            try {
+                                updateTable();
+                            } catch (ClassNotFoundException | IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                        }
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
                     }
                 } else {
-                    if(pageNum + 1 < Math.ceil((double) searchStudentList.size() / numOfStudentsOnPage)) {
+                    if (pageNum + 1 < Math.ceil((double) searchStudentList.size() / numOfStudentsOnPage)) {
                         pageNum++;
                         updateTable(searchStudentList);
                     }
@@ -110,9 +133,20 @@ public class StudentTable extends Composite {
 
             @Override
             public void handleEvent(Event e) {
-                if(searchStudentList.isEmpty()) {
-                    pageNum = (int) Math.ceil((double) controller.getAllStudents().size() / numOfStudentsOnPage) - 1;
-                    updateTable();
+                if (searchStudentList.isEmpty()) {
+                    try {
+                        pageNum = (int) Math.ceil((double) controller.getAllStudents().size() / numOfStudentsOnPage)
+                                - 1;
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    try {
+                        updateTable();
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 } else {
                     pageNum = (int) Math.ceil((double) searchStudentList.size() / numOfStudentsOnPage - 1);
                     updateTable(searchStudentList);
@@ -125,19 +159,18 @@ public class StudentTable extends Composite {
 
         searchStudentList = new ArrayList<Student>();
 
-        ModifyListener modifyListener = new ModifyListener(){
-        
-            @Override   
+        ModifyListener modifyListener = new ModifyListener() {
+
+            @Override
             public void modifyText(ModifyEvent e) {
                 try {
                     numOfStudentsOnPage = Integer.parseInt(numOfStudentsText.getText());
                     pageNum = 0;
-                    if(searchStudentList.isEmpty()) {
+                    if (searchStudentList.isEmpty()) {
                         updateTable();
-                    }
-                    else updateTable(searchStudentList);
-                }
-                catch (Exception exception) {
+                    } else
+                        updateTable(searchStudentList);
+                } catch (Exception exception) {
                     exception.getStackTrace();
                 }
             }
@@ -152,8 +185,8 @@ public class StudentTable extends Composite {
         super.pack();
     }
 
-    public void updateTable() {
-        List<Student> students = getStudentPage(pageNum, numOfStudentsOnPage, controller.getAllStudents());
+    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException {
+        List<Student> students = controller.getStudentPage(pageNum, numOfStudentsOnPage, controller.getAllStudents());
         table.removeAll();
         for (Student student : students) {
             TableItem item = new TableItem(table, SWT.NONE);
@@ -173,7 +206,7 @@ public class StudentTable extends Composite {
 
     public void updateTable(List<Student> studentsList) {
         searchStudentList = studentsList;
-        List<Student> students = getStudentPage(pageNum, numOfStudentsOnPage, studentsList);
+        List<Student> students = controller.getStudentPage(pageNum, numOfStudentsOnPage, studentsList);
         table.removeAll();
         for (Student student : students) {
             TableItem item = new TableItem(table, SWT.NONE);
@@ -190,37 +223,5 @@ public class StudentTable extends Composite {
         table.pack();
         this.pack();
         //super.pack();
-    }
-
-    private List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students) {
-        List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
-        if(!pages.isEmpty()) {
-            return pages.get(index);
-        } else {
-            List<Student> page = new ArrayList<Student>();
-            return page;
-        }
-    }
-
-    private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {
-        List<List<Student>> pages = new ArrayList<List<Student>>();
-        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage );
-
-        System.out.println("Students on page: " + numOfStudentsOnPage);
-        System.out.println("Number of pages: " + numOfPages);
-
-        for(int j = 0; j < numOfPages; j++) {
-            List<Student> studentPage = new ArrayList<Student>();
-            for(int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
-                try {
-                studentPage.add(students.get(i));
-                }
-                catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            pages.add(studentPage);
-        }
-        return pages;
     }
 }

@@ -118,7 +118,12 @@ public class SearchListener implements Listener {
 
             @Override
             public void handleEvent(Event e) {
-                List<Student> students = controller.getAllStudents();
+                List<Student> students = null;
+                try {
+                    students = controller.getAllStudents();
+                } catch (ClassNotFoundException | IOException e2) {
+                    e2.printStackTrace();
+                }
                 if (nameSearchCheck.getSelection()) {
                     String name = nameText.getText();
                     try {

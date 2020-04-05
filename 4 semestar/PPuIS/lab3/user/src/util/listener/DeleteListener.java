@@ -175,26 +175,45 @@ public class DeleteListener implements Listener {
                         e1.printStackTrace();
                     }
                 }
-                if (fatherIncomeSearchCheck.getSelection() || motherIncomeSearchCheck.getSelection()) {
-                    boolean includeFather = fatherIncomeSearchCheck.getSelection();
-                    boolean includeMother = motherIncomeSearchCheck.getSelection();
-                    boolean includeLower = lowerBoundCheck.getSelection();
-                    boolean includeUpper = upperBoundCheck.getSelection();
-                    int upperBound = 0;
-                    int lowerBound = 0;
-                    try {
-                        upperBound = Integer.parseInt(upperBoundText.getText());
-                    } catch (java.lang.NumberFormatException exception) {
-                        System.out.println("Upper bound was not set.");
+                if (fatherIncomeSearchCheck.getSelection()) {
+                    if (lowerBoundCheck.getSelection()) {
+                        try {
+                            students = controller.findByFatherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
+                                    students);
+                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
                     }
-
-                    try {
-                        lowerBound = Integer.parseInt(lowerBoundText.getText());
-                    } catch (java.lang.NumberFormatException exception) {
-                        System.out.println("Lower bound was not set.");
+                    if (upperBoundCheck.getSelection()) {
+                        try {
+                            students = controller.findByFatherIncomeLower(Integer.parseInt(upperBoundText.getText()),
+                                    students);
+                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
                     }
-                    students = controller.findByIncome(upperBound, lowerBound, includeUpper, includeLower,
-                            includeFather, includeMother, students);
+                }
+                if (motherIncomeSearchCheck.getSelection()) {
+                    if (lowerBoundCheck.getSelection()) {
+                        try {
+                            students = controller.findByFatherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
+                                    students);
+                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
+                    if (upperBoundCheck.getSelection()) {
+                        try {
+                            students = controller.findByFatherIncomeLower(Integer.parseInt(upperBoundText.getText()),
+                                    students);
+                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
                 }
                 Shell dialog = new Shell(child);
                 dialog.setText("Vynik");

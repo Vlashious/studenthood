@@ -230,104 +230,116 @@ public class Controller {
         return incomePacket.getData();
     }
 
-    public List<Student> findByIncome(int upperIncome, int lowerIncome, boolean includeUpper, boolean includeLower, boolean includeFather, boolean includeMother) {
-        List<Student> students = new ArrayList<Student>();
-        if(includeUpper && !includeLower) {
-            for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        if(includeLower && !includeUpper) {
-            for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        if(includeUpper && includeLower) {
-            for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome && student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        return students;
+    public List<Student> findByFatherIncomeLower(int upperBound)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherIncomeLower";
+        Packet packet = new Packet(method, null, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
-    public List<Student> findByIncome(int upperIncome, int lowerIncome, boolean includeUpper, boolean includeLower, boolean includeFather, boolean includeMother, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        if(includeUpper && !includeLower) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        if(includeLower && !includeUpper) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        if(includeUpper && includeLower) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome && student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        return students;
+    public List<Student> findByFatherIncomeLower(int upperBound, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherIncomeLower";
+        Packet packet = new Packet(method, studentsList, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByFatherIncomeHigher(int upperBound)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherIncomeHigher";
+        Packet packet = new Packet(method, null, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByFatherIncomeHigher(int upperBound, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherIncomeHigher";
+        Packet packet = new Packet(method, studentsList, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByMotherIncomeLower(int upperBound)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherIncomeLower";
+        Packet packet = new Packet(method, null, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByMotherIncomeLower(int upperBound, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherIncomeLower";
+        Packet packet = new Packet(method, studentsList, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByMotherIncomeHigher(int upperBound)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherIncomeHigher";
+        Packet packet = new Packet(method, null, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByMotherIncomeHigher(int upperBound, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByMotherIncomeHigher";
+        Packet packet = new Packet(method, studentsList, null, null, upperBound);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
     public List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students) {

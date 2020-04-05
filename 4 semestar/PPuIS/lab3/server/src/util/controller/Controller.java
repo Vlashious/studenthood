@@ -33,7 +33,7 @@ public class Controller {
     }
 
     public void getAllStudents(Socket socket, ObjectOutputStream oos) throws IOException {
-        Packet packet = new Packet("", students);
+        Packet packet = new Packet("", students, null);
         oos.writeObject(packet);
     }
 

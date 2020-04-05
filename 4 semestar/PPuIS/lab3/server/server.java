@@ -34,6 +34,9 @@ public class server {
                 case "getAllStudents":
                 controller.getAllStudents(socket, oos);
                 break;
+                case "load":
+                controller.load(packet.getFilePath());
+                break;
             }
             ois.close();
             oos.close();

@@ -24,7 +24,7 @@ public class server {
             System.out.println("Client is connected!");
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             Packet packet = (Packet) ois.readObject();
-            String method = packet.getMethod();
+            String method = packet.getMethod().split(" ")[0];
             System.out.println("Message received: " + method);
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             switch(method) {
@@ -66,6 +66,12 @@ public class server {
                 break;
                 case "findByMotherIncomeHigher":
                 controller.findByMotherIncomeHigher(oos, packet.getFindByNumber(), packet.getData());
+                break;
+                case "getStudentPage":
+                controller.getStudentPage(oos, Integer.parseInt(packet.getMethod().split(" ")[1]), packet.getFindByNumber(), packet.getData());
+                break;
+                case "deleteStudents":
+                controller.deleteStudents(oos, packet.getData());
                 break;
             }
             ois.close();

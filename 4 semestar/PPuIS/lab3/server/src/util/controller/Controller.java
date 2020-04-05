@@ -1,10 +1,7 @@
 package src.util.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +42,25 @@ public class Controller {
         students.add(data.get(0));
     }
 
-    public void deleteStudents(List<Student> students) {
-        for (Student student : students) {
-            students.remove(student);
+    public void deleteStudents(ObjectOutputStream oos, List<Student> studentsList) throws IOException {
+        for(int i = 0; i < studentsList.size(); i++) {
+            for(int j = 0; j < this.students.size(); j++) {
+                if(compareStudents(studentsList.get(i), this.students.get(j))) {
+                    this.students.remove(j);
+                    j--;
+                }
+            }
         }
+        Packet packet = new Packet(null, this.students, null, null, 0);
+        oos.writeObject(packet);
+        oos.close();
+    }
+
+    private boolean compareStudents(Student left, Student right) {
+        if(left.getName().equals(right.getName()) && left.getFatherName().equals(right.getFatherName()) && left.getMotherName().equals(right.getMotherName()) {
+            return true;
+        }
+        return false;
     }
 
     public void findByName(ObjectOutputStream oos, String name, List<Student> students) throws IOException, ClassNotFoundException {
@@ -235,5 +247,42 @@ public class Controller {
         Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
         oos.writeObject(outcomePacket);
         oos.close();
+    }
+
+    public void getStudentPage(ObjectOutputStream oos, int index, int numOfStudentsOnPage, List<Student> students)
+            throws IOException {
+        List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
+        if(!pages.isEmpty()) {
+            Packet packet = new Packet(null, pages.get(index), null, null, 0);
+            oos.writeObject(packet);
+            oos.close();
+        } else {
+            List<Student> page = new ArrayList<Student>();
+            Packet packet = new Packet(null, page, null, null, 0);
+            oos.writeObject(packet);
+            oos.close();
+        }
+    }
+
+    private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {
+        List<List<Student>> pages = new ArrayList<List<Student>>();
+        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage );
+
+        System.out.println("Students on page: " + numOfStudentsOnPage);
+        System.out.println("Number of pages: " + numOfPages);
+
+        for(int j = 0; j < numOfPages; j++) {
+            List<Student> studentPage = new ArrayList<Student>();
+            for(int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
+                try {
+                studentPage.add(students.get(i));
+                }
+                catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            pages.add(studentPage);
+        }
+        return pages;
     }
 }

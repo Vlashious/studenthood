@@ -220,7 +220,12 @@ public class DeleteListener implements Listener {
                 dialog.setLayout(new FillLayout());
                 Label resultLabel = new Label(dialog, SWT.NONE);
                 if (students.size() != 0) {
-                    controller.deleteStudents(students);
+                    try {
+                        controller.deleteStudents(students);
+                    } catch (ClassNotFoundException | IOException e2) {
+                        // TODO Auto-generated catch block
+                        e2.printStackTrace();
+                    }
                     try {
                         window.updateTable();
                     } catch (ClassNotFoundException | IOException e1) {

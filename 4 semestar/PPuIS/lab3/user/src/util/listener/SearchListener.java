@@ -212,7 +212,12 @@ public class SearchListener implements Listener {
                         }
                     }
                 }
-                table.updateTable(students);
+                try {
+                    table.updateTable(students);
+                } catch (ClassNotFoundException | IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         };
 

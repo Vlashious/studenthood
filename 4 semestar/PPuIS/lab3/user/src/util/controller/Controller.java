@@ -3,7 +3,6 @@ package src.util.controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -18,10 +17,6 @@ public class Controller {
     private String url = "localhost";
     private int port = 8080;
 
-    public Controller(List<Student> students) {
-        this.students = students;
-    }
-
     public void connect(String url, int port) throws UnknownHostException, IOException, ClassNotFoundException {
         socket = new Socket(url, port);
     }
@@ -34,7 +29,7 @@ public class Controller {
         oos.writeObject(packet);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         Packet incomePacket = (Packet) ois.readObject();
-        students = incomePacket.getData();
+        this.students = incomePacket.getData();
     }
 
     public void save(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
@@ -84,10 +79,18 @@ public class Controller {
         oos.close();
     }
 
-    public void deleteStudents(List<Student> students) {
-        for (Student student : students) {
-            students.remove(student);
-        }
+    public void deleteStudents(List<Student> students)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "deleteStudents";
+        Packet packet = new Packet(method, students, null, null, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        this.students = incomePacket.getData();
     }
 
     public List<Student> findByName(String name) throws IOException,
@@ -342,35 +345,17 @@ public class Controller {
         return incomePacket.getData();
     }
 
-    public List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students) {
-        List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
-        if(!pages.isEmpty()) {
-            return pages.get(index);
-        } else {
-            List<Student> page = new ArrayList<Student>();
-            return page;
-        }
-    }
-
-    private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {
-        List<List<Student>> pages = new ArrayList<List<Student>>();
-        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage );
-
-        System.out.println("Students on page: " + numOfStudentsOnPage);
-        System.out.println("Number of pages: " + numOfPages);
-
-        for(int j = 0; j < numOfPages; j++) {
-            List<Student> studentPage = new ArrayList<Student>();
-            for(int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
-                try {
-                studentPage.add(students.get(i));
-                }
-                catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            pages.add(studentPage);
-        }
-        return pages;
+    public List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "getStudentPage " + index;
+        Packet packet = new Packet(method, students, null, null, numOfStudentsOnPage);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 }

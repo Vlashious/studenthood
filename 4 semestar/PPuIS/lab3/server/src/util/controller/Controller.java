@@ -33,7 +33,7 @@ public class Controller {
     }
 
     public void getAllStudents(ObjectOutputStream oos) throws IOException {
-        Packet packet = new Packet("", students, null, null);
+        Packet packet = new Packet("", students, null, null, 0);
         oos.writeObject(packet);
     }
 
@@ -66,7 +66,7 @@ public class Controller {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
         oos.writeObject(outcomePacket);
         oos.close();
     }
@@ -86,7 +86,7 @@ public class Controller {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
         oos.writeObject(outcomePacket);
         oos.close();
     }
@@ -106,51 +106,53 @@ public class Controller {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
         oos.writeObject(outcomePacket);
         oos.close();
     }
 
-    public List<Student> findByNumOfBrothers(int numOfBrothers) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getNumOfBrothers() == numOfBrothers) {
-                students.add(student);
+    public void findByNumOfBrothers(ObjectOutputStream oos, int numOfBrothers, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getNumOfBrothers() == numOfBrothers) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getNumOfBrothers() == numOfBrothers) {
+                    outputStudents.add(student);
+                }
             }
         }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 
-    public List<Student> findByNumOfBrothers(int numOfBrothers, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getNumOfBrothers() == numOfBrothers) {
-                students.add(student);
+    public void findByNumOfSisters(ObjectOutputStream oos, int numOfSisters, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getNumOfSisters() == numOfSisters) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getNumOfSisters() == numOfSisters) {
+                    outputStudents.add(student);
+                }
             }
         }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
-
-    public List<Student> findByNumOfSisters(int numOfSisters) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getNumOfSisters() == numOfSisters) {
-                students.add(student);
-            }
-        }
-        return students;
-    }
-
-    public List<Student> findByNumOfSisters(int numOfSisters, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getNumOfSisters() == numOfSisters) {
-                students.add(student);
-            }
-        }
-        return students;
-    }
-
+    
     public List<Student> findByIncome(int upperIncome, int lowerIncome, boolean includeUpper, boolean includeLower, boolean includeFather, boolean includeMother) {
         List<Student> students = new ArrayList<Student>();
         if(includeUpper && !includeLower) {

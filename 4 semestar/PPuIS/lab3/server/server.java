@@ -49,6 +49,12 @@ public class server {
                 case "findByMotherName":
                 controller.findByMotherName(oos, packet.getFindByName(), packet.getData());
                 break;
+                case "findByNumOfBrothers":
+                controller.findByNumOfBrothers(oos, packet.getFindByNumber(), packet.getData());
+                break;
+                case "findByNumOfSisters":
+                controller.findByNumOfSisters(oos, packet.getFindByNumber(), packet.getData());
+                break;
             }
             ois.close();
             oos.close();

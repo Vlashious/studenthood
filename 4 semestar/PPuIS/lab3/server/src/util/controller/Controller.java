@@ -32,8 +32,8 @@ public class Controller {
         saver.save(this.students, filePath);
     }
 
-    public void getAllStudents(Socket socket, ObjectOutputStream oos) throws IOException {
-        Packet packet = new Packet("", students, null);
+    public void getAllStudents(ObjectOutputStream oos) throws IOException {
+        Packet packet = new Packet("", students, null, null);
         oos.writeObject(packet);
     }
 
@@ -51,51 +51,44 @@ public class Controller {
         }
     }
 
-    public void findByName(BufferedReader data, Socket socket) throws IOException, ClassNotFoundException {
-        String name = data.readLine();
-
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-
-        List<Student> students = (List<Student>) inputStream.readObject();
-        for (Student student : students) {
-            if(student.getName().contains(name)) {
-                students.add(student);
+    public void findByName(ObjectOutputStream oos, String name, List<Student> students) throws IOException, ClassNotFoundException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getName().contains(name)) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getName().contains(name)) {
+                    outputStudents.add(student);
+                }
             }
         }
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        outputStream.writeObject(students);
-        outputStream.close();
-        data.close();
+        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 
-    public List<Student> findByName(String name, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getName().contains(name)) {
-                students.add(student);
+    public void findByFatherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getFatherName().contains(name)) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getFatherName().contains(name)) {
+                    outputStudents.add(student);
+                }
             }
         }
-        return students;
-    }
-
-    public List<Student> findByFatherName(String fatherName) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getFatherName().contains(fatherName)) {
-                students.add(student);
-            }
-        }
-        return students;
-    }
-
-    public List<Student> findByFatherName(String fatherName, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getFatherName().contains(fatherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 
     public List<Student> findByMotherName(String motherName) {

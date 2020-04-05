@@ -32,10 +32,19 @@ public class server {
                 controller.addStudent(packet.getData());
                 break;
                 case "getAllStudents":
-                controller.getAllStudents(socket, oos);
+                controller.getAllStudents(oos);
                 break;
                 case "load":
                 controller.load(packet.getFilePath());
+                break;
+                case "save":
+                controller.save(packet.getFilePath());
+                break;
+                case "findByName":
+                controller.findByName(oos, packet.getFindByName(), packet.getData());
+                break;
+                case "findByFatherName":
+                controller.findByFatherName(oos, packet.getFindByName(), packet.getData());
                 break;
             }
             ois.close();

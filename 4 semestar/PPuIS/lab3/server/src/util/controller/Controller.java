@@ -10,6 +10,7 @@ import java.util.List;
 
 import src.util.loader.Loader;
 import src.util.model.Student;
+import src.util.packet.Packet;
 import src.util.saver.Saver;
 
 public class Controller {
@@ -31,34 +32,17 @@ public class Controller {
         saver.save(this.students, filePath);
     }
 
-    public List<Student> getAllStudents() {
-        return students;
+    public void getAllStudents(Socket socket, ObjectOutputStream oos) throws IOException {
+        Packet packet = new Packet("", students);
+        oos.writeObject(packet);
     }
 
     public void setAllStudents(List<Student> students) {
         this.students = students;
     }
 
-    public void addStudent(BufferedReader data) throws IOException {
-        Student student = new Student();
-        String name = data.readLine();
-        String fatherName = data.readLine();
-        String motherName = data.readLine();
-        int fatherIncome = Integer.parseInt(data.readLine());
-        int motherIncome = Integer.parseInt(data.readLine());
-        int numOfBrothers = Integer.parseInt(data.readLine());
-        int numOfSisters = Integer.parseInt(data.readLine());
-        
-        student.setName(name);
-        student.setFatherName(fatherName);
-        student.setFatherIncome(fatherIncome);
-        student.setMotherName(motherName);
-        student.setMotherIncome(motherIncome);
-        student.setNumOfBrothers(numOfBrothers);
-        student.setNumOfSisters(numOfSisters);
-        students.add(student);
-
-        data.close();
+    public void addStudent(List<Student> data) throws IOException {
+        students.add(data.get(0));
     }
 
     public void deleteStudents(List<Student> students) {

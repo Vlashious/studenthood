@@ -1,36 +1,47 @@
 import java.util.ArrayList;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 import src.util.controller.Controller;
 import src.util.model.Student;
+import src.util.packet.Packet;
 
 public class server {
+    static Controller controller = new Controller(new ArrayList<Student>());
+    static boolean isWorking = false;
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Controller controller = new Controller(new ArrayList<Student>());
+        startServer();
+    }
+
+    public static void startServer() throws IOException, ClassNotFoundException {
         ServerSocket serverSocket = new ServerSocket(8080);
-        System.out.println("Waiting for the client...");
-        while(true) {
+        isWorking = true;
+        while(isWorking) {
             Socket socket = serverSocket.accept();
             System.out.println("Client is connected!");
-            BufferedReader data = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String command = data.readLine();
-            switch(command) {
-                case "Add":
-                    System.out.println("Add a student");
-                    controller.addStudent(data);
-                    data.close();
-                    break;
-                case "findByName":
-                    System.out.println("Find by name");
-                    controller.findByName(data, socket);
-                    data.close();
-                default:
-                    System.out.println("No command.");
-                    break;
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            Packet packet = (Packet) ois.readObject();
+            String method = packet.getMethod();
+            System.out.println("Message received: " + method);
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            switch(method) {
+                case "addStudent":
+                controller.addStudent(packet.getData());
+                break;
+                case "getAllStudents":
+                controller.getAllStudents(socket, oos);
+                break;
             }
+            ois.close();
+            oos.close();
         }
+        serverSocket.close();
+    }
+
+    public static void stopServer() {
+        isWorking = false;
     }
 }

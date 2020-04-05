@@ -55,6 +55,18 @@ public class server {
                 case "findByNumOfSisters":
                 controller.findByNumOfSisters(oos, packet.getFindByNumber(), packet.getData());
                 break;
+                case "findByFatherIncomeLower":
+                controller.findByFatherIncomeLower(oos, packet.getFindByNumber(), packet.getData());
+                break;
+                case "findByFatherIncomeHigher":
+                controller.findByFatherIncomeHigher(oos, packet.getFindByNumber(), packet.getData());
+                break;
+                case "findByMotherIncomeLower":
+                controller.findByMotherIncomeLower(oos, packet.getFindByNumber(), packet.getData());
+                break;
+                case "findByMotherIncomeHigher":
+                controller.findByMotherIncomeHigher(oos, packet.getFindByNumber(), packet.getData());
+                break;
             }
             ois.close();
             oos.close();

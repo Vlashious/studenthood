@@ -152,104 +152,88 @@ public class Controller {
         oos.writeObject(outcomePacket);
         oos.close();
     }
-    
-    public List<Student> findByIncome(int upperIncome, int lowerIncome, boolean includeUpper, boolean includeLower, boolean includeFather, boolean includeMother) {
-        List<Student> students = new ArrayList<Student>();
-        if(includeUpper && !includeLower) {
-            for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
+
+    public void findByFatherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getFatherIncome() < upperBound) {
+                    outputStudents.add(student);
                 }
             }
-            return students;
-        }
-        if(includeLower && !includeUpper) {
+        } else {
             for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
+                if(student.getFatherIncome() < upperBound) {
+                    outputStudents.add(student);
                 }
             }
-            return students;
         }
-        if(includeUpper && includeLower) {
-            for (Student student : students) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome && student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
-                }
-            }
-            return students;
-        }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 
-    public List<Student> findByIncome(int upperIncome, int lowerIncome, boolean includeUpper, boolean includeLower, boolean includeFather, boolean includeMother, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        if(includeUpper && !includeLower) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
+    public void findByFatherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getFatherIncome() > lowerBound) {
+                    outputStudents.add(student);
                 }
             }
-            return students;
-        }
-        if(includeLower && !includeUpper) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
+        } else {
+            for (Student student : students) {
+                if(student.getFatherIncome() > lowerBound) {
+                    outputStudents.add(student);
                 }
             }
-            return students;
         }
-        if(includeUpper && includeLower) {
-            for (Student student : studentsList) {
-                if(includeFather) {
-                    if(student.getFatherIncome() > lowerIncome && student.getFatherIncome() < upperIncome) {
-                        students.add(student);
-                    }
-                }
-                if(includeMother) {
-                    if(student.getMotherIncome() > lowerIncome && student.getMotherIncome() < upperIncome && !students.contains(student)) {
-                        students.add(student);
-                    }
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
+    }
+
+    public void findByMotherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getMotherIncome() < upperBound) {
+                    outputStudents.add(student);
                 }
             }
-            return students;
+        } else {
+            for (Student student : students) {
+                if(student.getMotherIncome() < upperBound) {
+                    outputStudents.add(student);
+                }
+            }
         }
-        return students;
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
+    }
+
+    public void findByMotherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
+            throws IOException {
+        List<Student> outputStudents = new ArrayList<Student>();
+        if(students == null) {
+            for (Student student : this.students) {
+                if(student.getMotherIncome() > lowerBound) {
+                    outputStudents.add(student);
+                }
+            }
+        } else {
+            for (Student student : students) {
+                if(student.getMotherIncome() > lowerBound) {
+                    outputStudents.add(student);
+                }
+            }
+        }
+        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
+        oos.writeObject(outcomePacket);
+        oos.close();
     }
 }

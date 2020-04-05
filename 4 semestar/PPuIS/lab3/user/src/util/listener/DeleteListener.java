@@ -128,7 +128,7 @@ public class DeleteListener implements Listener {
                 if (nameSearchCheck.getSelection()) {
                     String name = nameText.getText();
                     try {
-                        students = controller.findByName(name, students);
+                        students = controller.findByName(name);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     } catch (ClassNotFoundException e1) {
@@ -138,7 +138,12 @@ public class DeleteListener implements Listener {
 
                 if (fatherNameSearchCheck.getSelection()) {
                     String fatherName = fatherNameText.getText();
-                    students = controller.findByFatherName(fatherName, students);
+                    try {
+                        students = controller.findByFatherName(fatherName, students);
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
 
                 if (motherNameSearchCheck.getSelection()) {

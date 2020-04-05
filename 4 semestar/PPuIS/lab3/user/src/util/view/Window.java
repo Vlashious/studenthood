@@ -41,7 +41,7 @@ public class Window {
         Button saveButton = new Button(shell, SWT.PUSH);
         saveButton.setText("Zachavaj...");
         saveButton.setLayoutData(new RowData(100, 50));
-        SaveListener saveListener = new SaveListener(shell, controller);
+        SaveListener saveListener = new SaveListener(shell, controller, this);
         saveButton.addListener(SWT.MouseDown, saveListener);
 
         Button loadButton = new Button(shell, SWT.PUSH);

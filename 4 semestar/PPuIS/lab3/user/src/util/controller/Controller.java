@@ -29,7 +29,7 @@ public class Controller {
     public void load(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
         connect(url, port);
         String method = "load";
-        Packet packet = new Packet(method, null, filePath);
+        Packet packet = new Packet(method, null, filePath, null, 0);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -40,18 +40,16 @@ public class Controller {
     public void save(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
         connect(url, port);
         String method = "save";
-        Packet packet = new Packet(method, null, filePath);
+        Packet packet = new Packet(method, null, filePath, null, 0);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
-        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        Packet incomePacket = (Packet) ois.readObject();
-        students = incomePacket.getData();
+        oos.close();
     }
 
     public List<Student> getAllStudents() throws UnknownHostException, ClassNotFoundException, IOException {
         connect(url, port);
         String method = "getAllStudents";
-        Packet packet = new Packet(method, null, null);
+        Packet packet = new Packet(method, null, null, null, 0);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -80,7 +78,7 @@ public class Controller {
         newStud.setNumOfSisters(numOfSisters);
         List<Student> oneStudent = new ArrayList<Student>();
         oneStudent.add(newStud);
-        Packet packet = new Packet(method, oneStudent, null);
+        Packet packet = new Packet(method, oneStudent, null, null, 0);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
         oos.close();
@@ -92,39 +90,60 @@ public class Controller {
         }
     }
 
-    public List<Student> findByName(String name, List<Student> studentsList) throws IOException,
+    public List<Student> findByName(String name) throws IOException,
             ClassNotFoundException {
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
-        out.println("findByName");
-        out.println(name);
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        outputStream.writeObject(studentsList);
-        out.flush();
-        out.close();
-
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-        List<Student> students = (List<Student>) inputStream.readObject();
-        return students;
+        connect(url, port);
+        String method = "findByName";
+        Packet packet = new Packet(method, null, null, name, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
-    public List<Student> findByFatherName(String fatherName) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : students) {
-            if(student.getFatherName().contains(fatherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+    public List<Student> findByName(String name, List<Student> students) throws IOException,
+            ClassNotFoundException {
+        connect(url, port);
+        String method = "findByName";
+        Packet packet = new Packet(method, students, null, name, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
-    public List<Student> findByFatherName(String fatherName, List<Student> studentsList) {
-        List<Student> students = new ArrayList<Student>();
-        for (Student student : studentsList) {
-            if(student.getFatherName().contains(fatherName)) {
-                students.add(student);
-            }
-        }
-        return students;
+    public List<Student> findByFatherName(String fatherName)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherName";
+        Packet packet = new Packet(method, null, null, fatherName, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
+    }
+
+    public List<Student> findByFatherName(String fatherName, List<Student> studentsList)
+            throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "findByFatherName";
+        Packet packet = new Packet(method, studentsList, null, fatherName, 0);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        ois.close();
+        oos.close();
+        return incomePacket.getData();
     }
 
     public List<Student> findByMotherName(String motherName) {

@@ -133,9 +133,14 @@ public class SearchListener implements Listener {
                     }
                 }
 
-                if(fatherNameSearchCheck.getSelection()) {
+                if (fatherNameSearchCheck.getSelection()) {
                     String fatherName = fatherNameText.getText();
-                    students = controller.findByFatherName(fatherName, students);
+                    try {
+                        students = controller.findByFatherName(fatherName, students);
+                    } catch (ClassNotFoundException | IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
 
                 if(motherNameSearchCheck.getSelection()) {

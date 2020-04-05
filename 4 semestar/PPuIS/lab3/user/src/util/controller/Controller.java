@@ -9,41 +9,49 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.util.loader.Loader;
 import src.util.model.Student;
 import src.util.packet.Packet;
-import src.util.saver.Saver;
 
 public class Controller {
     private List<Student> students;
-    private Loader loader;
-    private Saver saver;
     private Socket socket;
     private String url = "localhost";
     private int port = 8080;
 
     public Controller(List<Student> students) {
         this.students = students;
-        loader = new Loader();
-        saver = new Saver();
     }
 
     public void connect(String url, int port) throws UnknownHostException, IOException, ClassNotFoundException {
         socket = new Socket(url, port);
     }
 
-    public void load(String filePath) {
-        this.students = loader.load(filePath);
+    public void load(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "load";
+        Packet packet = new Packet(method, null, filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        students = incomePacket.getData();
     }
 
-    public void save(String filePath) {
-        saver.save(this.students, filePath);
+    public void save(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
+        connect(url, port);
+        String method = "save";
+        Packet packet = new Packet(method, null, filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(packet);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        Packet incomePacket = (Packet) ois.readObject();
+        students = incomePacket.getData();
     }
 
     public List<Student> getAllStudents() throws UnknownHostException, ClassNotFoundException, IOException {
         connect(url, port);
         String method = "getAllStudents";
-        Packet packet = new Packet(method, null);
+        Packet packet = new Packet(method, null, null);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -72,7 +80,7 @@ public class Controller {
         newStud.setNumOfSisters(numOfSisters);
         List<Student> oneStudent = new ArrayList<Student>();
         oneStudent.add(newStud);
-        Packet packet = new Packet(method, oneStudent);
+        Packet packet = new Packet(method, oneStudent, null);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(packet);
         oos.close();

@@ -11,11 +11,13 @@ public class Packet implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     String method;
+    String filePath;
     List<Student> data;
 
-    public Packet(String method, List<Student> data) {
+    public Packet(String method, List<Student> data, String path) {
         this.method = method;
         this.data = data;
+        this.filePath = path;
     }
 
     public String getMethod() {
@@ -24,5 +26,9 @@ public class Packet implements Serializable {
 
     public List<Student> getData() {
         return data;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

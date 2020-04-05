@@ -25,6 +25,6 @@ public class SaveListener implements Listener {
         fDialog.setFilterNames(new String[] {"XML File"});
         fDialog.setFilterExtensions(new String[] {"*.xml"});
         String outputFile = fDialog.open();
-        controller.save(outputFile);
+        //controller.save(outputFile);
     }
 }

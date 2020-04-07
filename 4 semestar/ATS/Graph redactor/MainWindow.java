@@ -344,6 +344,16 @@ public class MainWindow extends Window {
             }
         });
 
+        findHamiltonianCycleButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                HamiltonianCycleAlgorithm algorithm = new HamiltonianCycleAlgorithm(graphCanvas.GetCurrentGraph());
+                algorithm.hamCycle();
+                graphCanvas.redraw();
+            }
+        });
+
         findDiameterButton.addListener(SWT.MouseUp, new Listener(){
         
             @Override

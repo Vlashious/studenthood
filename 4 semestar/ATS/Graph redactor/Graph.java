@@ -160,7 +160,10 @@ public class Graph implements Serializable {
             Node n1 = selectedNodes.get(0);
             Node n2 = selectedNodes.get(1);
             for (int i = 0; i < NORientedEdges.size(); i++) {
-                if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2 || NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
+                if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2) {
+                    NORientedEdges.remove(i);
+                }
+                if (NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
                     NORientedEdges.remove(i);
                 }
             }

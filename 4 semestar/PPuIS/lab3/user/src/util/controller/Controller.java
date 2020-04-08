@@ -1,12 +1,16 @@
 package src.util.controller;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import src.util.model.Student;
 import src.util.packet.Packet;
@@ -14,10 +18,19 @@ import src.util.packet.Packet;
 public class Controller {
     private List<Student> students;
     private Socket socket;
-    private String url = "localhost";
-    private int port = 8080;
+    private String url;
+    private int port;
 
     public void connect(String url, int port) throws UnknownHostException, IOException, ClassNotFoundException {
+        File file = new File("*.properties");
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            String[] data = input.split(":");
+            url = data[0];
+            port = Integer.parseInt(data[1]);
+            System.out.println(url + port);
+        }
         socket = new Socket(url, port);
     }
 

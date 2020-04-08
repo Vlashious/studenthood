@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class MainWindow extends Window {
 
@@ -100,13 +101,9 @@ public class MainWindow extends Window {
         findGraphCenterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         findGraphCenterButton.setText("Find center");
 
-        Button findVectorMultButton = new Button(shell, SWT.PUSH);
-        findVectorMultButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        findVectorMultButton.setText("Find vector mult");
-
         Button findDecartMultButton = new Button(shell, SWT.PUSH);
         findDecartMultButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        findDecartMultButton.setText("Find decart mult");
+        findDecartMultButton.setText("Find Decart product");
 
         GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER);
         graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 13, 1));
@@ -385,6 +382,38 @@ public class MainWindow extends Window {
 
                 Label label = new Label(child, SWT.NONE);
                 label.setText("Radius is: " + algorithm.getRadius());
+
+                child.open();
+            }
+        });
+
+        findDecartMultButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                Shell child = new Shell(shell);
+                child.setSize(300, 100);
+                child.setLayout(new GridLayout(1, true));
+
+                Label label = new Label(child, SWT.NONE);
+                label.setText("Enter the name of the second graph:");
+                label.setLayoutData(new GridData());
+
+                Text text = new Text(child, SWT.NONE);
+                text.setLayoutData(new GridData(1, 1, true, true));
+
+                text.addListener(SWT.KeyDown, new Listener(){
+                
+                    @Override
+                    public void handleEvent(Event e) {
+                        if(e.keyCode == 13) {
+                            DecartProductAlgorithm algorithm = new DecartProductAlgorithm(graphCanvas.GetCurrentGraph(), graphCanvas.GetGraphByName(text.getText()));
+                            //graphCanvas.SetCurrentGraph(algorithm.Start());
+                            algorithm.Start();
+                            child.dispose();
+                        }
+                    }
+                });
 
                 child.open();
             }

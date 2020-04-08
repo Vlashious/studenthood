@@ -55,6 +55,19 @@ public class GraphCanvas extends Composite {
         return graphs.get(index);
     }
 
+    /*
+    Returns graph by it's name.
+    @param name
+    */
+    public Graph GetGraphByName(String name) {
+        for (Graph graph : graphs) {
+            if(graph.GetName().equals(name)) {
+                return graph;
+            }
+        }
+        return null;
+    }
+
     public Graph GetCurrentGraph() {
         return currentGraph;
     }

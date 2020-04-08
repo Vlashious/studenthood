@@ -24,7 +24,7 @@ public class Graph implements Serializable {
         loopEdges = new ArrayList<Edge>();
 
         selectedNodes = new ArrayList<Node>();
-        name = "New Graph";
+        name = "NewGraph";
     }
 
     public void SetName(String name) {
@@ -53,6 +53,25 @@ public class Graph implements Serializable {
 
     public boolean isSelectedNodesEmpty() {
         return selectedNodes.isEmpty();
+    }
+
+    public boolean nodesConnected(Node left, Node right) {
+        for (Edge edge : NORientedEdges) {
+            if(edge.left == left && edge.right == right || edge.left == right && edge.right == left) {
+                return true;
+            }
+        }
+        for (Edge edge : OREdges) {
+            if(edge.left == left && edge.right == right) {
+                return true;
+            }
+        }
+        for (Edge edge : loopEdges) {
+            if(edge.left == left && edge.right == right) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Node> GetNodes() {
@@ -145,6 +164,7 @@ public class Graph implements Serializable {
         for (int i = 0; i < NORientedEdges.size(); i++) {
             if(NORientedEdges.get(i).left == node || NORientedEdges.get(i).right == node) {
                 NORientedEdges.remove(i);
+                i--;
             }
         }
         for (int i = 0; i < OREdges.size(); i++) {
@@ -162,9 +182,11 @@ public class Graph implements Serializable {
             for (int i = 0; i < NORientedEdges.size(); i++) {
                 if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2) {
                     NORientedEdges.remove(i);
+                    i--;
                 }
                 if (NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
                     NORientedEdges.remove(i);
+                    i--;
                 }
             }
             for (int i = 0; i < OREdges.size(); i++) {

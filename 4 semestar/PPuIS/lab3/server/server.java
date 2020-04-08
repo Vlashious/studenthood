@@ -9,9 +9,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.*;
 
 import src.util.controller.Controller;
@@ -78,60 +82,14 @@ public class server {
         while(isWorking) {
             Socket socket = serverSocket.accept();
             System.out.println("Client is connected!");
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            Packet packet = (Packet) ois.readObject();
-            String method = packet.getMethod().split(" ")[0];
-            System.out.println("Message received: " + method);
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            switch(method) {
-                case "addStudent":
-                controller.addStudent(packet.getData());
-                break;
-                case "getAllStudents":
-                controller.getAllStudents(oos);
-                break;
-                case "load":
-                controller.load(packet.getFilePath());
-                break;
-                case "save":
-                controller.save(packet.getFilePath());
-                break;
-                case "findByName":
-                controller.findByName(oos, packet.getFindByName(), packet.getData());
-                break;
-                case "findByFatherName":
-                controller.findByFatherName(oos, packet.getFindByName(), packet.getData());
-                break;
-                case "findByMotherName":
-                controller.findByMotherName(oos, packet.getFindByName(), packet.getData());
-                break;
-                case "findByNumOfBrothers":
-                controller.findByNumOfBrothers(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "findByNumOfSisters":
-                controller.findByNumOfSisters(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "findByFatherIncomeLower":
-                controller.findByFatherIncomeLower(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "findByFatherIncomeHigher":
-                controller.findByFatherIncomeHigher(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "findByMotherIncomeLower":
-                controller.findByMotherIncomeLower(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "findByMotherIncomeHigher":
-                controller.findByMotherIncomeHigher(oos, packet.getFindByNumber(), packet.getData());
-                break;
-                case "getStudentPage":
-                controller.getStudentPage(oos, Integer.parseInt(packet.getMethod().split(" ")[1]), packet.getFindByNumber(), packet.getData());
-                break;
-                case "deleteStudents":
-                controller.deleteStudents(oos, packet.getData());
-                break;
-            }
+            InputStream ois = socket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(ois));
+            String packet = (String) br.readLine();
+            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+            pw.write("GET / HTTP/1.1");
+            br.close();
+            pw.close();
             ois.close();
-            oos.close();
         }
         serverSocket.close();
         System.out.println("Server spyniŭsia");

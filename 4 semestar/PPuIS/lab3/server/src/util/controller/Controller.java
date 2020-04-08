@@ -57,7 +57,7 @@ public class Controller {
     }
 
     private boolean compareStudents(Student left, Student right) {
-        if(left.getName().equals(right.getName()) && left.getFatherName().equals(right.getFatherName()) && left.getMotherName().equals(right.getMotherName()) {
+        if(left.getName().equals(right.getName()) && left.getFatherName().equals(right.getFatherName()) && left.getMotherName().equals(right.getMotherName())) {
             return true;
         }
         return false;

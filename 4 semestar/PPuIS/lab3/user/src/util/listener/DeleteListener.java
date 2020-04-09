@@ -121,7 +121,7 @@ public class DeleteListener implements Listener {
                 List<Student> students = null;
                 try {
                     students = controller.getAllStudents();
-                } catch (ClassNotFoundException | IOException e2) {
+                } catch (ClassNotFoundException | IOException | InterruptedException e2) {
                     // TODO Auto-generated catch block
                     e2.printStackTrace();
                 }
@@ -228,7 +228,7 @@ public class DeleteListener implements Listener {
                     }
                     try {
                         window.updateTable();
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }

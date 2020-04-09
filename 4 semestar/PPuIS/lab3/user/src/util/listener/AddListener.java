@@ -132,7 +132,7 @@ public class AddListener implements Listener {
                     }
                     try {
                         window.updateTable();
-                    } catch (ClassNotFoundException | IOException e) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }

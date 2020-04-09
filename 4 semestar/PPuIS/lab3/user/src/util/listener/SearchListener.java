@@ -121,7 +121,7 @@ public class SearchListener implements Listener {
                 List<Student> students = null;
                 try {
                     students = controller.getAllStudents();
-                } catch (ClassNotFoundException | IOException e2) {
+                } catch (ClassNotFoundException | IOException | InterruptedException e2) {
                     e2.printStackTrace();
                 }
                 if (nameSearchCheck.getSelection()) {

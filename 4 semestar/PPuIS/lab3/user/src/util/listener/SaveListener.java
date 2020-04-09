@@ -55,7 +55,7 @@ public class SaveListener implements Listener {
                     child.dispose();
                     try {
                         window.updateTable();
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         e1.printStackTrace();
                     }
                 }

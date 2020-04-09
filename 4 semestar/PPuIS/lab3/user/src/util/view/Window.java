@@ -78,7 +78,7 @@ public class Window {
         }
     }
 
-    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException {
+    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException, InterruptedException {
         table.updateTable();
     }
 }

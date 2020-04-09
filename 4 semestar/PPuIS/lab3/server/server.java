@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -9,22 +10,17 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.*;
 
 import src.util.controller.Controller;
 import src.util.model.Student;
-import src.util.packet.Packet;
+import com.sun.net.httpserver.HttpServer;
 
 public class server {
     static Controller controller = new Controller(new ArrayList<Student>());
     static boolean isWorking = false;
+    static HttpServer server = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Display display = new Display();
@@ -76,27 +72,16 @@ public class server {
     }
 
     public static void startServer() throws IOException, ClassNotFoundException {
-        ServerSocket serverSocket = new ServerSocket(8080);
+        InetSocketAddress addr = new InetSocketAddress(8080);
+        server = HttpServer.create(addr, 0);
         isWorking = true;
-        System.out.println("Server zapuściŭsia");
-        while(isWorking) {
-            Socket socket = serverSocket.accept();
-            System.out.println("Client is connected!");
-            
-            InputStream ois = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(ois));
-            String packet = (String) br.readLine();
-            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-            pw.write("GET / HTTP/1.1");
-            br.close();
-            pw.close();
-            ois.close();
-        }
-        serverSocket.close();
-        System.out.println("Server spyniŭsia");
+        System.out.println("Server zapuściŭsia na porcie 8080.");
+        server.createContext("/", controller);
+        server.setExecutor(Executors.newCachedThreadPool());
+        server.start();
     }
 
     public static void stopServer() {
-        isWorking = false;
+        server.stop(1);
     }
 }

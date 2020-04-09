@@ -1,7 +1,9 @@
 package src.util.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,10 @@ import src.util.model.Student;
 import src.util.packet.Packet;
 import src.util.saver.Saver;
 
-public class Controller {
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+public class Controller implements HttpHandler {
     private List<Student> students;
     private Loader loader;
     private Saver saver;
@@ -19,6 +24,39 @@ public class Controller {
         this.students = students;
         loader = new Loader();
         saver = new Saver();
+    }
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        String httpMethod = exchange.getRequestMethod();
+        if(httpMethod.equalsIgnoreCase("GET")) {
+            String requestMethod = exchange.getRequestURI().toString();
+            switch(requestMethod) {
+                case "/load":
+                    exchange.sendResponseHeaders(200, 0);
+                    String filePath = exchange.getRequestHeaders().get("FileName").get(0);
+                    load(filePath);
+                    exchange.getResponseBody().write("File loaded.".getBytes());
+                    exchange.getResponseBody().close();
+                break;
+                case "/getAllStudents":
+                    exchange.sendResponseHeaders(200, 0);
+                    OutputStream os = exchange.getResponseBody();
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(bos);
+                    oos.writeObject(students);
+                    os.write(bos.toByteArray());
+                    bos.close();
+                    oos.close();
+                    os.close();
+                break;
+                default:
+                    exchange.sendResponseHeaders(200, 0);
+                    exchange.getResponseBody().write("<h1>404 Not Found<h1>".getBytes());
+                    exchange.getResponseBody().close();
+                break;
+            }
+        }
     }
 
     public void load(String filePath) {
@@ -43,9 +81,9 @@ public class Controller {
     }
 
     public void deleteStudents(ObjectOutputStream oos, List<Student> studentsList) throws IOException {
-        for(int i = 0; i < studentsList.size(); i++) {
-            for(int j = 0; j < this.students.size(); j++) {
-                if(compareStudents(studentsList.get(i), this.students.get(j))) {
+        for (int i = 0; i < studentsList.size(); i++) {
+            for (int j = 0; j < this.students.size(); j++) {
+                if (compareStudents(studentsList.get(i), this.students.get(j))) {
                     this.students.remove(j);
                     j--;
                 }
@@ -57,23 +95,25 @@ public class Controller {
     }
 
     private boolean compareStudents(Student left, Student right) {
-        if(left.getName().equals(right.getName()) && left.getFatherName().equals(right.getFatherName()) && left.getMotherName().equals(right.getMotherName())) {
+        if (left.getName().equals(right.getName()) && left.getFatherName().equals(right.getFatherName())
+                && left.getMotherName().equals(right.getMotherName())) {
             return true;
         }
         return false;
     }
 
-    public void findByName(ObjectOutputStream oos, String name, List<Student> students) throws IOException, ClassNotFoundException {
+    public void findByName(ObjectOutputStream oos, String name, List<Student> students)
+            throws IOException, ClassNotFoundException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getName().contains(name)) {
+                if (student.getName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getName().contains(name)) {
+                if (student.getName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
@@ -85,15 +125,15 @@ public class Controller {
 
     public void findByFatherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getFatherName().contains(name)) {
+                if (student.getFatherName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getFatherName().contains(name)) {
+                if (student.getFatherName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
@@ -105,15 +145,15 @@ public class Controller {
 
     public void findByMotherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getMotherName().contains(name)) {
+                if (student.getMotherName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getMotherName().contains(name)) {
+                if (student.getMotherName().contains(name)) {
                     outputStudents.add(student);
                 }
             }
@@ -126,15 +166,15 @@ public class Controller {
     public void findByNumOfBrothers(ObjectOutputStream oos, int numOfBrothers, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getNumOfBrothers() == numOfBrothers) {
+                if (student.getNumOfBrothers() == numOfBrothers) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getNumOfBrothers() == numOfBrothers) {
+                if (student.getNumOfBrothers() == numOfBrothers) {
                     outputStudents.add(student);
                 }
             }
@@ -147,15 +187,15 @@ public class Controller {
     public void findByNumOfSisters(ObjectOutputStream oos, int numOfSisters, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getNumOfSisters() == numOfSisters) {
+                if (student.getNumOfSisters() == numOfSisters) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getNumOfSisters() == numOfSisters) {
+                if (student.getNumOfSisters() == numOfSisters) {
                     outputStudents.add(student);
                 }
             }
@@ -168,15 +208,15 @@ public class Controller {
     public void findByFatherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getFatherIncome() < upperBound) {
+                if (student.getFatherIncome() < upperBound) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getFatherIncome() < upperBound) {
+                if (student.getFatherIncome() < upperBound) {
                     outputStudents.add(student);
                 }
             }
@@ -189,15 +229,15 @@ public class Controller {
     public void findByFatherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getFatherIncome() > lowerBound) {
+                if (student.getFatherIncome() > lowerBound) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getFatherIncome() > lowerBound) {
+                if (student.getFatherIncome() > lowerBound) {
                     outputStudents.add(student);
                 }
             }
@@ -210,15 +250,15 @@ public class Controller {
     public void findByMotherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getMotherIncome() < upperBound) {
+                if (student.getMotherIncome() < upperBound) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getMotherIncome() < upperBound) {
+                if (student.getMotherIncome() < upperBound) {
                     outputStudents.add(student);
                 }
             }
@@ -231,15 +271,15 @@ public class Controller {
     public void findByMotherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
-        if(students == null) {
+        if (students == null) {
             for (Student student : this.students) {
-                if(student.getMotherIncome() > lowerBound) {
+                if (student.getMotherIncome() > lowerBound) {
                     outputStudents.add(student);
                 }
             }
         } else {
             for (Student student : students) {
-                if(student.getMotherIncome() > lowerBound) {
+                if (student.getMotherIncome() > lowerBound) {
                     outputStudents.add(student);
                 }
             }
@@ -252,7 +292,7 @@ public class Controller {
     public void getStudentPage(ObjectOutputStream oos, int index, int numOfStudentsOnPage, List<Student> students)
             throws IOException {
         List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
-        if(!pages.isEmpty()) {
+        if (!pages.isEmpty()) {
             Packet packet = new Packet(null, pages.get(index), null, null, 0);
             oos.writeObject(packet);
             oos.close();
@@ -266,18 +306,17 @@ public class Controller {
 
     private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {
         List<List<Student>> pages = new ArrayList<List<Student>>();
-        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage );
+        int numOfPages = (int) Math.ceil((double) students.size() / numOfStudentsOnPage);
 
         System.out.println("Students on page: " + numOfStudentsOnPage);
         System.out.println("Number of pages: " + numOfPages);
 
-        for(int j = 0; j < numOfPages; j++) {
+        for (int j = 0; j < numOfPages; j++) {
             List<Student> studentPage = new ArrayList<Student>();
-            for(int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
+            for (int i = numOfStudentsOnPage * j; i < numOfStudentsOnPage * j + numOfStudentsOnPage; i++) {
                 try {
-                studentPage.add(students.get(i));
-                }
-                catch (Exception e) {
+                    studentPage.add(students.get(i));
+                } catch (Exception e) {
                     e.getStackTrace();
                 }
             }

@@ -7,6 +7,7 @@ public class Node implements Serializable {
     public int y;
     public int r, g, b;
     public String name = "";
+    public String content = "";
 
     public Node() {
         Random random = new Random();

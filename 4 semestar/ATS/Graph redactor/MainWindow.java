@@ -408,7 +408,7 @@ public class MainWindow extends Window {
                     public void handleEvent(Event e) {
                         if(e.keyCode == 13) {
                             DecartProductAlgorithm algorithm = new DecartProductAlgorithm(graphCanvas.GetCurrentGraph(), graphCanvas.GetGraphByName(text.getText()));
-                            //graphCanvas.SetCurrentGraph(algorithm.Start());
+                            graphCanvas.SetCurrentGraph(algorithm.Start());
                             algorithm.Start();
                             child.dispose();
                         }

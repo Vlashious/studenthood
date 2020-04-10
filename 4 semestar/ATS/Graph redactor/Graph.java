@@ -241,7 +241,7 @@ public class Graph implements Serializable {
         edge1.left = right;
         edge1.right = left;
         NORientedEdges.add(edge);
-        NORientedEdges.add(edge1);
+        //NORientedEdges.add(edge1);
     }
 
     public void AddOREdge() {

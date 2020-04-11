@@ -2,6 +2,8 @@ package src.util.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -9,7 +11,6 @@ import java.util.List;
 
 import src.util.loader.Loader;
 import src.util.model.Student;
-import src.util.packet.Packet;
 import src.util.saver.Saver;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -29,34 +30,181 @@ public class Controller implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String httpMethod = exchange.getRequestMethod();
-        if(httpMethod.equalsIgnoreCase("GET")) {
-            String requestMethod = exchange.getRequestURI().toString();
-            switch(requestMethod) {
+        String requestMethod = exchange.getRequestURI().toString();
+
+        OutputStream os = exchange.getResponseBody();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        if (httpMethod.equalsIgnoreCase("GET")) {
+            switch (requestMethod) {
                 case "/load":
-                    exchange.sendResponseHeaders(200, 0);
                     String filePath = exchange.getRequestHeaders().get("FileName").get(0);
                     load(filePath);
-                    exchange.getResponseBody().write("File loaded.".getBytes());
-                    exchange.getResponseBody().close();
-                break;
-                case "/getAllStudents":
                     exchange.sendResponseHeaders(200, 0);
-                    OutputStream os = exchange.getResponseBody();
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(bos);
+                    exchange.getResponseBody().write("File loaded.".getBytes());
                     oos.writeObject(students);
                     os.write(bos.toByteArray());
-                    bos.close();
-                    oos.close();
-                    os.close();
-                break;
-                default:
+                    break;
+                case "/getAllStudents":
+                    oos.writeObject(students);
                     exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                default:
+                    exchange.sendResponseHeaders(404, 0);
                     exchange.getResponseBody().write("<h1>404 Not Found<h1>".getBytes());
-                    exchange.getResponseBody().close();
-                break;
+                    break;
             }
         }
+        if (httpMethod.equalsIgnoreCase("POST")) {
+            InputStream is = exchange.getRequestBody();
+            ObjectInputStream ois = new ObjectInputStream(is);
+            switch (requestMethod) {
+                case "/addStudent":
+                    try {
+                        Student newStudent = (Student) ois.readObject();
+                        addStudent(newStudent);
+                        exchange.sendResponseHeaders(200, 0);
+                        exchange.getResponseBody().write("OK".getBytes());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "/findByName":
+                    String findName = exchange.getRequestHeaders().get("Name").get(0);
+                    try {
+                        oos.writeObject(findByName(findName, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByFatherName":
+                    findName = exchange.getRequestHeaders().get("Name").get(0);
+                    try {
+                        oos.writeObject(findByFatherName(findName, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByMotherName":
+                    findName = exchange.getRequestHeaders().get("Name").get(0);
+                    try {
+                        oos.writeObject(findByMotherName(findName, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByNumOfBrothers":
+                    int findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByNumOfBrothers(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByNumOfSisters":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByNumOfSisters(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByFatherIncomeLower":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByFatherIncomeLower(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByFatherIncomeHigher":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByFatherIncomeHigher(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByMotherIncomeLower":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByMotherIncomeLower(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/findByMotherIncomeHigher":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("Num").get(0));
+                    try {
+                        oos.writeObject(findByMotherIncomeHigher(findNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                case "/getStudentPage":
+                    findNum = Integer.parseInt(exchange.getRequestHeaders().get("NumOfPage").get(0));
+                    int studentNum = Integer.parseInt(exchange.getRequestHeaders().get("NumOnPage").get(0));
+                    try {
+                        oos.writeObject(getStudentPage(findNum, studentNum, (List<Student>) ois.readObject()));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    exchange.sendResponseHeaders(200, 0);
+                    os.write(bos.toByteArray());
+                    break;
+                default:
+                    exchange.sendResponseHeaders(404, 0);
+                    exchange.getResponseBody().write("<h1>404 Not Found :(<h1>".getBytes());
+                    break;
+            }
+            is.close();
+            ois.close();
+        }
+        if (httpMethod.equalsIgnoreCase("DELETE")) {
+            InputStream is = exchange.getRequestBody();
+            ObjectInputStream ois = new ObjectInputStream(is);
+            switch (requestMethod) {
+                case "/deleteStudents":
+                    try {
+                        List<Student> studentsToDelete = (List<Student>) ois.readObject();
+                        deleteStudents(studentsToDelete);
+                        exchange.sendResponseHeaders(200, 0);
+                        exchange.getResponseBody().write("OK".getBytes());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                break;
+                default:
+                    exchange.sendResponseHeaders(404, 0);
+                    exchange.getResponseBody().write("<h1>404 Not Found :(<h1>".getBytes());
+                break;
+            }
+            is.close();
+            ois.close();
+        }
+        os.close();
+        bos.close();
+        oos.close();
+        exchange.getResponseBody().close();
     }
 
     public void load(String filePath) {
@@ -67,20 +215,15 @@ public class Controller implements HttpHandler {
         saver.save(this.students, filePath);
     }
 
-    public void getAllStudents(ObjectOutputStream oos) throws IOException {
-        Packet packet = new Packet("", students, null, null, 0);
-        oos.writeObject(packet);
-    }
-
     public void setAllStudents(List<Student> students) {
         this.students = students;
     }
 
-    public void addStudent(List<Student> data) throws IOException {
-        students.add(data.get(0));
+    public void addStudent(Student student) throws IOException {
+        students.add(student);
     }
 
-    public void deleteStudents(ObjectOutputStream oos, List<Student> studentsList) throws IOException {
+    public void deleteStudents(List<Student> studentsList) throws IOException {
         for (int i = 0; i < studentsList.size(); i++) {
             for (int j = 0; j < this.students.size(); j++) {
                 if (compareStudents(studentsList.get(i), this.students.get(j))) {
@@ -89,9 +232,6 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet packet = new Packet(null, this.students, null, null, 0);
-        oos.writeObject(packet);
-        oos.close();
     }
 
     private boolean compareStudents(Student left, Student right) {
@@ -102,8 +242,7 @@ public class Controller implements HttpHandler {
         return false;
     }
 
-    public void findByName(ObjectOutputStream oos, String name, List<Student> students)
-            throws IOException, ClassNotFoundException {
+    public List<Student> findByName(String name, List<Student> students) {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
             for (Student student : this.students) {
@@ -118,12 +257,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByFatherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
+    public List<Student> findByFatherName(String name, List<Student> students) throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
             for (Student student : this.students) {
@@ -138,12 +275,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByMotherName(ObjectOutputStream oos, String name, List<Student> students) throws IOException {
+    public List<Student> findByMotherName(String name, List<Student> students) throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
             for (Student student : this.students) {
@@ -158,12 +293,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByNumOfBrothers(ObjectOutputStream oos, int numOfBrothers, List<Student> students)
+    public List<Student> findByNumOfBrothers(int numOfBrothers, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -179,12 +312,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByNumOfSisters(ObjectOutputStream oos, int numOfSisters, List<Student> students)
+    public List<Student> findByNumOfSisters(int numOfSisters, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -200,12 +331,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByFatherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
+    public List<Student> findByFatherIncomeLower(int upperBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -221,12 +350,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByFatherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
+    public List<Student> findByFatherIncomeHigher(int lowerBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -242,12 +369,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByMotherIncomeLower(ObjectOutputStream oos, int upperBound, List<Student> students)
+    public List<Student> findByMotherIncomeLower(int upperBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -263,12 +388,10 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void findByMotherIncomeHigher(ObjectOutputStream oos, int lowerBound, List<Student> students)
+    public List<Student> findByMotherIncomeHigher(int lowerBound, List<Student> students)
             throws IOException {
         List<Student> outputStudents = new ArrayList<Student>();
         if (students == null) {
@@ -284,24 +407,18 @@ public class Controller implements HttpHandler {
                 }
             }
         }
-        Packet outcomePacket = new Packet(null, outputStudents, null, null, 0);
-        oos.writeObject(outcomePacket);
-        oos.close();
+        return outputStudents;
     }
 
-    public void getStudentPage(ObjectOutputStream oos, int index, int numOfStudentsOnPage, List<Student> students)
+    public List<Student> getStudentPage(int index, int numOfStudentsOnPage, List<Student> students)
             throws IOException {
         List<List<Student>> pages = calculatePages(numOfStudentsOnPage, students);
         if (!pages.isEmpty()) {
-            Packet packet = new Packet(null, pages.get(index), null, null, 0);
-            oos.writeObject(packet);
-            oos.close();
+            return pages.get(index);
         } else {
             List<Student> page = new ArrayList<Student>();
-            Packet packet = new Packet(null, page, null, null, 0);
-            oos.writeObject(packet);
-            oos.close();
         }
+        return null;
     }
 
     private List<List<Student>> calculatePages(int numOfStudentsOnPage, List<Student> students) {

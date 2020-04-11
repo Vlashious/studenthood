@@ -127,7 +127,7 @@ public class AddListener implements Listener {
                     try {
                         controller.addStudent(studentName, fatherName, motherName, fatherIncome, motherIncome,
                                 numOfBrothers, numOfSisters);
-                    } catch (IOException | ClassNotFoundException e) {
+                    } catch (IOException | ClassNotFoundException | InterruptedException e) {
                         e.printStackTrace();
                     }
                     try {

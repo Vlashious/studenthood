@@ -133,6 +133,8 @@ public class DeleteListener implements Listener {
                         e1.printStackTrace();
                     } catch (ClassNotFoundException e1) {
                         e1.printStackTrace();
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
                     }
                 }
 
@@ -140,7 +142,7 @@ public class DeleteListener implements Listener {
                     String fatherName = fatherNameText.getText();
                     try {
                         students = controller.findByFatherName(fatherName, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -150,7 +152,7 @@ public class DeleteListener implements Listener {
                     String motherName = motherNameText.getText();
                     try {
                         students = controller.findByMotherName(motherName, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -160,7 +162,7 @@ public class DeleteListener implements Listener {
                     int numOfBrothers = Integer.parseInt(numOfBrothersText.getText());
                     try {
                         students = controller.findByNumOfBrothers(numOfBrothers, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -170,7 +172,7 @@ public class DeleteListener implements Listener {
                     int numOfSIsters = Integer.parseInt(numOfSistersText.getText());
                     try {
                         students = controller.findByNumOfSisters(numOfSIsters, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -180,7 +182,8 @@ public class DeleteListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -189,7 +192,8 @@ public class DeleteListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(upperBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -200,7 +204,8 @@ public class DeleteListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -209,7 +214,8 @@ public class DeleteListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(upperBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -222,7 +228,7 @@ public class DeleteListener implements Listener {
                 if (students.size() != 0) {
                     try {
                         controller.deleteStudents(students);
-                    } catch (ClassNotFoundException | IOException e2) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e2) {
                         // TODO Auto-generated catch block
                         e2.printStackTrace();
                     }

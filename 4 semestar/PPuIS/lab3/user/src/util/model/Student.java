@@ -12,6 +12,20 @@ public class Student implements Serializable {
     private int numOfBrothers;
     private int numOfSisters;
 
+    public Student() {
+
+    }
+
+    public Student(String name, String fatherName, String motherName, int fatherIncome, int motherIncome, int numOfBrothers, int numOfSisters) {
+        this.name = name;
+        this.fatherName = fatherName;
+        this.motherName = motherName;
+        this.fatherIncome = fatherIncome;
+        this.motherIncome = motherIncome;
+        this.numOfBrothers = numOfBrothers;
+        this.numOfSisters = numOfSisters;
+    }
+
     public String getName() {
         return name;
     }

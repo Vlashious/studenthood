@@ -73,7 +73,7 @@ public class StudentTable extends Composite {
                 } else
                     try {
                         updateTable(searchStudentList);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -98,7 +98,7 @@ public class StudentTable extends Composite {
                     } else
                         try {
                             updateTable(searchStudentList);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -133,7 +133,7 @@ public class StudentTable extends Composite {
                         pageNum++;
                         try {
                             updateTable(searchStudentList);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -166,7 +166,7 @@ public class StudentTable extends Composite {
                     pageNum = (int) Math.ceil((double) searchStudentList.size() / numOfStudentsOnPage - 1);
                     try {
                         updateTable(searchStudentList);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -225,7 +225,7 @@ public class StudentTable extends Composite {
     }
 
     public void updateTable(List<Student> studentsList)
-            throws UnknownHostException, ClassNotFoundException, IOException {
+            throws UnknownHostException, ClassNotFoundException, IOException, InterruptedException {
         searchStudentList = studentsList;
         List<Student> students = controller.getStudentPage(pageNum, numOfStudentsOnPage, studentsList);
         table.removeAll();

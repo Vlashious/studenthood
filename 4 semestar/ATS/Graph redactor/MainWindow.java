@@ -312,8 +312,8 @@ public class MainWindow extends Window {
                 Label nodeContentLabel = new Label(child, SWT.NONE);
                 nodeContentLabel.setLayoutData(new GridData());
                 try {
-                    nodeContentLabel.setText(graphCanvas.GetCurrentGraph().GetNodes().get(0).content);
-                    System.out.println(graphCanvas.GetCurrentGraph().GetNodes().get(0).content);
+                    nodeContentLabel.setText(graphCanvas.GetCurrentGraph().GetSelectedNodes().get(0).content);
+                    System.out.println(graphCanvas.GetCurrentGraph().GetSelectedNodes().get(0).content);
                 } catch (Exception e1) {
                     e1.getStackTrace();
                 }
@@ -382,7 +382,7 @@ public class MainWindow extends Window {
             }
         });
 
-        findRadiusButton.addListener(SWT.MouseUp, new Listener(){
+        findRadiusButton.addListener(SWT.MouseUp, new Listener(){   
         
             @Override
             public void handleEvent(Event e) {
@@ -397,6 +397,17 @@ public class MainWindow extends Window {
                 label.setText("Radius is: " + algorithm.getRadius());
 
                 child.open();
+            }
+        });
+
+        findGraphCenterButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                DijkstraAlgorithm algorithm = new DijkstraAlgorithm(graphCanvas.GetCurrentGraph());
+                algorithm.dijkstra();
+                graphCanvas.GetCurrentGraph().SelectNode(graphCanvas.GetCurrentGraph().GetNodes().get(algorithm.getCenterIndex()));
+                graphCanvas.redraw();
             }
         });
 

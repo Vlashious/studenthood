@@ -15,10 +15,7 @@ public class SetEdgeColorButton extends DialogWindow {
         cd.setRGB(new RGB(255, 255, 255));
         RGB newColor = cd.open();
         if(newColor != null) {
-            Edge edge = graph.GetEdge();
-            edge.r = newColor.red;
-            edge.g = newColor.green;
-            edge.b = newColor.blue;
+            graph.SetEdgeColor(newColor.red, newColor.green, newColor.blue);
         }
     }
     

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/uladzimir/Workspace/dotnet learn/dotnet learn.csproj": {}
+    "/home/uladzimir/Workspace/studenthood/dotnet/dotnet.csproj": {}
   },
   "projects": {
-    "/home/uladzimir/Workspace/dotnet learn/dotnet learn.csproj": {
+    "/home/uladzimir/Workspace/studenthood/dotnet/dotnet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/uladzimir/Workspace/dotnet learn/dotnet learn.csproj",
-        "projectName": "dotnet learn",
-        "projectPath": "/home/uladzimir/Workspace/dotnet learn/dotnet learn.csproj",
+        "projectUniqueName": "/home/uladzimir/Workspace/studenthood/dotnet/dotnet.csproj",
+        "projectName": "dotnet",
+        "projectPath": "/home/uladzimir/Workspace/studenthood/dotnet/dotnet.csproj",
         "packagesPath": "/home/uladzimir/.nuget/packages/",
-        "outputPath": "/home/uladzimir/Workspace/dotnet learn/obj/",
+        "outputPath": "/home/uladzimir/Workspace/studenthood/dotnet/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/uladzimir/.nuget/NuGet/NuGet.Config"

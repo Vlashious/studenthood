@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>dotnet_learn</RootNamespace>
   </PropertyGroup>
-
-
 
 </Project>

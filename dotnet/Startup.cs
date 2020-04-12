@@ -12,6 +12,11 @@ namespace dotnet
 {
     public class Startup
     {
+        private IWebHostEnvironment _env;
+        public Startup(IWebHostEnvironment environment)
+        {
+            _env = environment;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -27,14 +32,23 @@ namespace dotnet
             }
 
             app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
+            int x = 8, y = 5, z = 0;
+            app.Use(async (context, next) => 
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                z = x * y;
+                await next.Invoke();
             });
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync($"x * y = {z}");
+            });
+            // app.UseEndpoints(endpoints =>
+            // {
+            //     endpoints.MapGet("/", async context =>
+            //     {
+            //         await context.Response.WriteAsync("Hello World!" + $"\nApplication Name: {_env.ApplicationName}");
+            //     });
+            // });
         }
     }
 }

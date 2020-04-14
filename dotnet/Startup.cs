@@ -26,29 +26,16 @@ namespace dotnet
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
 
-            app.UseRouting();
-            int x = 8, y = 5, z = 0;
-            app.Use(async (context, next) => 
-            {
-                z = x * y;
-                await next.Invoke();
-            });
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync($"x * y = {z}");
+                await context.Response.WriteAsync("Hey Babe");
             });
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapGet("/", async context =>
-            //     {
-            //         await context.Response.WriteAsync("Hello World!" + $"\nApplication Name: {_env.ApplicationName}");
-            //     });
-            // });
         }
     }
 }

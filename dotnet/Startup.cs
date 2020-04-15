@@ -33,7 +33,7 @@ namespace dotnet
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseHttpsRedirection();
             app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
 
             app.Map("/kiek", ac => ac.Run(async context =>

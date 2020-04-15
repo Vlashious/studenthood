@@ -33,22 +33,17 @@ namespace dotnet
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/error");
-            }
 
+            app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
+
+            app.Map("/kiek", ac => ac.Run(async context =>
+            {
+                await context.Response.WriteAsync("Heyyy");
+            }));
             app.Map("/error", ac => ac.Run(async context =>
             {
-                await context.Response.WriteAsync("exception!");
+                await context.Response.WriteAsync($"Error: {context.Request.Query["code"]}");
             }));
-
-            app.Run(async context =>
-            {
-                int x = 0;
-                int y = 8;
-                y = y / x;
-            });
         }
     }
 }

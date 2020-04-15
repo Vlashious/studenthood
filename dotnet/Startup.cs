@@ -28,16 +28,27 @@ namespace dotnet
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            env.EnvironmentName = "Test";
             if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            else
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "../")),
-                RequestPath = new PathString("/pages")
+                app.UseExceptionHandler("/error");
+            }
+
+            app.Map("/error", ac => ac.Run(async context =>
+            {
+                await context.Response.WriteAsync("exception!");
+            }));
+
+            app.Run(async context =>
+            {
+                int x = 0;
+                int y = 8;
+                y = y / x;
             });
-            app.UseStaticFiles();
         }
     }
 }

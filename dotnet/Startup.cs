@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace dotnet
 {
@@ -30,12 +32,12 @@ namespace dotnet
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
-
-            app.Run(async (context) =>
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
             {
-                await context.Response.WriteAsync("Hey Babe");
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "../")),
+                RequestPath = new PathString("/pages")
             });
+            app.UseStaticFiles();
         }
     }
 }

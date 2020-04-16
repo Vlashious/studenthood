@@ -1,4 +1,4 @@
-package src.util.listener;
+package src.listener;
 
 import java.io.IOException;
 
@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import src.util.controller.Controller;
-import src.util.view.Window;
+import src.controller.Controller;
+import src.view.Window;
 
 public class SaveListener implements Listener {
     

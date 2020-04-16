@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import src.controller.Controller;
+import src.model.Student;
+
 import java.io.IOException;
 import java.net.*;
-
-import src.util.controller.Controller;
-import src.util.model.Student;
 import com.sun.net.httpserver.HttpServer;
 
 public class server {
@@ -74,7 +74,6 @@ public class server {
     public static void startServer() throws IOException, ClassNotFoundException {
         InetSocketAddress addr = new InetSocketAddress(8080);
         server = HttpServer.create(addr, 0);
-        isWorking = true;
         System.out.println("Server zapuściŭsia na porcie 8080.");
         server.createContext("/", controller);
         server.setExecutor(Executors.newCachedThreadPool());

@@ -60,6 +60,16 @@ public class Controller implements HttpHandler {
             InputStream is = exchange.getRequestBody();
             ObjectInputStream ois = new ObjectInputStream(is);
             switch (requestMethod) {
+                case "/save":
+                    try {
+                        String filePath = (String) ois.readObject();
+                        save(filePath);
+                        exchange.sendResponseHeaders(200, 0);
+                        os.write("OK".getBytes());
+                    } catch (ClassNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                    break;
                 case "/addStudent":
                     try {
                         Student newStudent = (Student) ois.readObject();

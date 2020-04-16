@@ -13,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ import src.util.model.Student;
 
 public class Controller {
     private List<Student> students;
-    private Socket socket;
     private String url;
     private int port;
     private HttpClient client = HttpClient.newHttpClient();
@@ -44,16 +44,22 @@ public class Controller {
             InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create("http://" + url + ":" + port + "/load"))
-        .setHeader("FileName", filePath)
         .build();
 
-        client.send(request, BodyHandlers.ofInputStream());
+        client.send(request, BodyHandlers.discarding());
     }
 
-    public void save(String filePath) throws UnknownHostException, ClassNotFoundException, IOException {
-        String method = "save";
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-        oos.close();
+    public void save(String filePath) throws UnknownHostException, ClassNotFoundException, IOException,
+            InterruptedException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(filePath);
+        HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create("http://" + url + ":" + port + "/save"))
+        .POST(BodyPublishers.ofByteArray(baos.toByteArray()))
+        .build();
+
+        client.send(request, BodyHandlers.discarding());
     }
 
     public List<Student> getAllStudents() throws UnknownHostException, ClassNotFoundException, IOException,

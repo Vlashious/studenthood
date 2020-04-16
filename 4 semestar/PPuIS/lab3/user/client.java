@@ -1,8 +1,9 @@
 import java.net.*;
-import java.io.*;
 
-import src.util.controller.Controller;
-import src.util.view.Window;
+import src.controller.Controller;
+import src.view.Window;
+
+import java.io.*;
 
 public class client {
     public static void main(String []args) throws UnknownHostException, IOException, URISyntaxException,

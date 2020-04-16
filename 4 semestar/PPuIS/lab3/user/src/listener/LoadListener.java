@@ -1,4 +1,4 @@
-package src.util.listener;
+package src.listener;
 
 import java.io.IOException;
 
@@ -13,16 +13,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import src.util.controller.Controller;
-import src.util.view.Window;
+import src.controller.Controller;
+import src.view.Window;
 
-public class SaveListener implements Listener {
-    
+public class LoadListener implements Listener {
+
     private Shell parent;
     private Controller controller;
     private Window window;
 
-    public SaveListener(Shell parent, Controller controller, Window window) {
+    public LoadListener(Shell parent, Window window, Controller controller) {
         this.parent = parent;
         this.controller = controller;
         this.window = window;
@@ -48,16 +48,16 @@ public class SaveListener implements Listener {
                 if (e.keyCode == 13) {
                     String filePath = text.getText();
                     try {
-                        controller.save(filePath);
+                        controller.load(filePath);
                     } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         e1.printStackTrace();
                     }
                     child.dispose();
-                    // try {
-                    //     window.updateTable();
-                    // } catch (ClassNotFoundException | IOException | InterruptedException e1) {
-                    //     e1.printStackTrace();
-                    // }
+                    try {
+                        window.updateTable();
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         

@@ -23,27 +23,23 @@ namespace dotnet
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICounter, RandomCounter>(); // Create instance of the ICounter object.
+            services.AddTransient<CounterService>(); // Cuz CounterService holds an ICounter object, create another object for it.
+            // Thus, each time there is a request, TWO objects are created. For ICounter implementation and for CounterService.
+
+            services.AddScoped<ICounter, RandomCounter>(); // Create instance of the ICounter object.
+            services.AddScoped<CounterService>(); // Cuz instance of the ICounter exists, CounterService will hold alrdy created service.
+            // Thus, each time there is a request, ONE object is created. They are recreated each time there is a new request.
+
+            services.AddSingleton<ICounter, RandomCounter>(); // Create instance of the ICounter object.
+            services.AddSingleton<CounterService>(); // Cuz instance of the ICounter exists, CounterService will hold alrdy created service.
+            // Thus, each time there is a request, ONE object is created, and they last until app is closed.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            env.EnvironmentName = "Test";
-            if(env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseHttpsRedirection();
-            app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
-
-            app.Map("/kiek", ac => ac.Run(async context =>
-            {
-                await context.Response.WriteAsync("Heyyy");
-            }));
-            app.Map("/error", ac => ac.Run(async context =>
-            {
-                await context.Response.WriteAsync($"Error: {context.Request.Query["code"]}");
-            }));
+            app.UseMiddleware<CounterMiddleware>();
         }
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 public class DijkstraAlgorithm {
     private int V;
     private List<Integer> maxDistance = new ArrayList<Integer>();
+    private List<Integer> minDistance = new ArrayList<Integer>();
 
     private List<List<Integer>> adjMatrix = new ArrayList<List<Integer>>();
 
@@ -64,6 +65,7 @@ public class DijkstraAlgorithm {
                 }
             }
             maxDistance.add(getMax(dist));
+            minDistance.add(getMin(dist));
         }
     }
 
@@ -113,5 +115,18 @@ public class DijkstraAlgorithm {
             }
         }
         return minValue;
+    }
+
+    public int getCenterIndex() {
+        List<Integer> array = maxDistance;
+        int minValue = array.get(0);
+        int index = 0;
+        for(int i = 0; i < array.size(); i++) {
+            if(array.get(i) < minValue) {
+                minValue = array.get(i);
+                index = i;
+            }
+        }
+        return index;
     }
 }

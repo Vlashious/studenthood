@@ -102,6 +102,37 @@ public class Graph implements Serializable {
         return OREdges.size() + loopEdges.size() + NORientedEdges.size() / 2;
     }
 
+    public void SetEdgeColor(int r, int g, int b) {
+        if(selectedNodes.size() == 1) {
+            Node n = selectedNodes.get(0);
+            for (Edge edge : loopEdges) {
+                if(edge.left == n) {
+                    edge.r = r;
+                    edge.g = g;
+                    edge.b = b;
+                }
+            }
+        }
+        if(selectedNodes.size() == 2) {
+            Node n1 = selectedNodes.get(0);
+            Node n2 = selectedNodes.get(1);
+            for (int i = 0; i < NORientedEdges.size(); i++) {
+                if(NORientedEdges.get(i).left == n1 && NORientedEdges.get(i).right == n2 || NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
+                    NORientedEdges.get(i).r = r;
+                    NORientedEdges.get(i).g = g;
+                    NORientedEdges.get(i).b = b;
+                }
+            }
+            for (int i = 0; i < OREdges.size(); i++) {
+                if(OREdges.get(i).left == n1 && OREdges.get(i).right == n2 || OREdges.get(i).left == n2 && OREdges.get(i).right == n1) {
+                    OREdges.get(i).r = r;
+                    OREdges.get(i).g = g;
+                    OREdges.get(i).b = b;
+                }
+            }
+        }
+    }
+
     public Edge GetEdge() {
         if(selectedNodes.size() == 1) {
             Node n = selectedNodes.get(0);
@@ -184,6 +215,8 @@ public class Graph implements Serializable {
                     NORientedEdges.remove(i);
                     i--;
                 }
+            }
+            for (int i = 0; i < NORientedEdges.size(); i++) {
                 if (NORientedEdges.get(i).left == n2 && NORientedEdges.get(i).right == n1) {
                     NORientedEdges.remove(i);
                     i--;
@@ -241,7 +274,7 @@ public class Graph implements Serializable {
         edge1.left = right;
         edge1.right = left;
         NORientedEdges.add(edge);
-        NORientedEdges.add(edge1);
+        //NORientedEdges.add(edge1);
     }
 
     public void AddOREdge() {

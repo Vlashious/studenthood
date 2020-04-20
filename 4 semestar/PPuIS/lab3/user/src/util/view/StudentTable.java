@@ -66,14 +66,14 @@ public class StudentTable extends Composite {
                 if (searchStudentList.isEmpty()) {
                     try {
                         updateTable();
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 } else
                     try {
                         updateTable(searchStudentList);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -91,14 +91,14 @@ public class StudentTable extends Composite {
                     if (searchStudentList.isEmpty()) {
                         try {
                             updateTable();
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
                     } else
                         try {
                             updateTable(searchStudentList);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -124,7 +124,7 @@ public class StudentTable extends Composite {
                                 e1.printStackTrace();
                             }
                         }
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -133,7 +133,7 @@ public class StudentTable extends Composite {
                         pageNum++;
                         try {
                             updateTable(searchStudentList);
-                        } catch (ClassNotFoundException | IOException e1) {
+                        } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -152,13 +152,13 @@ public class StudentTable extends Composite {
                     try {
                         pageNum = (int) Math.ceil((double) controller.getAllStudents().size() / numOfStudentsOnPage)
                                 - 1;
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                     try {
                         updateTable();
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -166,7 +166,7 @@ public class StudentTable extends Composite {
                     pageNum = (int) Math.ceil((double) searchStudentList.size() / numOfStudentsOnPage - 1);
                     try {
                         updateTable(searchStudentList);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -205,7 +205,7 @@ public class StudentTable extends Composite {
         super.pack();
     }
 
-    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException {
+    public void updateTable() throws UnknownHostException, ClassNotFoundException, IOException, InterruptedException {
         List<Student> students = controller.getStudentPage(pageNum, numOfStudentsOnPage, controller.getAllStudents());
         table.removeAll();
         for (Student student : students) {
@@ -225,7 +225,7 @@ public class StudentTable extends Composite {
     }
 
     public void updateTable(List<Student> studentsList)
-            throws UnknownHostException, ClassNotFoundException, IOException {
+            throws UnknownHostException, ClassNotFoundException, IOException, InterruptedException {
         searchStudentList = studentsList;
         List<Student> students = controller.getStudentPage(pageNum, numOfStudentsOnPage, studentsList);
         table.removeAll();

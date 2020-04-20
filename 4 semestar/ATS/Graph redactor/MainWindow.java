@@ -105,6 +105,10 @@ public class MainWindow extends Window {
         findDecartMultButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         findDecartMultButton.setText("Find Decart product");
 
+        Button setNodeContentsButton = new Button(shell, SWT.PUSH);
+        setNodeContentsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        setNodeContentsButton.setText("Set Node Content");
+
         GraphCanvas graphCanvas = new GraphCanvas(shell, SWT.BORDER);
         graphCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 13, 1));
         graphCanvas.CreateNewGraph();
@@ -282,7 +286,7 @@ public class MainWindow extends Window {
             public void handleEvent(Event e) {
                 Shell child = new Shell(shell);
                 child.setLayout(new GridLayout(1, true));
-                child.setSize(200, 150);
+                child.setSize(200, 200);
                 child.setText("Information");
 
                 Label numOfNodesLabel = new Label(child, SWT.NONE);
@@ -304,6 +308,15 @@ public class MainWindow extends Window {
                 Label isGraphTreeLabel = new Label(child, SWT.NONE);
                 isGraphTreeLabel.setLayoutData(new GridData());
                 isGraphTreeLabel.setText(graphCanvas.GetCurrentGraph().CheckIfTree());
+
+                Label nodeContentLabel = new Label(child, SWT.NONE);
+                nodeContentLabel.setLayoutData(new GridData());
+                try {
+                    nodeContentLabel.setText(graphCanvas.GetCurrentGraph().GetSelectedNodes().get(0).content);
+                    System.out.println(graphCanvas.GetCurrentGraph().GetSelectedNodes().get(0).content);
+                } catch (Exception e1) {
+                    e1.getStackTrace();
+                }
 
                 child.open();
             }
@@ -369,7 +382,7 @@ public class MainWindow extends Window {
             }
         });
 
-        findRadiusButton.addListener(SWT.MouseUp, new Listener(){
+        findRadiusButton.addListener(SWT.MouseUp, new Listener(){   
         
             @Override
             public void handleEvent(Event e) {
@@ -384,6 +397,17 @@ public class MainWindow extends Window {
                 label.setText("Radius is: " + algorithm.getRadius());
 
                 child.open();
+            }
+        });
+
+        findGraphCenterButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                DijkstraAlgorithm algorithm = new DijkstraAlgorithm(graphCanvas.GetCurrentGraph());
+                algorithm.dijkstra();
+                graphCanvas.GetCurrentGraph().SelectNode(graphCanvas.GetCurrentGraph().GetNodes().get(algorithm.getCenterIndex()));
+                graphCanvas.redraw();
             }
         });
 
@@ -408,8 +432,40 @@ public class MainWindow extends Window {
                     public void handleEvent(Event e) {
                         if(e.keyCode == 13) {
                             DecartProductAlgorithm algorithm = new DecartProductAlgorithm(graphCanvas.GetCurrentGraph(), graphCanvas.GetGraphByName(text.getText()));
-                            //graphCanvas.SetCurrentGraph(algorithm.Start());
+                            graphCanvas.SetCurrentGraph(algorithm.Start());
                             algorithm.Start();
+                            child.dispose();
+                        }
+                    }
+                });
+
+                child.open();
+            }
+        });
+
+        setNodeContentsButton.addListener(SWT.MouseUp, new Listener(){
+        
+            @Override
+            public void handleEvent(Event e) {
+                Shell child = new Shell(shell);
+                child.setSize(300, 100);
+                child.setLayout(new GridLayout(1, true));
+
+                Label label = new Label(child, SWT.NONE);
+                label.setText("Enter the contents:");
+                label.setLayoutData(new GridData());
+
+                Text text = new Text(child, SWT.NONE);
+                text.setLayoutData(new GridData(1, 1, true, true));
+
+                text.addListener(SWT.KeyDown, new Listener(){
+                
+                    @Override
+                    public void handleEvent(Event e) {
+                        if(e.keyCode == 13) {
+                            for (Node node : graphCanvas.GetCurrentGraph().GetSelectedNodes()){
+                                node.content = text.getText();
+                            }
                             child.dispose();
                         }
                     }

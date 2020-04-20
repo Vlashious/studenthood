@@ -121,14 +121,14 @@ public class SearchListener implements Listener {
                 List<Student> students = null;
                 try {
                     students = controller.getAllStudents();
-                } catch (ClassNotFoundException | IOException e2) {
+                } catch (ClassNotFoundException | IOException | InterruptedException e2) {
                     e2.printStackTrace();
                 }
                 if (nameSearchCheck.getSelection()) {
                     String name = nameText.getText();
                     try {
                         students = controller.findByName(name, students);
-                    } catch (IOException | ClassNotFoundException e1) {
+                    } catch (IOException | ClassNotFoundException | InterruptedException e1) {
                         e1.printStackTrace();
                     }
                 }
@@ -137,7 +137,7 @@ public class SearchListener implements Listener {
                     String fatherName = fatherNameText.getText();
                     try {
                         students = controller.findByFatherName(fatherName, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -147,7 +147,7 @@ public class SearchListener implements Listener {
                     String motherName = motherNameText.getText();
                     try {
                         students = controller.findByMotherName(motherName, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -157,7 +157,7 @@ public class SearchListener implements Listener {
                     int numOfBrothers = Integer.parseInt(numOfBrothersText.getText());
                     try {
                         students = controller.findByNumOfBrothers(numOfBrothers, students);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
@@ -168,7 +168,7 @@ public class SearchListener implements Listener {
                         int numOfSIsters = Integer.parseInt(numOfSistersText.getText());
                         students = controller.findByNumOfSisters(numOfSIsters, students);
                     }
-                } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                } catch (NumberFormatException | ClassNotFoundException | IOException | InterruptedException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
@@ -177,7 +177,8 @@ public class SearchListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -186,7 +187,8 @@ public class SearchListener implements Listener {
                         try {
                             students = controller.findByFatherIncomeLower(Integer.parseInt(upperBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -197,7 +199,8 @@ public class SearchListener implements Listener {
                         try {
                             students = controller.findByMotherIncomeLower(Integer.parseInt(lowerBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -206,7 +209,8 @@ public class SearchListener implements Listener {
                         try {
                             students = controller.findByMotherIncomeLower(Integer.parseInt(upperBoundText.getText()),
                                     students);
-                        } catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+                        } catch (NumberFormatException | ClassNotFoundException | IOException
+                                | InterruptedException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -214,7 +218,7 @@ public class SearchListener implements Listener {
                 }
                 try {
                     table.updateTable(students);
-                } catch (ClassNotFoundException | IOException e1) {
+                } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }

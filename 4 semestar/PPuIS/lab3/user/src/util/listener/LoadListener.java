@@ -49,13 +49,13 @@ public class LoadListener implements Listener {
                     String filePath = text.getText();
                     try {
                         controller.load(filePath);
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         e1.printStackTrace();
                     }
                     child.dispose();
                     try {
                         window.updateTable();
-                    } catch (ClassNotFoundException | IOException e1) {
+                    } catch (ClassNotFoundException | IOException | InterruptedException e1) {
                         e1.printStackTrace();
                     }
                 }

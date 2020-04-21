@@ -1,17 +1,35 @@
-using System.Threading;
 using System;
+using System.Threading;
+using System.Net.Http;
+using System.Collections;
+using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Handler
 {
     public class MessageHandler
     {
         private ITelegramBotClient _botClient;
+        private HttpClient _httpClient;
+        private List<string> zodiacSigns = new List<string>() 
+        {
+            "Aries", "Cancer", "Taurus", 
+            "Leo", "Gemini", "Virgo", 
+            "Libra", "Capricorn", "Scorpio",
+            "Aquarius", "Sagittarius", "Pisces"
+        };
+
+        private List<List<InlineKeyboardButton>> signsKeyBoard = new List<List<InlineKeyboardButton>>();
 
         public MessageHandler(ITelegramBotClient botClient)
         {
             _botClient = botClient;
+            _httpClient = new HttpClient();
+            PopulateSignKeyboard();
         }
 
         public void UseOnMessageProcessing()
@@ -19,13 +37,56 @@ namespace Handler
             _botClient.OnMessage += OnMessage;
         }
 
-        private async void OnMessage(object sender, MessageEventArgs eventArgs)
+        public void UseOnCallBackQueryProcessing()
         {
-            if(eventArgs.Message.Text != null)
-            {
-                Console.WriteLine($"Message received " + eventArgs.Message.Text);
+            _botClient.OnCallbackQuery += OnCallbackQuery;
+        }
 
-                await _botClient.SendTextMessageAsync(eventArgs.Message.Chat, "You said:\n" + eventArgs.Message.Text);
+        private async void OnMessage(object sender, MessageEventArgs e)
+        {
+            await _botClient.SendChatActionAsync(e.Message.Chat, ChatAction.Typing);
+
+            Thread.Sleep(500);
+
+            if(e.Message.Text != null)
+            {
+                await _botClient.SendTextMessageAsync(
+                    chatId: e.Message.Chat,
+                    text: "Choose you sign.",
+                    parseMode: ParseMode.Markdown,
+                    replyMarkup: new InlineKeyboardMarkup(signsKeyBoard)
+                );
+            }
+        }
+
+        private async void OnCallbackQuery(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
+        {
+            var query = callbackQueryEventArgs;
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "http://horoscope-api.herokuapp.com/horoscope/today/" + query.CallbackQuery.Data);
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var responeBody = await response.Content.ReadAsStringAsync();
+
+            var dictionary = responeBody.Split("\"");
+
+            await _botClient.SendTextMessageAsync(query.CallbackQuery.Message.Chat.Id, dictionary[7]);
+        }
+
+        private void PopulateSignKeyboard()
+        {
+            for(int i = 0; i < zodiacSigns.Count;)
+            {
+                List<InlineKeyboardButton> row = new List<InlineKeyboardButton>();
+                for(int j = 0; j < 3; j++)
+                {
+                    InlineKeyboardButton button = InlineKeyboardButton.WithCallbackData(zodiacSigns[i], zodiacSigns[i].ToLower());
+                    i++;
+                    row.Add(button);
+                }
+                signsKeyBoard.Add(row);
             }
         }
     }

@@ -8,7 +8,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Net.Http.Headers;
+using Quartz;
 
 namespace Handler
 {
@@ -53,6 +53,7 @@ namespace Handler
                         text: "Hello! I'm Śniežań bot! I can do something what I CAN do uknow.\nTo learn more, use */menu*",
                         parseMode: ParseMode.Markdown
                     );
+                    UsersInfo.SetUser(e.Message.Chat.Id, "none");
                 break;
                 case "/menu":
                     await _botClient.SendTextMessageAsync(
@@ -138,6 +139,7 @@ namespace Handler
                 catch (Exception exc)
                 {
                     Console.WriteLine("Fizra");
+                    Console.WriteLine(exc.StackTrace);
                 }
                 toUser += schedule.subject + "\n";
                 toUser += schedule.lessonTime + "\n\n";
@@ -147,6 +149,8 @@ namespace Handler
                 chatId: e.Message.Chat.Id,
                 text: toUser
             );
+
+            UsersInfo.SetUser(e.Message.Chat.Id, messageArgs[1]);
         }
 
         private void PopulateSignKeyboard()

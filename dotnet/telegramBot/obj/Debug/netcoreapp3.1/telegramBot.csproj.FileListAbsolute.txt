@@ -12,3 +12,14 @@
 /home/uladzimir/Workspace/studenthood/dotnet/telegramBot/obj/Debug/netcoreapp3.1/telegramBot.csproj.CopyComplete
 /home/uladzimir/Workspace/studenthood/dotnet/telegramBot/obj/Debug/netcoreapp3.1/telegramBot.dll
 /home/uladzimir/Workspace/studenthood/dotnet/telegramBot/obj/Debug/netcoreapp3.1/telegramBot.pdb
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/Quartz.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/System.Configuration.ConfigurationManager.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/System.Data.SqlClient.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/System.Security.Permissions.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/win-arm64/native/sni.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/win-x64/native/sni.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/sni.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/home/uladzimir/Workspace/studenthood/dotnet/telegramBot/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll

@@ -6,6 +6,7 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Text.Json;
+using System.Linq;
 
 namespace Handler
 {
@@ -28,16 +29,7 @@ namespace Handler
             _botClient = botClient;
             _httpClient = new HttpClient();
             PopulateSignKeyboard();
-        }
-
-        public void UseOnMessageProcessing()
-        {
             _botClient.OnMessage += OnMessage;
-        }
-
-        public void UseOnCallBackQueryProcessing()
-        {
-            _botClient.OnCallbackQuery += OnCallbackQuery;
         }
 
         private async void OnMessage(object sender, MessageEventArgs e)
@@ -46,18 +38,47 @@ namespace Handler
 
             Thread.Sleep(500);
 
-            if(e.Message.Text != null)
+            if(e.Message.Text == null)
             {
-                await _botClient.SendTextMessageAsync(
-                    chatId: e.Message.Chat,
-                    text: "Choose you sign.",
-                    parseMode: ParseMode.Markdown,
-                    replyMarkup: new InlineKeyboardMarkup(signsKeyBoard)
-                );
+                return;
+            }
+
+            switch (e.Message.Text.Split(" ").First())
+            {
+                case "/start":
+                    await _botClient.SendTextMessageAsync(
+                        chatId: e.Message.Chat.Id,
+                        text: "Hello! I'm Śniežań bot! I can do something what I CAN do uknow.\nTo learn more, use */menu*",
+                        parseMode: ParseMode.Markdown
+                    );
+                break;
+                case "/menu":
+                    await _botClient.SendTextMessageAsync(
+                        chatId: e.Message.Chat.Id,
+                        text: "*/horoscope* - horoscope for today",
+                        parseMode: ParseMode.Markdown
+                    );
+                break;
+                case "/horoscope":
+                    _botClient.OnCallbackQuery += GetCallbackQueryData;
+                    await _botClient.SendTextMessageAsync(
+                        chatId: e.Message.Chat,
+                        text: "Choose you sign.",
+                        parseMode: ParseMode.Markdown,
+                        replyMarkup: new InlineKeyboardMarkup(signsKeyBoard)
+                    );
+                break;
+                default:
+                    await _botClient.SendTextMessageAsync(
+                        chatId: e.Message.Chat.Id,
+                        text: $"Incorrect command *:(*\n To show what the bot can do, type */menu*",
+                        parseMode: ParseMode.Markdown
+                    );
+                break;
             }
         }
 
-        private async void OnCallbackQuery(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
+        private async void GetCallbackQueryData(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
             var query = callbackQueryEventArgs;
 
@@ -69,8 +90,12 @@ namespace Handler
             var responeBody = await response.Content.ReadAsStringAsync();
 
             var horoscopeJson = JsonSerializer.Deserialize<Dictionary<string, string>>(responeBody);
-
-            await _botClient.SendTextMessageAsync(query.CallbackQuery.Message.Chat.Id, horoscopeJson["horoscope"]);
+            await _botClient.SendTextMessageAsync(
+                query.CallbackQuery.Message.Chat.Id,
+                "*" + horoscopeJson["sunsign"].ToUpper() + "*" + $"\n{horoscopeJson["horoscope"]}",
+                parseMode: ParseMode.Markdown
+            );
+            _botClient.OnCallbackQuery -= GetCallbackQueryData;
         }
 
         private void PopulateSignKeyboard()

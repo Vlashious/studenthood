@@ -13,8 +13,6 @@ namespace Main
             var bot = botClient.GetMeAsync().Result;
 
             MessageHandler handler = new MessageHandler(botClient);
-            handler.UseOnMessageProcessing();
-            handler.UseOnCallBackQueryProcessing();
 
             botClient.StartReceiving();
             Thread.Sleep(int.MaxValue);

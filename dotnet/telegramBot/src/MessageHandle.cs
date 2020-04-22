@@ -8,6 +8,10 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+using json;
 
 namespace Handler
 {
@@ -70,9 +74,9 @@ namespace Handler
 
             var responeBody = await response.Content.ReadAsStringAsync();
 
-            var dictionary = responeBody.Split("\"");
+            var horoscopeJson = JsonSerializer.Deserialize<Dictionary<string, string>>(responeBody);
 
-            await _botClient.SendTextMessageAsync(query.CallbackQuery.Message.Chat.Id, dictionary[7]);
+            await _botClient.SendTextMessageAsync(query.CallbackQuery.Message.Chat.Id, horoscopeJson["horoscope"]);
         }
 
         private void PopulateSignKeyboard()

@@ -5,8 +5,10 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using System.Text.Json;
+using System;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Handler
 {
@@ -55,7 +57,8 @@ namespace Handler
                 case "/menu":
                     await _botClient.SendTextMessageAsync(
                         chatId: e.Message.Chat.Id,
-                        text: "*/horoscope* - horoscope for today",
+                        text: "*/horoscope* - horoscope for today\n" +
+                        "*/timetable group_number* - timetable for tomorrow",
                         parseMode: ParseMode.Markdown
                     );
                 break;
@@ -67,6 +70,9 @@ namespace Handler
                         parseMode: ParseMode.Markdown,
                         replyMarkup: new InlineKeyboardMarkup(signsKeyBoard)
                     );
+                break;
+                case "/timetable":
+                    SendTimetable(e);
                 break;
                 default:
                     await _botClient.SendTextMessageAsync(
@@ -89,13 +95,58 @@ namespace Handler
 
             var responeBody = await response.Content.ReadAsStringAsync();
 
-            var horoscopeJson = JsonSerializer.Deserialize<Dictionary<string, string>>(responeBody);
+            var horoscopeJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(responeBody);
             await _botClient.SendTextMessageAsync(
                 query.CallbackQuery.Message.Chat.Id,
                 "*" + horoscopeJson["sunsign"].ToUpper() + "*" + $"\n{horoscopeJson["horoscope"]}",
                 parseMode: ParseMode.Markdown
             );
             _botClient.OnCallbackQuery -= GetCallbackQueryData;
+        }
+
+        private async void SendTimetable(MessageEventArgs e)
+        {
+
+            var messageArgs = e.Message.Text.Split(" ");
+
+            if(messageArgs.Length != 2)
+            {
+                await _botClient.SendTextMessageAsync(
+                    chatId: e.Message.Chat,
+                    text: "Please, provide a *group number*.",
+                    parseMode: ParseMode.Markdown
+                );
+                return;
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://journal.bsuir.by/api/v1/studentGroup/schedule?studentGroup=" + messageArgs[1]);
+
+            var response = await _httpClient.SendAsync(request);
+
+            var responseJSON = JsonConvert.DeserializeObject<JSONTimetable>(await response.Content.ReadAsStringAsync());
+            string toUser = "";
+            toUser += responseJSON.tomorrowDate + "\n";
+            toUser += responseJSON.studentGroup.name + "\n";
+
+            foreach(TomorrowSchedule schedule in responseJSON.tomorrowSchedules)
+            {
+                toUser += schedule.lessonType + "\n";
+                try
+                {
+                toUser += schedule.auditory[0] + "\n";
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine("Fizra");
+                }
+                toUser += schedule.subject + "\n";
+                toUser += schedule.lessonTime + "\n\n";
+            }
+
+            await _botClient.SendTextMessageAsync(
+                chatId: e.Message.Chat.Id,
+                text: toUser
+            );
         }
 
         private void PopulateSignKeyboard()
